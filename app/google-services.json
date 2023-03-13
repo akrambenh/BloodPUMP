@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "116766494069",
+    "project_id": "bloodbump-35398",
+    "storage_bucket": "bloodbump-35398.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:116766494069:android:a43acb225bef4bafffd73c",
+        "android_client_info": {
+          "package_name": "com.example.bloodbump"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "116766494069-khv6qad64b3u9kd4m4s7u45u333da6di.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6ejby8aDQDBfEglIZXRE75QTpA-kOywA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "116766494069-khv6qad64b3u9kd4m4s7u45u333da6di.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
