@@ -3,9 +3,9 @@ package com.example.bloodbump;
 public class User {
 
 	private String user_ID;
-	private String username;
-	private String email;
-	private String password;
+	String username;
+	String email;
+	String password;
 
 	public void registerUser() {
 		// TODO - implement User.registerUser
