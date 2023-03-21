@@ -20,10 +20,12 @@ import static android.content.ContentValues.TAG;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -38,7 +40,6 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         userAuth = FirebaseAuth.getInstance();
-
         EditText user_name = (EditText) findViewById(R.id.user_name);
         EditText user_lastname = (EditText) findViewById(R.id.user_lastname);
         EditText user_email = (EditText) findViewById(R.id.user_email);
@@ -60,7 +61,6 @@ public class RegisterActivity extends AppCompatActivity {
             String password = user_password.getText().toString().trim();
             String ConfirmedPassword = confirmPassword.getText().toString().trim();
             String phone = user_phone.getText().toString().trim();
-            String fullname = lastname + " " + name;
             int SelectedID = radioGroup.getCheckedRadioButtonId();
             RadioButton SelectedRadioButton = (RadioButton) findViewById(SelectedID);
             String UserType = SelectedRadioButton.getText().toString();
@@ -84,35 +84,27 @@ public class RegisterActivity extends AppCompatActivity {
                 user_email.requestFocus();
             } else if(SelectedRadioButton == donor){
                 // complete constructor
+                userDatabase = FirebaseDatabase.getInstance();
+                reference = userDatabase.getReference("User");
                 Donor user = new Donor(name, lastname, username, email, password, phone);
-                userAuth.createUserWithEmailAndPassword(user.email, user.password).addOnCompleteListener(task -> {
-                    try {
-                        if (task.isComplete()) {
-                            Log.d(TAG, "OnRegister: User Authenticated");
-                            FirebaseDatabase.getInstance().getReference("User")
-                                    .child("Donor")
-                                            .child(userAuth.getCurrentUser().getUid())
-                                                    .setValue(user)
-                           .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    Log.d(TAG, "Instance Created Successfully");
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(RegisterActivity.this, "Account Created Successfully " + user.first_name + " " + user.last_name + " !", Toast.LENGTH_LONG).show();
-                                        Log.d(TAG, "OnRegister: Transition to Document Auth Activity");
-                                        startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
-                                    } else {
-                                        Log.d(TAG, "OnRegister: User Authentication Failed");
-                                        Toast.makeText(RegisterActivity.this, "Failed To Register :" + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
+                String fullname = user.first_name + " " + user.last_name;
+                userAuth.createUserWithEmailAndPassword(user.email, user.password)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if(task.isSuccessful()){
+                                    String ID = userAuth.getUid().toString();
+                                    reference.child(ID).setValue(user);
+                                    Toast.makeText(RegisterActivity.this, "User Has Been Registered Successfully!", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(RegisterActivity.this, "Welcome " + fullname, Toast.LENGTH_LONG).show();
+                                    startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
+                                }else {
+                                    Toast.makeText(RegisterActivity.this, "Failed To Register!" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                 }
-                            });
+                            }
+                        });
 
-                        }
-                        }catch (NullPointerException e){
-                        Log.d(TAG, "OnRegister: Null Pointer Exception Caught");
-                    }
-                });
+
             }else if(SelectedRadioButton == center){}
         });
     }
