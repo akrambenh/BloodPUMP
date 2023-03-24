@@ -72,4 +72,8 @@ public class LoginActivity extends AppCompatActivity {
     public void resetPassword(View view) {
         startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
     }
+
+    public void switch_signUp(View view) {
+        startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+    }
 }
