@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -46,12 +47,7 @@ public class RegisterActivity extends AppCompatActivity {
         EditText user_password = (EditText) findViewById(R.id.user_password);
         EditText confirmPassword = (EditText) findViewById(R.id.confirmPassword);
         Button sign_upButton = (Button) findViewById(R.id.sign_upButton);
-        RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radiogroup);
-        RadioButton donor = (RadioButton) findViewById(R.id.donor);
-        RadioButton center = (RadioButton) findViewById(R.id.center);
         EditText user_username = (EditText) findViewById(R.id.user_lastname);
-        TextView textview8 = (TextView) findViewById(R.id.textview8);
-        TextView textview9 = (TextView) findViewById(R.id.textView9);
         EditText user_phone = (EditText) findViewById(R.id.user_phone);
         sign_upButton.setOnClickListener(view -> {
             String name = user_name.getText().toString().trim();
@@ -61,9 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
             String password = user_password.getText().toString().trim();
             String ConfirmedPassword = confirmPassword.getText().toString().trim();
             String phone = user_phone.getText().toString().trim();
-            int SelectedID = radioGroup.getCheckedRadioButtonId();
-            RadioButton SelectedRadioButton = (RadioButton) findViewById(SelectedID);
-            String UserType = SelectedRadioButton.getText().toString();
+
             // Using A Regular Expression to avoid numbers in names
             Pattern numbers = Pattern.compile("[1-9]");
             //Using A Regular Expression to avoid characters and symbols in National Number
@@ -82,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
             } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 user_email.setError("Please Enter A Valid Email");
                 user_email.requestFocus();
-            } else if(SelectedRadioButton == donor){
+            } else {
                 // complete constructor
                 userDatabase = FirebaseDatabase.getInstance();
                 reference = userDatabase.getReference("User");
@@ -105,7 +99,11 @@ public class RegisterActivity extends AppCompatActivity {
                         });
 
 
-            }else if(SelectedRadioButton == center){}
+            }
         });
+    }
+
+    public void switch_login(View view) {
+        startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
     }
 }
