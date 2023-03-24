@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">BloodBUMP</string>
+    <string name="login">Login</string>
+    <string name="sign_up">Sign Up</string>
 </resources>

@@ -4,15 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/my_red"
     tools:context=".MainActivity">
 
     <Button
         android:id="@+id/login_button"
-        android:layout_width="207dp"
-        android:layout_height="118dp"
-        android:text="Login"
-        android:textSize="24sp"
+        android:layout_width="208dp"
+        android:layout_height="100dp"
+        android:background="@drawable/button"
         android:onClick="login"
+        android:text="@string/login"
+        android:textColor="@color/med_blue"
+        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
@@ -22,14 +25,16 @@
 
     <Button
         android:id="@+id/signup_button"
-        android:layout_width="199dp"
-        android:layout_height="118dp"
-        android:text="Sign Up"
+        android:layout_width="208dp"
+        android:layout_height="100dp"
+        android:background="@drawable/button"
         android:onClick="signup"
+        android:text="@string/sign_up"
+        android:textColor="@color/med_blue"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.008"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
