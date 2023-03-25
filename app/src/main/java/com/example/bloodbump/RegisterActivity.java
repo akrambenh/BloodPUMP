@@ -78,6 +78,7 @@ public class RegisterActivity extends AppCompatActivity {
                 user_email.requestFocus();
             } else {
                 // complete constructor
+
                 userDatabase = FirebaseDatabase.getInstance();
                 reference = userDatabase.getReference("User");
                 Donor user = new Donor(name, lastname, username, email, password, phone);
@@ -89,9 +90,9 @@ public class RegisterActivity extends AppCompatActivity {
                                 if(task.isSuccessful()){
                                     String ID = userAuth.getUid().toString();
                                     reference.child(ID).setValue(user);
-                                    Toast.makeText(RegisterActivity.this, "User Has Been Registered Successfully!", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(RegisterActivity.this, "User Has Been Registered Successfully! \n Complete Additional Information to start Booking donation", Toast.LENGTH_LONG).show();
                                     Toast.makeText(RegisterActivity.this, "Welcome " + fullname, Toast.LENGTH_LONG).show();
-                                    startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
+                                    startActivity(new Intent(RegisterActivity.this, CompleteRegistrationActivity.class));
                                 }else {
                                     Toast.makeText(RegisterActivity.this, "Failed To Register!" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                 }
@@ -99,7 +100,7 @@ public class RegisterActivity extends AppCompatActivity {
                         });
 
 
-            }
+                }
         });
     }
 
