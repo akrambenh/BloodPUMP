@@ -188,6 +188,7 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
       app:layout_constraintVertical_bias="0.053"
-      app:srcCompat="@drawable/login_switch_title" />
+      app:srcCompat="@drawable/login_switch_title"
+      tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

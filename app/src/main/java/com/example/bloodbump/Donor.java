@@ -2,7 +2,56 @@ package com.example.bloodbump;
 
 import android.widget.EditText;
 
+import java.time.LocalDate;
+
 public class Donor {
+	String password;
+	String username;
+	String email;
+	String donor_ID;
+	String first_name;
+	String last_name;
+	String phone;
+	LocalDate DOB;
+	String sex;
+	String donorType;
+	String bloodGroup;
+	public String getBloodGroup() {
+		return bloodGroup;
+	}
+
+	public void setBloodGroup(String bloodGroup) {
+		this.bloodGroup = bloodGroup;
+	}
+
+
+	public String getDonorType() {
+		return donorType;
+	}
+
+	public void setDonorType(String donorType) {
+		this.donorType = donorType;
+	}
+
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+
+
+	public LocalDate getDOB() {
+		return DOB;
+	}
+
+	public void setDOB(LocalDate DOB) {
+		this.DOB = DOB;
+	}
+
 
 	public Donor(String name, String lastname, String username, String email, String password, String phone) {
 		super();
@@ -13,6 +62,13 @@ public class Donor {
 		this.password = password;
 		this.phone = phone;
 	}
+	public Donor(String sex, LocalDate dob, String donortype, String bloodgroup){
+		super();
+		this.sex = sex;
+		this.DOB = dob;
+		this.donorType = donortype;
+		this.bloodGroup = bloodgroup;
+	}
 
 	public String getPassword() {
 		return password;
@@ -22,7 +78,7 @@ public class Donor {
 		this.password = password;
 	}
 
-	String password;
+
 
 	public String getUsername() {
 		return username;
@@ -32,7 +88,7 @@ public class Donor {
 		this.username = username;
 	}
 
-	String username;
+
 	public String getEmail() {
 		return email;
 	}
@@ -41,7 +97,7 @@ public class Donor {
 		this.email = email;
 	}
 
-	String email;
+
 
 	String getDonor_ID() {
 		return donor_ID;
@@ -51,7 +107,7 @@ public class Donor {
 		this.donor_ID = donor_ID;
 	}
 
-	String donor_ID;
+
 
 	public String getFirst_name() {
 		return first_name;
@@ -61,7 +117,7 @@ public class Donor {
 		this.first_name = first_name;
 	}
 
-	String first_name;
+
 
 	public String getLast_name() {
 		return last_name;
@@ -71,8 +127,8 @@ public class Donor {
 		this.last_name = last_name;
 	}
 
-	String last_name;
-	String phone;
+
+
 
 
 	//private  DOB;
