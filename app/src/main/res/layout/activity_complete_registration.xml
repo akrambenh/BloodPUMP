@@ -49,8 +49,8 @@
         android:id="@+id/sex_spinner"
         android:layout_width="281dp"
         android:layout_height="52dp"
+        android:spinnerMode="dialog"
         android:prompt="@string/sex"
-        android:spinnerMode="dropdown"
         android:background="@drawable/secondfields"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -58,4 +58,20 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.262"
         tools:ignore="SpeakableTextPresentCheck" />
+
+
+    <Button
+        android:id="@+id/datePicker_button"
+        android:layout_width="281dp"
+        android:layout_height="52dp"
+        android:onClick="OpenDatePicker"
+        android:text="Date Of Birth"
+        android:fontFamily="@font/lost_foundry"
+        android:background="@drawable/secondfields"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.367" />
 </androidx.constraintlayout.widget.ConstraintLayout>
