@@ -6,24 +6,31 @@ import java.time.LocalDate;
 
 public class Donor {
 	String password;
-	String username;
 	String email;
 	String donor_ID;
 	String first_name;
 	String last_name;
 	String phone;
-	LocalDate DOB;
+	String DOB;
 	String sex;
 	String donorType;
-	String bloodGroup;
-	public String getBloodGroup() {
-		return bloodGroup;
+
+	public Donor(String sex, String dob, String bloodgroup, String donorType) {
+		this.sex = sex;
+		this.DOB = dob;
+		this.Bloodgroup = bloodgroup;
+		this.donorType = donorType;
 	}
 
-	public void setBloodGroup(String bloodGroup) {
-		this.bloodGroup = bloodGroup;
+	public String getBloodgroup() {
+		return Bloodgroup;
 	}
 
+	public void setBloodgroup(String bloodgroup) {
+		Bloodgroup = bloodgroup;
+	}
+
+	String Bloodgroup;
 
 	public String getDonorType() {
 		return donorType;
@@ -44,31 +51,24 @@ public class Donor {
 
 
 
-	public LocalDate getDOB() {
+	public String getDOB() {
 		return DOB;
 	}
 
-	public void setDOB(LocalDate DOB) {
+	public void setDOB(String DOB) {
 		this.DOB = DOB;
 	}
 
 
-	public Donor(String name, String lastname, String username, String email, String password, String phone) {
+	public Donor(String name, String lastname, String email, String password, String phone) {
 		super();
 		this.first_name = name;
 		this.last_name = lastname;
-		this.username = username;
 		this.email = email;
 		this.password = password;
 		this.phone = phone;
 	}
-	public Donor(String sex, LocalDate dob, String donortype, String bloodgroup){
-		super();
-		this.sex = sex;
-		this.DOB = dob;
-		this.donorType = donortype;
-		this.bloodGroup = bloodgroup;
-	}
+
 
 	public String getPassword() {
 		return password;
@@ -77,17 +77,6 @@ public class Donor {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
 
 	public String getEmail() {
 		return email;
@@ -126,13 +115,6 @@ public class Donor {
 	public void setLast_name(String last_name) {
 		this.last_name = last_name;
 	}
-
-
-
-
-
-	//private  DOB;
-
 
 	public void login(int username, int password) {
 		// TODO - implement User.login

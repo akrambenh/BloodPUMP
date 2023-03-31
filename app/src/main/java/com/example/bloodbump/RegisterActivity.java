@@ -47,12 +47,10 @@ public class RegisterActivity extends AppCompatActivity {
         EditText user_password = (EditText) findViewById(R.id.user_password);
         EditText confirmPassword = (EditText) findViewById(R.id.confirmPassword);
         Button sign_upButton = (Button) findViewById(R.id.sign_upButton);
-        EditText user_username = (EditText) findViewById(R.id.user_lastname);
         EditText user_phone = (EditText) findViewById(R.id.user_phone);
         sign_upButton.setOnClickListener(view -> {
             String name = user_name.getText().toString().trim();
             String lastname = user_lastname.getText().toString().trim();
-            String username = user_username.getText().toString().trim();
             String email = user_email.getText().toString().trim();
             String password = user_password.getText().toString().trim();
             String ConfirmedPassword = confirmPassword.getText().toString().trim();
@@ -81,7 +79,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 userDatabase = FirebaseDatabase.getInstance();
                 reference = userDatabase.getReference("User");
-                Donor user = new Donor(name, lastname, username, email, password, phone);
+                Donor user = new Donor(name, lastname, email, password, phone);
                 String fullname = user.first_name + " " + user.last_name;
                 userAuth.createUserWithEmailAndPassword(user.email, user.password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {

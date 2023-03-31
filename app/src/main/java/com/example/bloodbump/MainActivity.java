@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(MainActivity.this, LoginActivity.class));
     }
     public void signup(View view){
-        startActivity(new Intent(MainActivity.this, CompleteRegistrationActivity.class));
+        startActivity(new Intent(MainActivity.this, RegisterActivity.class));
     }
 
 }

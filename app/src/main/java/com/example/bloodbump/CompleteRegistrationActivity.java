@@ -1,39 +1,89 @@
 package com.example.bloodbump;
 
+import static android.content.ContentValues.TAG;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.unusedapprestrictions.IUnusedAppRestrictionsBackportService;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class CompleteRegistrationActivity extends AppCompatActivity {
+    private FirebaseAuth userAuth;
+    private FirebaseDatabase userDatabase;
+    private DatabaseReference reference;
     private Spinner sex_spinner;
+    private Spinner bloodgroupSpinner;
+    private Spinner donorTypeSpinner;
     private DatePickerDialog datePickerDialog;
     private Button datePicker_button;
+    private Button continueButton;
 
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complete_registration);
         sex_spinner = (Spinner) findViewById(R.id.sex_spinner);
+        bloodgroupSpinner = (Spinner) findViewById(R.id.bloodgroupSpinner);
         datePicker_button = (Button) findViewById(R.id.datePicker_button);
+        continueButton = (Button) findViewById(R.id.continue_button);
+        donorTypeSpinner = (Spinner) findViewById(R.id.donorTypeSpinner);
+        // TEST
+        //userAuth = FirebaseAuth.getInstance();
+
         initDatePicker();
         // Adding Sex Options With Array Adapter
-        ArrayAdapter<CharSequence>adapter = ArrayAdapter.createFromResource(this, R.array.Sex, R.layout.spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sex_spinner.setAdapter(adapter);
-        //String dob to pass it to database
+        ArrayAdapter<CharSequence> sexAdapter = ArrayAdapter.createFromResource(this, R.array.Sex, R.layout.spinner_item);
+        sexAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sex_spinner.setAdapter(sexAdapter);
+        // Adding Blood Group Options With Array Adapter;
+        ArrayAdapter<CharSequence> bloodgroupAdapter = ArrayAdapter.createFromResource(this, R.array.bloodgroup, R.layout.spinner_item);
+        bloodgroupAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        bloodgroupSpinner.setAdapter(bloodgroupAdapter);
+        // Adding Donor Type Options With Array Adapter
+        ArrayAdapter<CharSequence> donorTypeAdapter = ArrayAdapter.createFromResource(this, R.array.donorType,R.layout.spinner_item);
+        donorTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        donorTypeSpinner.setAdapter(donorTypeAdapter);
+        continueButton.setOnClickListener(view -> {
+            String sex = sex_spinner.getSelectedItem().toString();
+            String dob = datePicker_button.getText().toString();
+            String bloodgroup = bloodgroupSpinner.getSelectedItem().toString();
+            String donorType = donorTypeSpinner.getSelectedItem().toString();
+            Donor userPlus = new Donor(sex, dob, bloodgroup, donorType);
+            userAuth = FirebaseAuth.getInstance();
+            String UID = userAuth.getCurrentUser().getUid();
+            userDatabase = FirebaseDatabase.getInstance();
+            reference = userDatabase.getReference("User");
+            reference.child(UID).push().setValue(userPlus);
+            String pushID = reference.child(UID).push().getKey();
+            Toast.makeText(this, pushID, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Informations Have Been Added Successfully!", Toast.LENGTH_SHORT).show();
+            String first_name = reference.child(UID).child("first_name").toString();
+            String last_name = reference.child(UID).child("last_name").toString();
+            Toast.makeText(this, "Welcome " + first_name + " " + last_name, Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(CompleteRegistrationActivity.this, HomeActivity.class));
 
+        });
     }
-    // Adding Date Picker Dialog And It's Functions
+    // Adding Date Picker For Date Of Birth Dialog And It's Functions
     private void initDatePicker(){
         DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override

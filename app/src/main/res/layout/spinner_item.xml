@@ -6,6 +6,6 @@
     android:backgroundTint="@color/rihab_grey"
     android:textAlignment="center"
     android:textColor="@color/black"
-    android:fontFamily="@font/lost_foundry"
+    android:fontFamily="@font/lostfoundry"
     android:paddingBottom="5dp"
     android:paddingTop="5dp" />
