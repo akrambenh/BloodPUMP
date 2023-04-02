@@ -18,6 +18,27 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.29" />
 
+    <io.getstream.avatarview.AvatarView
+        android:id="@+id/avatarView"
+        android:layout_width="110dp"
+        android:layout_height="110dp"
+        app:avatarViewBorderColor="@color/my_red"
+        app:avatarViewBorderWidth="3dp"
+        app:avatarViewIndicatorBorderColor="@color/white"
+        app:avatarViewIndicatorBorderSizeCriteria="10"
+        app:avatarViewIndicatorColor="@color/med_blue"
+        app:avatarViewIndicatorEnabled="true"
+        app:avatarViewIndicatorPosition="bottomRight"
+        app:avatarViewIndicatorSizeCriteria="9"
+        app:avatarViewInitialsTextStyle="bold"
+        app:avatarViewShape="circle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.455"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.729" />
+
     <ImageView
         android:id="@+id/user_pic"
         android:layout_width="246dp"

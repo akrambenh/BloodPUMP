@@ -14,7 +14,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".PicAddingActivity"
+            android:name=".picAddActivity"
             android:exported="false" />
         <activity
             android:name=".CompleteRegistrationActivity"
