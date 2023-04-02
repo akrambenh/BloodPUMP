@@ -22,5 +22,9 @@
         <item>Regular</item>
         <item>Occasional</item>
     </string-array>
+    <string-array name="photoOptions">
+        <item>Take A Picture</item>
+        <item>Import A Picture From Album</item>
+    </string-array>
 
 </resources>

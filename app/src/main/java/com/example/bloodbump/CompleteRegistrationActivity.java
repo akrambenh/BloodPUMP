@@ -1,16 +1,12 @@
 package com.example.bloodbump;
 
-import static android.content.ContentValues.TAG;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.unusedapprestrictions.IUnusedAppRestrictionsBackportService;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -23,7 +19,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
-import java.util.HashMap;
 
 public class CompleteRegistrationActivity extends AppCompatActivity {
     private FirebaseAuth userAuth;
@@ -79,7 +74,7 @@ public class CompleteRegistrationActivity extends AppCompatActivity {
             String first_name = reference.child(UID).child("first_name").toString();
             String last_name = reference.child(UID).child("last_name").toString();
             Toast.makeText(this, "Welcome " + first_name + " " + last_name, Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(CompleteRegistrationActivity.this, HomeActivity.class));
+            startActivity(new Intent(CompleteRegistrationActivity.this, picAddActivity.class));
 
         });
     }
@@ -98,7 +93,7 @@ public class CompleteRegistrationActivity extends AppCompatActivity {
         int month = cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
 
-        int style = AlertDialog.THEME_HOLO_LIGHT;
+        int style = AlertDialog.THEME_DEVICE_DEFAULT_LIGHT;
 
         datePickerDialog = new DatePickerDialog(this, style, dateSetListener, year, month, day);
     }
@@ -108,29 +103,29 @@ public class CompleteRegistrationActivity extends AppCompatActivity {
     }
 
     private String getMonthFormat(int month) {
-            if(month == 1)
+            if(month == 0)
                 return "JAN";
-            if(month == 2)
+            if(month == 1)
                 return "FEB";
-            if (month == 3)
+            if (month == 2)
                 return "MAR";
-            if (month == 4)
+            if (month == 3)
                 return "APR";
-            if (month == 5)
+            if (month == 4)
                 return "MAY";
-            if (month == 6)
+            if (month == 5)
                 return "JUN";
-            if (month == 7)
+            if (month == 6)
                 return "JUL";
-            if (month == 8)
+            if (month == 7)
                 return "AUG";
-            if (month == 9)
+            if (month == 8)
                 return "SEP";
-            if (month == 10)
+            if (month == 9)
                 return "OCT";
-            if (month == 11)
+            if (month == 10)
                 return "NOV";
-            if (month == 12)
+            if (month == 11)
                 return "DEC";
         return null;
     }
