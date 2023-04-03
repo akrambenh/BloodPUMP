@@ -1,15 +1,27 @@
 package com.example.bloodbump;
 
+import static android.content.ContentValues.TAG;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 import io.getstream.avatarview.AvatarView;
 
@@ -26,6 +39,7 @@ public class picAddActivity extends AppCompatActivity {
     private Button skip_continue_button;
     private Button take_pic_button;
     private Button upload_pic_button;
+    public static final int PICK_IMAGE = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,30 +64,44 @@ public class picAddActivity extends AppCompatActivity {
             }
         });
         upload_pic_button.setOnClickListener(new View.OnClickListener() {
+            private ContentResolver getContentResolver;
+
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(intent, 3);
-
-            }
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+                }
         });
         dialog.show();
 
     }
+
     @Override
-    public void startActivityForResult(Intent intent, int requestCode){
-        super.startActivityForResult(intent, requestCode);
-        if(requestCode == RESULT_OK && intent != null){
-            Uri selectedImage = intent.getData();
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == PICK_IMAGE){
+            Uri selectedImage = data.getData();
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-                Drawable d = new BitmapDrawable(bitmap);
-                avatarView.setPlaceholder(d);
+                int w  = bitmap.getWidth();
+                int h = bitmap.getHeight();
+                Bitmap rounder = Bitmap.createBitmap(w,h,Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(rounder);
+                Paint xferPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+                xferPaint.setColor(Color.RED);
+                canvas.drawRoundRect(new RectF(0,0,w,h), 20.0f, 20.0f, xferPaint);
+                xferPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
+                Bitmap result = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight() ,Bitmap.Config.ARGB_8888);
+                Canvas resultCanvas = new Canvas(result);
+                resultCanvas.drawBitmap(bitmap, 0, 0, null);
+                resultCanvas.drawBitmap(rounder, 0, 0, xferPaint);
+                avatarView.setImageBitmap(result);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
         }
     }
-
 }
