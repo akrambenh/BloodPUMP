@@ -15,6 +15,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -31,31 +32,30 @@ import android.widget.Toast;
 import java.io.IOException;
 import java.io.InputStream;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.getstream.avatarview.AvatarView;
 
 public class picAddActivity extends AppCompatActivity {
-    private ImageView user_pic;
-    private AvatarView avatarView;
     private Button skip_continue_button;
     private Button take_pic_button;
     private Button upload_pic_button;
+    private CircleImageView profile_image;
+    public Bitmap user_bitmap;
     public static final int PICK_IMAGE = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pic_adding);
-
-        user_pic = (ImageView) findViewById(R.id.user_pic);
         skip_continue_button = (Button) findViewById(R.id.skip_continue_button);
+        profile_image = (CircleImageView) findViewById(R.id.profile_image);
     }
     public void PicOptions(View view) {
         Toast.makeText(this, "Opening Pic Options", Toast.LENGTH_SHORT).show();
         Dialog dialog = new Dialog(picAddActivity.this);
         dialog.setContentView(R.layout.dialog_layout);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow();
         take_pic_button = dialog.findViewById(R.id.take_pic_button);
         upload_pic_button = dialog.findViewById(R.id.upload_pic_button);
-        avatarView = (AvatarView) findViewById(R.id.avatarView);
 
         take_pic_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +72,7 @@ public class picAddActivity extends AppCompatActivity {
                 intent.setType("image/*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+                dialog.hide();
                 }
         });
         dialog.show();
@@ -84,24 +85,31 @@ public class picAddActivity extends AppCompatActivity {
         if(requestCode == PICK_IMAGE){
             Uri selectedImage = data.getData();
             try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-                int w  = bitmap.getWidth();
-                int h = bitmap.getHeight();
-                Bitmap rounder = Bitmap.createBitmap(w,h,Bitmap.Config.ARGB_8888);
-                Canvas canvas = new Canvas(rounder);
-                Paint xferPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-                xferPaint.setColor(Color.RED);
-                canvas.drawRoundRect(new RectF(0,0,w,h), 20.0f, 20.0f, xferPaint);
-                xferPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-                Bitmap result = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight() ,Bitmap.Config.ARGB_8888);
-                Canvas resultCanvas = new Canvas(result);
-                resultCanvas.drawBitmap(bitmap, 0, 0, null);
-                resultCanvas.drawBitmap(rounder, 0, 0, xferPaint);
-                avatarView.setImageBitmap(result);
+                user_bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+                //Bitmap roundPic = getRoundedCornerBitmap(user_bitmap);
+                profile_image.setImageBitmap(user_bitmap);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
         }
+        // Used This Method to manually make photo's corners Rounder now with CircleImageView Dependency this method is not needed
+    }public Bitmap getRoundedCornerBitmap(Bitmap bitmap) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+        Toast.makeText(this, "Making Pic Rounder", Toast.LENGTH_SHORT).show();
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+        final RectF rectF = new RectF(rect);
+        final float roundPx = 380;
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(Color.RED);
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        return output;
     }
 }
