@@ -117,24 +117,6 @@
       tools:ignore="MissingConstraints,VisualLintBounds,SpeakableTextPresentCheck" />
 
   <EditText
-      android:id="@+id/user_username"
-      android:layout_width="356dp"
-      android:layout_height="44dp"
-      android:ems="10"
-      android:inputType="textPersonName"
-      android:minHeight="48sp"
-      android:background="@drawable/input_field"
-      android:hint="Usertname(Pseudo)"
-      android:textColorHint="@color/light_red"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.497"
-      app:layout_constraintStart_toStartOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_bias="0.43"
-      tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
-  <EditText
       android:id="@+id/user_phone"
       android:layout_width="356dp"
       android:layout_height="44dp"

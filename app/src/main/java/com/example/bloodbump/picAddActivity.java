@@ -35,6 +35,8 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -55,6 +57,8 @@ import io.getstream.avatarview.AvatarView;
 
 public class picAddActivity extends AppCompatActivity {
     private FirebaseAuth userAuth;
+    private FirebaseDatabase userDatabase;
+    private DatabaseReference reference;
     private FirebaseStorage storage;
     private Button skip_continue_button;
     private File photoFile = null;
@@ -73,8 +77,7 @@ public class picAddActivity extends AppCompatActivity {
         skip_continue_button = (Button) findViewById(R.id.skip_continue_button);
         profile_image = (CircleImageView) findViewById(R.id.profile_image);
         userAuth = FirebaseAuth.getInstance();
-        //String UID = userAuth.getCurrentUser().getUid().toString();
-        String UID = "Akram";
+        String UID = userAuth.getCurrentUser().getUid().toString();
         skip_continue_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,7 +86,7 @@ public class picAddActivity extends AppCompatActivity {
                 }else {
                     storage = FirebaseStorage.getInstance();
                     StorageReference storageRef = storage.getReferenceFromUrl("gs://bloodbump-35398.appspot.com/");
-                    StorageReference avatarRef = storageRef.child("Avatar/" + UID + "/" + photoFile.getName());
+                    StorageReference avatarRef = storageRef.child("Donor/" + UID + "/ProfilePic.jpg");
                     Bitmap bitmap = ((BitmapDrawable) profile_image.getDrawable()).getBitmap();
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -97,10 +100,8 @@ public class picAddActivity extends AppCompatActivity {
                     }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Toast.makeText(picAddActivity.this, "Image Uplaoded Successfully", Toast.LENGTH_SHORT).show();
-                            imageDatabasePath = taskSnapshot.getMetadata().getPath();
-                            Toast.makeText(picAddActivity.this, imageDatabasePath, Toast.LENGTH_SHORT).show();
-                            // Put Image Path to Database for later calling
+                            Toast.makeText(picAddActivity.this, "Image Uploaded Successfully", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(picAddActivity.this, HomeActivity.class));
                         }
                     });
 
@@ -109,7 +110,6 @@ public class picAddActivity extends AppCompatActivity {
         });
     }
     public void PicOptions(View view) {
-        Toast.makeText(this, "Opening Pic Options", Toast.LENGTH_SHORT).show();
         Dialog dialog = new Dialog(picAddActivity.this);
         dialog.setContentView(R.layout.dialog_layout);
         dialog.getWindow();
@@ -162,7 +162,6 @@ public class picAddActivity extends AppCompatActivity {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            Toast.makeText(this, currentPhotoPath, Toast.LENGTH_SHORT).show();
         }
 
 
@@ -189,12 +188,12 @@ public class picAddActivity extends AppCompatActivity {
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
+        String imageFileName = "ProfilePic";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
+                ".jpg",       /* suffix */
+                storageDir     /* directory */
         );
         //uploadUri = image.toURI();
         // Save a file: path for use with ACTION_VIEW intents
