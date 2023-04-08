@@ -134,15 +134,11 @@ public class Donor {
 		throw new UnsupportedOperationException();
 	}
 
-	public void addPhone() {
+	public void changeInfo() {
 		// TODO - implement Donor.addPhone
 		throw new UnsupportedOperationException();
 	}
 
-	public void updateLocation() {
-		// TODO - implement Donor.updateLocation
-		throw new UnsupportedOperationException();
-	}
 
 	public String getPhone() {
 		return phone;
