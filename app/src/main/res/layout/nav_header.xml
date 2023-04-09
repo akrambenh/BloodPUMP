@@ -12,6 +12,7 @@
         android:layout_height="36dp"
         android:paddingTop="5dp"
         android:text="Menu"
+        android:textColor="@color/white"
         android:textAlignment="viewStart"
         android:textSize="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
