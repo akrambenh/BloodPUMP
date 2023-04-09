@@ -16,11 +16,10 @@
             android:id="@+id/donatonRect"
             android:layout_width="160dp"
             android:layout_height="140dp"
-            android:layout_marginStart="8dp"
             android:background="@drawable/stats_rect"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/healthRect"
-            app:layout_constraintHorizontal_bias="0.367"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.08"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.111" />
@@ -38,7 +37,7 @@
             android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="@+id/donatonRect"
             app:layout_constraintEnd_toEndOf="@+id/donatonRect"
-            app:layout_constraintHorizontal_bias="0.418"
+            app:layout_constraintHorizontal_bias="0.358"
             app:layout_constraintStart_toStartOf="@+id/donatonRect"
             app:layout_constraintTop_toTopOf="@+id/donatonRect"
             app:layout_constraintVertical_bias="0.0"
@@ -48,45 +47,42 @@
             android:id="@+id/donationNum"
             android:layout_width="48dp"
             android:layout_height="32dp"
-            android:textSize="25dp"
-            android:textColor="@color/black"
             android:layout_marginStart="60dp"
             android:layout_marginTop="75dp"
             android:layout_marginEnd="62dp"
             android:layout_marginBottom="33dp"
+            android:textColor="@color/black"
+            android:textSize="25dp"
             app:layout_constraintBottom_toBottomOf="@+id/donatonRect"
             app:layout_constraintEnd_toEndOf="@+id/donatonRect"
             app:layout_constraintStart_toStartOf="@+id/donatonRect"
             app:layout_constraintTop_toTopOf="@+id/donatonRect" />
 
+
         <ImageView
             android:id="@+id/announcesRect"
             android:layout_width="160dp"
             android:layout_height="140dp"
-            android:layout_marginEnd="8dp"
             android:background="@drawable/stats_rect"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.111"
+            app:layout_constraintHorizontal_bias="0.08"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.527" />
-
-
-
+            app:layout_constraintVertical_bias="0.494" />
 
         <ImageView
             android:id="@+id/healthRect"
             android:layout_width="160dp"
             android:layout_height="140dp"
-            android:layout_marginEnd="8dp"
             android:background="@drawable/stats_rect"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.908"
+            app:layout_constraintHorizontal_bias="0.925"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.111" />
+
         <TextView
             android:layout_width="150dp"
             android:layout_height="24dp"
@@ -104,6 +100,7 @@
             app:layout_constraintStart_toStartOf="@+id/healthRect"
             app:layout_constraintTop_toTopOf="@+id/healthRect"
             app:layout_constraintVertical_bias="0.0" />
+
         <TextView
             android:layout_width="132dp"
             android:layout_height="48dp"
@@ -124,6 +121,7 @@
             tools:ignore="TextSizeCheck" />
 
         <TextView
+            android:id="@+id/textView8"
             android:layout_width="161dp"
             android:layout_height="48dp"
             android:layout_marginStart="13dp"
@@ -131,8 +129,9 @@
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="78dp"
             android:text="Blood Donation Announces"
-            android:textColor="@color/black"
+            android:textSize="20dp"
             android:textAlignment="center"
+            android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="@+id/announcesRect"
             app:layout_constraintEnd_toEndOf="@+id/announcesRect"
             app:layout_constraintHorizontal_bias="0.48"
@@ -141,6 +140,7 @@
             app:layout_constraintVertical_bias="1.0" />
 
         <TextView
+            android:id="@+id/textView9"
             android:layout_width="134dp"
             android:layout_height="57dp"
             android:layout_marginStart="12dp"
@@ -152,24 +152,23 @@
             android:textSize="15dp"
             app:layout_constraintBottom_toBottomOf="@+id/announcesRect"
             app:layout_constraintEnd_toEndOf="@+id/announcesRect"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/announcesRect"
             app:layout_constraintTop_toTopOf="@+id/announcesRect"
-            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintVertical_bias="1.0"
             tools:ignore="TextSizeCheck" />
 
         <ImageView
             android:id="@+id/nearbySearch"
             android:layout_width="160dp"
             android:layout_height="140dp"
-            android:layout_marginEnd="8dp"
             android:background="@drawable/stats_rect"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.607"
-            app:layout_constraintStart_toEndOf="@+id/announcesRect"
+            app:layout_constraintHorizontal_bias="0.925"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.527" />
+            app:layout_constraintVertical_bias="0.498" />
 
         <TextView
             android:layout_width="150dp"
@@ -179,14 +178,15 @@
             android:layout_marginEnd="5dp"
             android:layout_marginBottom="78dp"
             android:text="Nearby Search"
-            android:textSize="20dp"
+            android:textAlignment="center"
             android:textColor="@color/black"
+            android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="@+id/nearbySearch"
             app:layout_constraintEnd_toEndOf="@+id/nearbySearch"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/nearbySearch"
             app:layout_constraintTop_toTopOf="@+id/nearbySearch"
-            app:layout_constraintVertical_bias="0.416" />
+            app:layout_constraintVertical_bias="0.458" />
 
         <TextView
             android:layout_width="160dp"
@@ -194,16 +194,15 @@
             android:layout_marginTop="69dp"
             android:layout_marginBottom="23dp"
             android:text="Find Nearby Hospitals\n &amp; Medical Centres"
+            android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="15dp"
-            android:textAlignment="center"
             app:layout_constraintBottom_toBottomOf="@+id/nearbySearch"
             app:layout_constraintEnd_toEndOf="@+id/nearbySearch"
             app:layout_constraintStart_toStartOf="@+id/nearbySearch"
             app:layout_constraintTop_toTopOf="@+id/nearbySearch"
             tools:ignore="TextSizeCheck" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
 </FrameLayout>
