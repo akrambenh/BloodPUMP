@@ -1,6 +1,17 @@
 package com.example.bloodbump;
 
+import android.content.Intent;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.time.LocalDate;
 
@@ -50,7 +61,6 @@ public class Donor {
 	}
 
 
-
 	public String getDOB() {
 		return DOB;
 	}
@@ -87,7 +97,6 @@ public class Donor {
 	}
 
 
-
 	String getDonor_ID() {
 		return donor_ID;
 	}
@@ -97,7 +106,6 @@ public class Donor {
 	}
 
 
-
 	public String getFirst_name() {
 		return first_name;
 	}
@@ -105,7 +113,6 @@ public class Donor {
 	public void setFirst_name(String first_name) {
 		this.first_name = first_name;
 	}
-
 
 
 	public String getLast_name() {
@@ -120,17 +127,14 @@ public class Donor {
 		// TODO - implement User.login
 		throw new UnsupportedOperationException();
 	}
+
 	public void logout() {
 		// TODO - implement User.logout
 		throw new UnsupportedOperationException();
 	}
+
 	public void resetPassword() {
 		// TODO - implement User.resetPassword
-		throw new UnsupportedOperationException();
-	}
-	public void registerDonor() {
-
-		// TODO - implement Donor.registerDonor
 		throw new UnsupportedOperationException();
 	}
 
@@ -146,5 +150,28 @@ public class Donor {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
+	}
+
+	public boolean registerDonor(FirebaseAuth auth, Donor donor) {
+		final Boolean[] status = new Boolean[1];
+		FirebaseDatabase userDatabase = FirebaseDatabase.getInstance();
+		DatabaseReference reference = userDatabase.getReference("User");
+		String fullname = donor.first_name + " " + donor.last_name;
+		auth.createUserWithEmailAndPassword(donor.email, donor.password)
+				.addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+					@Override
+					public void onComplete(@NonNull Task<AuthResult> task) {
+						if (task.isSuccessful()) {
+							status[0] = true;
+							String ID = auth.getUid().toString();
+							reference.child(ID).setValue(donor);
+						}
+					}
+
+				});
+		if(status[0]){
+			return true;
+		}else
+			return false;
 	}
 }

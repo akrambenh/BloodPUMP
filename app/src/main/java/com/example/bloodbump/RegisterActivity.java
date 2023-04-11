@@ -30,6 +30,7 @@ import java.util.Objects;
 import java.util.regex.Pattern;
 
 public class RegisterActivity extends AppCompatActivity {
+    public Boolean status = false;
     private FirebaseAuth userAuth;
     private FirebaseDatabase userDatabase;
     private DatabaseReference reference;

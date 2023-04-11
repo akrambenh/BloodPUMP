@@ -7,31 +7,36 @@
         android:visible="true">
         <item
             android:id="@+id/nav_home"
-            android:icon="@drawable/location"
-            android:title="@string/home" />
+            android:icon="@drawable/home_icon"
+            android:iconTint="@color/my_red"
+            android:title="Home" />
         <item
             android:id="@+id/nav_appointment"
-            android:icon="@drawable/location_myred"
-            android:title="@string/appointments"/>
+            android:icon="@drawable/calender_icon"
+            android:iconTint="@color/my_red"
+            android:title="@string/appointments" />
         <item
             android:id="@+id/nav_settings"
-            android:icon="@drawable/location_myred"
-            android:title="@string/settings"/>
+            android:icon="@drawable/settings_icon"
+            android:iconTint="@color/my_red"
+            android:title="@string/settings" />
 
         <item
             android:id="@+id/nav_about"
-            android:icon="@drawable/location_myred"
-            android:title="@string/about"/>
+            android:icon="@drawable/info_icon"
+            android:iconTint="@color/my_red"
+            android:title="@string/about" />
 
 
     </group>
     <item
         android:title="">
         <menu>
-            <item
-                android:id="@+id/nav_logout"
-                android:icon="@drawable/location_myred"
-                android:title="@string/logout" />
+                <item
+                    android:id="@+id/nav_logout"
+                    android:icon="@drawable/logout_icon"
+                    android:iconTint="@color/my_red"
+                    android:title="@string/logout"/>
         </menu>
     </item>
 

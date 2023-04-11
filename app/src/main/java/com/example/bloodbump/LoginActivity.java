@@ -18,14 +18,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.util.regex.Pattern;
-
 public class LoginActivity extends AppCompatActivity {
     private EditText login_email, login_password;
     private Button login_button;
     private TextView forgotPassword;
 
     private FirebaseAuth bumpAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,12 +54,11 @@ public class LoginActivity extends AppCompatActivity {
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
-                                    if(task.isComplete()){
+                                    if(task.isSuccessful()){
                                         Toast.makeText(LoginActivity.this, "Logged In Successfully", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-                                    }else{
+                                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                    }else
                                         Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
-                                    }
                                 }
                             });
                 }

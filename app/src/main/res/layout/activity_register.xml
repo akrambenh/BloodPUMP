@@ -49,57 +49,57 @@
       android:id="@+id/user_email"
       android:layout_width="356dp"
       android:layout_height="44dp"
+      android:background="@drawable/input_field"
       android:ems="10"
+      android:hint="Email"
       android:importantForAutofill="no"
       android:inputType="textEmailAddress"
       android:minHeight="48sp"
-      android:background="@drawable/input_field"
-      android:hint="Email"
       android:textColorHint="@color/light_red"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.497"
+      app:layout_constraintHorizontal_bias="0.49"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_bias="0.534"
+      app:layout_constraintVertical_bias="0.438"
       tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
   <EditText
       android:id="@+id/user_password"
       android:layout_width="356dp"
       android:layout_height="44dp"
+      android:background="@drawable/input_field"
       android:ems="10"
+      android:hint="Password"
       android:importantForAutofill="no"
       android:inputType="textPassword"
       android:minHeight="48sp"
-      android:background="@drawable/input_field"
-      android:hint="Password"
       android:textColorHint="@color/light_red"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.497"
+      app:layout_constraintHorizontal_bias="0.49"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_bias="0.633"
+      app:layout_constraintVertical_bias="0.548"
       tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
   <EditText
       android:id="@+id/confirmPassword"
       android:layout_width="356dp"
       android:layout_height="44dp"
+      android:background="@drawable/input_field"
       android:ems="10"
+      android:hint="Confirm Password"
       android:importantForAutofill="no"
       android:inputType="textPassword"
       android:minHeight="48dp"
-      android:background="@drawable/input_field"
-      android:hint="Confirm Password"
       android:textColorHint="@color/light_red"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.497"
+      app:layout_constraintHorizontal_bias="0.49"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_bias="0.723"
+      app:layout_constraintVertical_bias="0.665"
       tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
   <Button
@@ -116,35 +116,36 @@
       app:layout_constraintVertical_bias="0.512"
       tools:ignore="MissingConstraints,VisualLintBounds,SpeakableTextPresentCheck" />
 
+
   <EditText
       android:id="@+id/user_phone"
       android:layout_width="356dp"
       android:layout_height="44dp"
+      android:background="@drawable/input_field"
       android:ems="10"
+      android:hint="Phone"
       android:inputType="phone"
       android:minHeight="48sp"
-      android:background="@drawable/input_field"
-      android:hint="Phone"
       android:textColorHint="@color/light_red"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
-      app:layout_constraintHorizontal_bias="0.497"
+      app:layout_constraintHorizontal_bias="0.49"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toTopOf="parent"
-      app:layout_constraintVertical_bias="0.818"
+      app:layout_constraintVertical_bias="0.775"
       tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
-
-  <ImageView
-      android:id="@+id/imageView4"
+  <TextView
+      android:id="@+id/textview9"
+      android:text="Fill In The Fields"
+      android:theme="@style/MytextTheme"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_marginBottom="608dp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintHorizontal_bias="0.497"
-      app:layout_constraintStart_toStartOf="parent"
-      app:srcCompat="@drawable/fill_the_fields_to_complete_registration" />
+      app:layout_constraintStart_toStartOf="parent" />
 
   <Button
       android:id="@+id/button2"

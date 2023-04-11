@@ -9,9 +9,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.ImageView;
+import android.view.View;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.google.android.material.navigation.NavigationView;
 
@@ -65,6 +64,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         } else {
             super.onBackPressed();
         }
+    }
+
+    public void JumpDonationFrag(View view) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_content, new donationFragment()).commit();
     }
 }
 
