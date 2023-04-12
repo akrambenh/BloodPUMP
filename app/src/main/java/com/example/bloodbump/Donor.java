@@ -1,11 +1,11 @@
 package com.example.bloodbump;
 
-import android.content.Intent;
-import android.widget.EditText;
-import android.widget.Toast;
+
+import static android.content.ContentValues.TAG;
+
+import android.util.Log;
 
 import androidx.annotation.NonNull;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -13,9 +13,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.time.LocalDate;
-
 public class Donor {
+	public static boolean status;
 	String password;
 	String email;
 	String donor_ID;
@@ -32,7 +31,15 @@ public class Donor {
 		this.Bloodgroup = bloodgroup;
 		this.donorType = donorType;
 	}
-
+	public void setOn(boolean status){
+		status = true;
+	}
+	public void setOff(boolean status){
+		status = false;
+	}
+	public boolean getStatus(){
+		return status;
+	}
 	public String getBloodgroup() {
 		return Bloodgroup;
 	}
@@ -69,7 +76,11 @@ public class Donor {
 		this.DOB = DOB;
 	}
 
-
+	public Donor(String email, String password){
+		super();
+		this.email = email;
+		this.password = password;
+	}
 	public Donor(String name, String lastname, String email, String password, String phone) {
 		super();
 		this.first_name = name;
@@ -123,9 +134,18 @@ public class Donor {
 		this.last_name = last_name;
 	}
 
-	public void login(int username, int password) {
-		// TODO - implement User.login
-		throw new UnsupportedOperationException();
+	public static boolean login(String email, String password) {
+		FirebaseAuth userAuth = FirebaseAuth.getInstance();
+
+		userAuth.signInWithEmailAndPassword(email, password)
+				.addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+					@Override
+					public void onComplete(@NonNull Task<AuthResult> task) {
+						if(task.isSuccessful()){
+						}
+					}
+				});
+		return true;
 	}
 
 	public void logout() {
@@ -152,7 +172,7 @@ public class Donor {
 		this.phone = phone;
 	}
 
-	public boolean registerDonor(FirebaseAuth auth, Donor donor) {
+	public boolean registerDonor(@NonNull FirebaseAuth auth, Donor donor) {
 		final Boolean[] status = new Boolean[1];
 		FirebaseDatabase userDatabase = FirebaseDatabase.getInstance();
 		DatabaseReference reference = userDatabase.getReference("User");

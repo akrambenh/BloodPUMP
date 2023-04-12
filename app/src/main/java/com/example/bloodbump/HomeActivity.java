@@ -5,14 +5,20 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
+import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -61,6 +67,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public void onBackPressed() {
         if(drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawer(GravityCompat.START);
+        }else if(!Objects.equals(getSupportFragmentManager().findFragmentById(R.id.fragment_content), new HomeFragment())){
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_content, new HomeFragment()).commit();
+            // Add onBackPressed On HomeFragment to Destroy activity
         } else {
             super.onBackPressed();
         }
@@ -68,6 +77,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     public void JumpDonationFrag(View view) {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_content, new donationFragment()).commit();
+    }
+
+    public void DonateBlood(View view) {
+        startActivity(new Intent(HomeActivity.this, AppointmentActivity.class));
     }
 }
 

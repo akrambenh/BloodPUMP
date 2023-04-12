@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AppointmentActivity">
+
+    <ImageView
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@drawable/small_red_header"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/back_arrow_button"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="318dp"
+        android:layout_marginBottom="16dp"
+
+        android:background="@drawable/round_arrow_back"
+        android:clickable="true"
+        android:focusable="true"
+        android:onClick="backToHome"
+        app:layout_constraintBottom_toBottomOf="@+id/header"
+        app:layout_constraintEnd_toEndOf="@+id/header"
+        app:layout_constraintStart_toStartOf="@+id/header"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+    <TextView
+        android:layout_width="180dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="6dp"
+        android:text="Appointment"
+        android:textColor="@color/white"
+        android:theme="@style/MytextTheme"
+        android:paddingTop="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/header"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:layout_width="320dp"
+        android:layout_height="100dp"
+        android:text="Thank You For Choosing To Donate Blood.\n We Are Very Proud Of Your Heroic Action.\n Keep Up The Good Work."
+        android:textSize="13dp"
+        android:theme="@style/MytextTheme"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.111"
+        tools:ignore="TextSizeCheck" />
+
+    <ImageView
+        android:id="@+id/suggest_box"
+        android:layout_width="335dp"
+        android:layout_height="400dp"
+        android:background="@drawable/suggest_box"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.483"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.583" />
+
+    <TextView
+        android:layout_width="172dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="195dp"
+        android:layout_marginBottom="352dp"
+        android:drawableLeft="@drawable/bulb_icon"
+        android:drawableTint="@color/my_red"
+        android:paddingBottom="12dp"
+        android:text="Suggested Venues"
+        android:textSize="10dp"
+        android:paddingRight="8dp"
+        android:theme="@style/MytextTheme"
+        app:layout_constraintBottom_toBottomOf="@+id/suggest_box"
+        app:layout_constraintEnd_toEndOf="@+id/suggest_box"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/suggest_box"
+        app:layout_constraintTop_toTopOf="@+id/suggest_box"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="TextSizeCheck" />
+
+    <TextView
+        android:id="@+id/suggest_venue1"
+        android:layout_width="200dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginEnd="179dp"
+        android:layout_marginBottom="299dp"
+        android:text="Hospitalier Saint Peter"
+        android:textSize="10dp"
+        android:theme="@style/MytextTheme"
+        android:drawableLeft="@drawable/hospital_icon"
+        android:drawableTint="@color/my_red"
+        android:paddingBottom="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/suggest_box"
+        app:layout_constraintEnd_toEndOf="@+id/suggest_box"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/suggest_box"
+        app:layout_constraintTop_toTopOf="@+id/suggest_box"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="TextSizeCheck" />
+
+    <Button
+        android:id="@+id/suggest_button1"
+        android:layout_width="100dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="247dp"
+        android:layout_marginTop="82dp"
+        android:layout_marginEnd="13dp"
+        android:layout_marginBottom="255dp"
+        android:background="@drawable/book_button"
+        android:paddingBottom="10dp"
+        android:text="Book"
+        android:textColor="@color/my_red"
+        android:textSize="13dp"
+        android:theme="@style/MytextTheme"
+        app:layout_constraintBottom_toBottomOf="@+id/suggest_box"
+        app:layout_constraintEnd_toEndOf="@+id/suggest_box"
+        app:layout_constraintHorizontal_bias="0.75"
+        app:layout_constraintStart_toStartOf="@+id/suggest_box"
+        app:layout_constraintTop_toTopOf="@+id/suggest_box"
+        app:layout_constraintVertical_bias="1.0"
+        tools:ignore="TextSizeCheck" />
+
+    <TextView
+        android:id="@+id/suggest_date1"
+        android:layout_width="100dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="254dp"
+        android:layout_marginTop="69dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginBottom="307dp"
+        android:text="16/04/2023"
+        android:textSize="11dp"
+        android:theme="@style/MytextTheme"
+        app:layout_constraintBottom_toBottomOf="@+id/suggest_box"
+        app:layout_constraintEnd_toEndOf="@+id/suggest_box"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="@+id/suggest_box"
+        app:layout_constraintTop_toTopOf="@+id/suggest_box"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="TextSizeCheck" />
+
+    <TextView
+        android:id="@+id/suggest_time1"
+        android:layout_width="90dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="17dp"
+        android:layout_marginTop="110dp"
+        android:layout_marginEnd="240dp"
+        android:layout_marginBottom="266dp"
+        android:text="8:00   -   16:00"
+        android:textSize="14dp"
+        app:layout_constraintBottom_toBottomOf="@+id/suggest_box"
+        app:layout_constraintEnd_toEndOf="@+id/suggest_box"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/suggest_box"
+        app:layout_constraintTop_toTopOf="@+id/suggest_box"
+        app:layout_constraintVertical_bias="1.0"
+        tools:ignore="TextSizeCheck" />
+
+    <ImageView
+        android:layout_width="300dp"
+        android:layout_height="3dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="152dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="64dp"
+        android:background="@drawable/line_separator"
+        app:layout_constraintBottom_toBottomOf="@+id/suggest_box"
+        app:layout_constraintEnd_toEndOf="@+id/suggest_box"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/suggest_box"
+        app:layout_constraintTop_toTopOf="@+id/suggest_box"
+        app:layout_constraintVertical_bias="0.016" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

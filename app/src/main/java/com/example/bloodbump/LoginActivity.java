@@ -38,6 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                bumpAuth = FirebaseAuth.getInstance();
                 String email = login_email.getText().toString().trim();
                 String password = login_password.getText().toString().trim();
                 if(email.isEmpty()){
@@ -50,13 +51,14 @@ public class LoginActivity extends AppCompatActivity {
                     login_email.setError("You Must Enter A Valid Email");
                     login_email.requestFocus();
                 }else {
+                    Donor donor = new Donor(email, password);
                     bumpAuth.signInWithEmailAndPassword(email, password)
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if(task.isSuccessful()){
                                         Toast.makeText(LoginActivity.this, "Logged In Successfully", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                                     }else
                                         Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
                                 }
