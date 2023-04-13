@@ -26,11 +26,19 @@ public class AppointmentActivity extends AppCompatActivity {
         back_arrow = findViewById(R.id.back_arrow_button);
         suggest_venue1 = findViewById(R.id.suggest_venue1);
         suggest_button1 = findViewById(R.id.suggest_button1);
+        suggest_button1.setOnClickListener(this::onClick);
         suggest_date1 = findViewById(R.id.suggest_date1);
         suggest_time1 = findViewById(R.id.suggest_time1);
     }
 
     public void backToHome(View view) {
         startActivity(new Intent(AppointmentActivity.this, HomeActivity.class));
+    }
+    public void onClick(View v){
+        switch(v.getId()){
+            case R.id.suggest_button1:
+
+                break;
+        }
     }
 }
