@@ -14,7 +14,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Donor {
-	public static boolean status;
 	String password;
 	String email;
 	String donor_ID;
@@ -30,15 +29,6 @@ public class Donor {
 		this.DOB = dob;
 		this.Bloodgroup = bloodgroup;
 		this.donorType = donorType;
-	}
-	public void setOn(boolean status){
-		status = true;
-	}
-	public void setOff(boolean status){
-		status = false;
-	}
-	public boolean getStatus(){
-		return status;
 	}
 	public String getBloodgroup() {
 		return Bloodgroup;

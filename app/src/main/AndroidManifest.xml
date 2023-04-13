@@ -26,6 +26,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".SearchVenueActivity"
+            android:exported="false" />
+        <activity
             android:name=".AppointmentActivity"
             android:exported="false" />
         <activity

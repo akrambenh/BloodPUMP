@@ -41,4 +41,9 @@ public class AppointmentActivity extends AppCompatActivity {
                 break;
         }
     }
+
+
+    public void searchVenue(View view) {
+        startActivity(new Intent(AppointmentActivity.this, SearchVenueActivity.class));
+    }
 }

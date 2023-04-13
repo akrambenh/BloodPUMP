@@ -3,6 +3,7 @@ package com.example.bloodbump;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -28,17 +29,28 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // User Session
         setContentView(R.layout.activity_login);
+        SessionManager sessionManager = new SessionManager(LoginActivity.this);
+        sessionManager.getUserDetail();
+        bumpAuth = FirebaseAuth.getInstance();
         login_email = (EditText) findViewById(R.id.login_email);
         login_password = (EditText) findViewById(R.id.login_password);
         forgotPassword = (TextView) findViewById(R.id.forgotPassword);
         login_button = (Button) findViewById(R.id.login_button);
         forgotPassword.setPaintFlags(forgotPassword.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-
+        if(sessionManager.checkLogin()){
+            bumpAuth.signInWithEmailAndPassword(sessionManager.KEY_EMAIL, sessionManager.KEY_PASSWORD)
+                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                        }
+                    });
+        }
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                bumpAuth = FirebaseAuth.getInstance();
                 String email = login_email.getText().toString().trim();
                 String password = login_password.getText().toString().trim();
                 if(email.isEmpty()){
@@ -58,11 +70,13 @@ public class LoginActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if(task.isSuccessful()){
                                         Toast.makeText(LoginActivity.this, "Logged In Successfully", Toast.LENGTH_SHORT).show();
+                                        sessionManager.createLoginSession(email, password);
                                         startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                                     }else
                                         Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
                                 }
                             });
+
                 }
             }
         });
