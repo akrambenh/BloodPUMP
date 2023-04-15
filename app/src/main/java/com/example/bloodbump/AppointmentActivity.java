@@ -1,7 +1,6 @@
 package com.example.bloodbump;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.transition.Fade;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,7 +36,9 @@ public class AppointmentActivity extends AppCompatActivity {
     public void onClick(View v){
         switch(v.getId()){
             case R.id.suggest_button1:
-
+                Intent intent = new Intent(AppointmentActivity.this, BookingActivity.class);
+                intent.putExtra("time", suggest_time1.getText().toString());
+                // I think Dialog Would Suit the case
                 break;
         }
     }

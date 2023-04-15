@@ -61,7 +61,7 @@ public class RegisterActivity extends AppCompatActivity {
             Pattern numbers = Pattern.compile("[1-9]");
             //Using A Regular Expression to avoid characters and symbols in National Number
             if(name.isEmpty() || lastname.isEmpty() || email.isEmpty() || password.isEmpty() || ConfirmedPassword.isEmpty()){
-                Log.d(TAG, "Not All Fields Are Fields");
+                Log.d(TAG, "Not All Fields Are Filled");
                 Toast.makeText(RegisterActivity.this, "Please Fill All The Fields", Toast.LENGTH_LONG).show();
             } else if (numbers.matcher(name).matches()) {
                 user_name.setError("Name Must Not Have Numbers");
@@ -103,5 +103,9 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void switch_login(View view) {
         startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
+    }
+
+    public void RegisterAdmin(View view) {
+        startActivity(new Intent(RegisterActivity.this, RegisterAdminActivity.class));
     }
 }
