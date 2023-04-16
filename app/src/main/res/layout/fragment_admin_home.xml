@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".AdminHomeFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="563dp"
+        android:layout_gravity="bottom">
+
+        <ImageView
+            android:id="@+id/scheduleRect"
+            android:layout_width="160dp"
+            android:layout_height="140dp"
+            android:background="@drawable/stats_rect"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="JumpSchuduleFrag"
+            android:paddingTop="80dp"
+            android:paddingBottom="10dp"
+            android:src="@drawable/schedule_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.08"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.111"
+            app:tint="@color/my_red"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <ImageView
+            android:id="@+id/requestRect"
+            android:layout_width="160dp"
+            android:layout_height="140dp"
+            android:background="@drawable/stats_rect"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="JumpRequestFrag"
+            android:paddingTop="80dp"
+            android:paddingBottom="10dp"
+            android:src="@drawable/request_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.925"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.111"
+            app:tint="@color/my_red"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <TextView
+            android:text="Schedule"
+            android:theme="@style/MytextTheme"
+            android:layout_width="128dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="17dp"
+            android:layout_marginEnd="17dp"
+            android:layout_marginBottom="75dp"
+            app:layout_constraintBottom_toBottomOf="@+id/scheduleRect"
+            app:layout_constraintEnd_toEndOf="@+id/scheduleRect"
+            app:layout_constraintStart_toStartOf="@+id/scheduleRect"
+            app:layout_constraintTop_toTopOf="@+id/scheduleRect" />
+
+        <TextView
+            android:text="Requests"
+            android:theme="@style/MytextTheme"
+            android:layout_width="128dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="17dp"
+            android:layout_marginEnd="17dp"
+            android:layout_marginBottom="75dp"
+            app:layout_constraintBottom_toBottomOf="@+id/requestRect"
+            app:layout_constraintEnd_toEndOf="@+id/requestRect"
+            app:layout_constraintStart_toStartOf="@+id/requestRect"
+            app:layout_constraintTop_toTopOf="@+id/requestRect" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

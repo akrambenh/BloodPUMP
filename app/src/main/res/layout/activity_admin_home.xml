@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        tools:context=".AdminHomeActivity"
+        >
+        <ImageView
+            android:id="@+id/scheduleRect"
+            android:layout_width="160dp"
+            android:layout_height="140dp"
+            android:background="@drawable/stats_rect"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="JumpSchuduleFrag"
+            android:paddingTop="80dp"
+            android:paddingBottom="10dp"
+            android:src="@drawable/schedule_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.063"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.373"
+            app:tint="@color/my_red"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <TextView
+            android:layout_width="128dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="17dp"
+            android:layout_marginEnd="17dp"
+            android:layout_marginBottom="75dp"
+            android:text="Schedule"
+            android:theme="@style/MytextTheme"
+            app:layout_constraintBottom_toBottomOf="@+id/scheduleRect"
+            app:layout_constraintEnd_toEndOf="@+id/scheduleRect"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/scheduleRect"
+            app:layout_constraintTop_toTopOf="@+id/scheduleRect"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <ImageView
+            android:id="@+id/requestRect"
+            android:layout_width="160dp"
+            android:layout_height="140dp"
+            android:background="@drawable/stats_rect"
+            android:clickable="true"
+            android:focusable="true"
+            android:onClick="JumpRequestFrag"
+            android:paddingTop="80dp"
+            android:paddingBottom="10dp"
+            android:src="@drawable/request_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.936"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.373"
+            app:tint="@color/my_red"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <TextView
+            android:layout_width="128dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="17dp"
+            android:layout_marginEnd="17dp"
+            android:layout_marginBottom="75dp"
+            android:text="Requests"
+            android:theme="@style/MytextTheme"
+            app:layout_constraintBottom_toBottomOf="@+id/requestRect"
+            app:layout_constraintEnd_toEndOf="@+id/requestRect"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/requestRect"
+            app:layout_constraintTop_toTopOf="@+id/requestRect"
+            app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="fill_parent"
+        android:layout_height="180dp"
+        android:background="@drawable/home_top_panel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/hospitalText"
+        android:layout_width="182dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="79dp"
+        android:layout_marginTop="131dp"
+        android:layout_marginEnd="280dp"
+        android:layout_marginBottom="30dp"
+        android:drawableStart="@drawable/hospital_icon"
+        android:drawablePadding="5dp"
+        android:drawableTint="@color/white"
+        android:paddingBottom="5dp"
+        android:text="Hospital Name"
+        android:textColor="@color/white"
+        android:textSize="12dp"
+        android:theme="@style/MytextTheme"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView7"
+        app:layout_constraintEnd_toEndOf="@+id/imageView7"
+        app:layout_constraintHorizontal_bias="0.285"
+        app:layout_constraintStart_toStartOf="@+id/imageView7"
+        app:layout_constraintTop_toTopOf="@+id/imageView7"
+        app:layout_constraintVertical_bias="0.066"
+        tools:ignore="TextSizeCheck" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

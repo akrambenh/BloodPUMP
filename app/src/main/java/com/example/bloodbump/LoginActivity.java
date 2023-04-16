@@ -18,6 +18,12 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText login_email, login_password;
@@ -25,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView forgotPassword;
 
     private FirebaseAuth bumpAuth;
+    private FirebaseDatabase userDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
         forgotPassword = (TextView) findViewById(R.id.forgotPassword);
         login_button = (Button) findViewById(R.id.login_button);
         forgotPassword.setPaintFlags(forgotPassword.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-        if(sessionManager.checkLogin()){
+        /*if(sessionManager.checkLogin()){
             bumpAuth.signInWithEmailAndPassword(sessionManager.KEY_EMAIL, sessionManager.KEY_PASSWORD)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -47,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
                             startActivity(new Intent(LoginActivity.this, HomeActivity.class));
                         }
                     });
-        }
+        }*/
         login_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,7 +78,11 @@ public class LoginActivity extends AppCompatActivity {
                                     if(task.isSuccessful()){
                                         Toast.makeText(LoginActivity.this, "Logged In Successfully", Toast.LENGTH_SHORT).show();
                                         sessionManager.createLoginSession(email, password);
-                                        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                                        String UID = bumpAuth.getCurrentUser().getUid();
+                                        String EMAIL = bumpAuth.getCurrentUser().getEmail();
+                                        userDB = FirebaseDatabase.getInstance();
+                                        Query q = userDB.getReference("Admin//").equalTo(EMAIL);
+                                        startActivity(new Intent(LoginActivity.this, AdminHomeActivity.class));
                                     }else
                                         Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
                                 }
