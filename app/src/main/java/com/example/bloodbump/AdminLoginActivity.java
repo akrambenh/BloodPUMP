@@ -3,7 +3,6 @@ package com.example.bloodbump;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -18,14 +17,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
-public class LoginActivity extends AppCompatActivity {
+public class AdminLoginActivity extends AppCompatActivity {
     private EditText login_email, login_password;
     private Button login_button;
     private TextView forgotPassword;
@@ -36,9 +31,8 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // User Session
-        setContentView(R.layout.activity_login);
-        //SessionManager sessionManager = new SessionManager(LoginActivity.this);
+        setContentView(R.layout.activity_admin_login);
+        //SessionManager sessionManager = new SessionManager(AdminLoginActivity.this);
         //sessionManager.getUserDetail();
         bumpAuth = FirebaseAuth.getInstance();
         login_email = (EditText) findViewById(R.id.login_email);
@@ -76,33 +70,27 @@ public class LoginActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<AuthResult> task) {
                                     if(task.isSuccessful()){
-                                        Toast.makeText(LoginActivity.this, "Logged In Successfully", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(AdminLoginActivity.this, "Logged In Successfully", Toast.LENGTH_SHORT).show();
                                         //sessionManager.createLoginSession(email, password);
                                         //String UID = bumpAuth.getCurrentUser().getUid();
-                                        //String EMAIL = bumpAuth.getCurrentUser().getEmail();
                                         //userDB = FirebaseDatabase.getInstance();
-                                        //Query q = userDB.getReference("Admin//").equalTo(EMAIL);
-                                        startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+                                        //String EMAIL = bumpAuth.getCurrentUser().getEmail();
+                                        startActivity(new Intent(AdminLoginActivity.this, AdminHomeActivity.class));
                                     }else
-                                        Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(AdminLoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
                                 }
                             });
 
                 }
             }
         });
-
-    }
-
-    public void resetPassword(View view) {
-        startActivity(new Intent(LoginActivity.this, ResetPasswordActivity.class));
     }
 
     public void switch_signUp(View view) {
-        startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+        startActivity(new Intent(AdminLoginActivity.this, RegisterAdminActivity.class));
     }
 
-    public void SwitchToAdmin(View view) {
-        startActivity(new Intent(LoginActivity.this, AdminLoginActivity.class));
+    public void SwitchToDonor(View view) {
+        startActivity(new Intent(AdminLoginActivity.this, LoginActivity.class));
     }
 }

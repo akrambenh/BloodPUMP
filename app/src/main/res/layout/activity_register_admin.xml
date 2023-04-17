@@ -5,7 +5,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RegisterAdminActivity">
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="81dp"
+        android:layout_height="32dp"
+        android:background="@drawable/signup_button_switch"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.04"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="switch_login"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.292"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.053"
+        app:srcCompat="@drawable/login_switch_title"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
     <EditText
         android:id="@+id/venue_name"
         android:layout_width="250dp"

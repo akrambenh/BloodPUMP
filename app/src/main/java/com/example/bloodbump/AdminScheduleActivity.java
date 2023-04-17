@@ -35,6 +35,9 @@ public class AdminScheduleActivity extends AppCompatActivity {
     private FirebaseDatabase adminDB;
     private DatabaseReference reference;
     private Button addSchedule_button;
+    private TextView addSchedule_text;
+    public String[] time = new String[8];
+    public int iterTime = 0;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,7 @@ public class AdminScheduleActivity extends AppCompatActivity {
         adminAuth = FirebaseAuth.getInstance();
         adminDB = FirebaseDatabase.getInstance();
         addSchedule_button = (Button) findViewById(R.id.addSchedule_button);
+        addSchedule_text = (TextView) findViewById(R.id.addSchedule_text);
         //
         dayOne = (TextView) findViewById(R.id.day1);
         dayTwo = (TextView) findViewById(R.id.day2);
@@ -66,11 +70,8 @@ public class AdminScheduleActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if(task.isSuccessful()){
                     if(task.getResult().exists()){
-                        Toast.makeText(AdminScheduleActivity.this, "Admin Data Exists", Toast.LENGTH_SHORT).show();
                         DataSnapshot data = task.getResult();
                         String Name = String.valueOf(data.child("name").getValue());
-                        Toast.makeText(AdminScheduleActivity.this, Name, Toast.LENGTH_SHORT).show();
-                        // Checking For Schedule Existance In Database
                         reference = adminDB.getReference("Schedule");
                         reference.child(Name).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                             @Override
@@ -83,42 +84,79 @@ public class AdminScheduleActivity extends AppCompatActivity {
                                         long iter = data.getChildrenCount();
                                         int iteration = (int) iter;
                                         String[] Days = new String[iteration];
-                                        String[] Opening = new String[iteration];
+                                        //String[] Opening = new String[iteration];
+                                        String[] time = new String[iteration];
                                         final Iterator<DataSnapshot> iterator = data.getChildren().iterator();
-                                        for(int i = 0; i < iteration; i++){
+                                        for(int i = 0; i < iteration; i++) {
                                             Days[i] = iterator.next().getKey();
-                                            Opening[i] = iterator.next().child(Days[i]).toString();
-                                            Toast.makeText(AdminScheduleActivity.this, Days[i] + " : " + Opening[i], Toast.LENGTH_SHORT).show();
+                                            time[i] = String.valueOf(data.child(Days[i]).getValue());
                                         }
+                                        dayOne.setText(Days[0]);
+                                        dayTwo.setText(Days[1]);
+                                        dayThree.setText(Days[2]);
+                                        dayFour.setText(Days[3]);
+                                        dayFive.setText(Days[4]);
+                                        daySix.setText(Days[5]);
+                                        daySeven.setText(Days[6]);
+                                        //
+                                        timing1.setText(time[0]);
+                                        timing2.setText(time[1]);
+                                        timing3.setText(time[2]);
+                                        timing4.setText(time[3]);
+                                        timing5.setText(time[4]);
+                                        timing6.setText(time[5]);
+                                        timing7.setText(time[6]);
+                                        addSchedule_button.setClickable(true);
+                                        addSchedule_button.setText("Save Changes");
+                                        addSchedule_button.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                String time1= timing1.getText().toString();
+                                                String time2 = timing2.getText().toString();
+                                                String time3 = timing3.getText().toString();
+                                                String time4 = timing4.getText().toString();
+                                                String time5 = timing5.getText().toString();
+                                                String time6 = timing6.getText().toString();
+                                                String time7 = timing7.getText().toString();
+                                                HashMap<String, String> scheduleMap = new HashMap<String, String>();
+                                                scheduleMap.put(giveDate(0), time1);
+                                                scheduleMap.put(giveDate(1), time2);
+                                                scheduleMap.put(giveDate(2), time3);
+                                                scheduleMap.put(giveDate(3), time4);
+                                                scheduleMap.put(giveDate(4), time5);
+                                                scheduleMap.put(giveDate(5), time6);
+                                                scheduleMap.put(giveDate(6), time7);
+                                                reference = adminDB.getReference("Schedule");
+                                                reference.child(Name).setValue(scheduleMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if(task.isSuccessful()){
+                                                            Toast.makeText(AdminScheduleActivity.this, "Schedule Changed Successfully", Toast.LENGTH_SHORT).show();
+                                                            startActivity(new Intent(AdminScheduleActivity.this, AdminHomeActivity.class));
+                                                        }else
+                                                            Toast.makeText(AdminScheduleActivity.this, "Failed To Change Schedule", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                            }
+                                        });
                                     }else {
                                         Toast.makeText(AdminScheduleActivity.this, "Schedule Doesn't Exists \n You Can Add Weekly Schedule", Toast.LENGTH_SHORT).show();
-                                        // Declaring Again To Avoid Null Pointer
-                                        dayOne = (TextView) findViewById(R.id.day1);
-                                        dayTwo = (TextView) findViewById(R.id.day2);
-                                        dayThree = (TextView) findViewById(R.id.day3);
-                                        dayFour = (TextView) findViewById(R.id.day4);
-                                        dayFive = (TextView) findViewById(R.id.day5);
-                                        daySix = (TextView) findViewById(R.id.day6);
-                                        daySeven = (TextView) findViewById(R.id.day7);
-                                        //
-                                        timing1 = (EditText) findViewById(R.id.timing1);
-                                        timing2 = (EditText) findViewById(R.id.timing2);
-                                        timing3 = (EditText) findViewById(R.id.timing3);
-                                        timing4 = (EditText) findViewById(R.id.timing4);
-                                        timing5 = (EditText) findViewById(R.id.timing5);
-                                        timing6 = (EditText) findViewById(R.id.timing6);
-                                        timing7 = (EditText) findViewById(R.id.timing7);
-                                        // Turn Fields into visible
-                                        dayOne.setText(giveDate(0));
-                                        dayTwo.setText(giveDate(1));
-                                        dayThree.setText(giveDate(2));
-                                        dayFour.setText(giveDate(3));
-                                        dayFive.setText(giveDate(4));
-                                        daySix.setText(giveDate(5));
-                                        daySeven.setText(giveDate(6));
-                                        // Reading Opening Time
+                                        addSchedule_text.setVisibility(View.VISIBLE);
+                                        addSchedule_text.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                addSchedule_button.setClickable(true);
+                                                dayOne.setText(giveDate(0));
+                                                dayTwo.setText(giveDate(1));
+                                                dayThree.setText(giveDate(2));
+                                                dayFour.setText(giveDate(3));
+                                                dayFive.setText(giveDate(4));
+                                                daySix.setText(giveDate(5));
+                                                daySeven.setText(giveDate(6));
 
-                                        addSchedule_button = (Button) findViewById(R.id.addSchedule_button);
+                                            }
+                                        });
+                                        // Reading Opening Time
                                         addSchedule_button.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
@@ -171,13 +209,14 @@ public class AdminScheduleActivity extends AppCompatActivity {
 
     }
 
+
     public void backToHome(View view) {
         startActivity(new Intent(AdminScheduleActivity.this, AdminHomeActivity.class));
     }
     public String giveDate(int i) {
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, i);
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d, yyyy");
-        return sdf.format(cal.getTime());
+        SimpleDateFormat inv = new SimpleDateFormat("d MMM, yyyy : EEE");
+        return inv.format(cal.getTime());
     }
 }

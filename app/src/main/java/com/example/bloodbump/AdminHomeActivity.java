@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,7 +38,18 @@ public class AdminHomeActivity extends AppCompatActivity {
         String EMAIL = adminAuth.getCurrentUser().getEmail();
         hospitalText = (TextView) findViewById(R.id.hospitalText);
         // Getting Hospital Name
-
+        String UID = adminAuth.getCurrentUser().getUid();
+        admin_Ref = adminDB.getReference("Admin");
+        admin_Ref.child(UID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.isSuccessful()){
+                    DataSnapshot data = task.getResult();
+                    String Name = String.valueOf(data.child("name").getValue());
+                    hospitalText.setText(Name);
+                }
+            }
+        });
     }
 
     public void JumpSchuduleFrag(View view) {

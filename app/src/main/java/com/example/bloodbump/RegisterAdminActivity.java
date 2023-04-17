@@ -92,4 +92,8 @@ public class RegisterAdminActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void switch_login(View view) {
+        startActivity(new Intent(RegisterAdminActivity.this, AdminLoginActivity.class));
+    }
 }

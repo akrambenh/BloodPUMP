@@ -53,8 +53,8 @@
         android:id="@+id/textView12"
         android:layout_width="250dp"
         android:layout_height="32dp"
-        android:text="Add The Weekly Schedule"
-        android:textSize="13dp"
+        android:text="The Weekly Schedule"
+        android:textSize="15dp"
         android:theme="@style/MytextTheme"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -63,6 +63,25 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.107"
         tools:ignore="TextSizeCheck" />
+
+    <TextView
+        android:id="@+id/addSchedule_text"
+        android:layout_width="250dp"
+        android:layout_height="32dp"
+        android:text="Add New Schedule For This Week"
+        android:theme="@style/MytextTheme"
+        android:textSize="10dp"
+        android:textColor="@color/med_blue"
+        android:clickable="true"
+        android:visibility="gone"
+        android:onClick="AddSchedule"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.187"
+        android:focusable="true" />
 
     <TextView
         android:id="@+id/day1"
@@ -79,13 +98,16 @@
         app:layout_constraintVertical_bias="0.286" />
 
     <EditText
-        android:id="@+id/timing1"
+        android:id="@+id/timing4"
         android:layout_width="128dp"
         android:layout_height="32dp"
         android:background="@drawable/field"
         android:paddingLeft="10dp"
         android:textSize="10dp"
         android:theme="@style/MytextTheme"
+        android:paddingBottom="7dp"
+        android:paddingRight="5dp"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.865"
@@ -102,6 +124,9 @@
         android:paddingLeft="10dp"
         android:textSize="10dp"
         android:theme="@style/MytextTheme"
+        android:paddingBottom="7dp"
+        android:paddingRight="5dp"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.865"
@@ -118,28 +143,15 @@
         android:paddingLeft="10dp"
         android:textSize="10dp"
         android:theme="@style/MytextTheme"
+        android:paddingBottom="7dp"
+        android:paddingRight="5dp"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.865"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.463"
-        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
-    <EditText
-        android:id="@+id/timing4"
-        android:layout_width="128dp"
-        android:layout_height="32dp"
-        android:background="@drawable/field"
-        android:paddingLeft="10dp"
-        android:textSize="10dp"
-        android:theme="@style/MytextTheme"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.865"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.643"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <EditText
@@ -150,12 +162,15 @@
         android:paddingLeft="10dp"
         android:textSize="10dp"
         android:theme="@style/MytextTheme"
+        android:paddingBottom="7dp"
+        android:paddingRight="5dp"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.865"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.732"
+        app:layout_constraintVertical_bias="0.643"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <EditText
@@ -166,6 +181,28 @@
         android:paddingLeft="10dp"
         android:textSize="10dp"
         android:theme="@style/MytextTheme"
+        android:paddingBottom="7dp"
+        android:paddingRight="5dp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.865"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.732"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+    <EditText
+        android:id="@+id/timing7"
+        android:layout_width="128dp"
+        android:layout_height="32dp"
+        android:background="@drawable/field"
+        android:paddingLeft="10dp"
+        android:textSize="10dp"
+        android:theme="@style/MytextTheme"
+        android:paddingBottom="7dp"
+        android:paddingRight="5dp"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.865"
@@ -175,7 +212,7 @@
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <EditText
-        android:id="@+id/timing7"
+        android:id="@+id/timing1"
         android:layout_width="128dp"
         android:layout_height="32dp"
         android:background="@drawable/field"
@@ -285,6 +322,7 @@
         android:drawableLeft="@drawable/add_icon"
         android:paddingLeft="20dp"
         android:text="Add Schedule"
+        android:clickable="false"
         android:paddingBottom="6dp"
         android:paddingRight="20dp"
         android:theme="@style/MytextTheme"

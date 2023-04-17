@@ -103,7 +103,7 @@
         android:drawablePadding="5dp"
         android:drawableTint="@color/white"
         android:paddingBottom="5dp"
-        android:text="Hospital Name"
+        android:text=""
         android:textColor="@color/white"
         android:textSize="12dp"
         android:theme="@style/MytextTheme"

@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
-
+    tools:context=".AdminLoginActivity">
     <EditText
         android:id="@+id/login_email"
         android:layout_width="250dp"
@@ -97,15 +96,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.06"
         tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
     <TextView
         android:id="@+id/adminLogin"
-        android:text="Login As Admin"
+        android:text="Login As Donor"
         android:theme="@style/MytextTheme"
         android:textSize="15dp"
         android:textColor="@color/med_blue"
         android:clickable="true"
-        android:onClick="SwitchToAdmin"
+        android:onClick="SwitchToDonor"
         android:layout_width="186dp"
         android:layout_height="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -114,6 +112,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.649" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
