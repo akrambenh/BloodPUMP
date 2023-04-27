@@ -209,7 +209,7 @@
         android:layout_marginBottom="8dp"
         android:paddingLeft="10dp"
         android:paddingRight="5dp"
-
+        android:clickable="true"
         android:paddingBottom="7dp"
         android:textColor="@color/black"
         android:textSize="10dp"
@@ -228,6 +228,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="168dp"
         android:layout_marginBottom="8dp"
+        android:clickable="true"
         android:paddingLeft="10dp"
         android:paddingRight="5dp"
         android:paddingBottom="7dp"
@@ -238,7 +239,8 @@
         app:layout_constraintEnd_toEndOf="@+id/dayButton4"
         app:layout_constraintStart_toStartOf="@+id/dayButton4"
         app:layout_constraintTop_toTopOf="@+id/dayButton4"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <TextView
         android:id="@+id/morning2"
@@ -252,7 +254,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="5dp"
 
-
+        android:clickable="true"
         android:paddingBottom="7dp"
         android:textColor="@color/black"
         android:textSize="10dp"
@@ -273,7 +275,7 @@
         android:layout_marginBottom="8dp"
         android:paddingLeft="10dp"
         android:paddingRight="5dp"
-
+        android:clickable="true"
         android:paddingBottom="7dp"
         android:textColor="@color/black"
         android:textSize="10dp"
@@ -294,6 +296,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="5dp"
         android:paddingBottom="7dp"
+        android:clickable="true"
         android:textColor="@color/black"
         android:textSize="10dp"
         android:theme="@style/MytextTheme"
@@ -313,7 +316,7 @@
         android:layout_marginBottom="7dp"
         android:paddingLeft="10dp"
         android:paddingRight="5dp"
-
+        android:clickable="true"
         android:paddingBottom="7dp"
         android:textColor="@color/black"
         android:textSize="10dp"
@@ -334,7 +337,7 @@
         android:layout_marginBottom="7dp"
         android:paddingLeft="10dp"
         android:paddingRight="5dp"
-
+        android:clickable="true"
         android:paddingBottom="7dp"
         android:textColor="@color/black"
         android:textSize="10dp"
@@ -353,6 +356,7 @@
         android:layout_marginTop="9dp"
         android:layout_marginEnd="170dp"
         android:layout_marginBottom="7dp"
+        android:clickable="true"
         android:paddingLeft="10dp"
         android:paddingRight="5dp"
         android:paddingBottom="7dp"
@@ -362,7 +366,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/dayButton5"
         app:layout_constraintEnd_toEndOf="@+id/dayButton5"
         app:layout_constraintStart_toStartOf="@+id/dayButton5"
-        app:layout_constraintTop_toTopOf="@+id/dayButton5" />
+        app:layout_constraintTop_toTopOf="@+id/dayButton5"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <TextView
         android:id="@+id/evening6"
@@ -374,7 +379,7 @@
         android:layout_marginBottom="9dp"
         android:paddingLeft="10dp"
         android:paddingRight="5dp"
-
+        android:clickable="true"
         android:paddingBottom="7dp"
         android:textColor="@color/black"
         android:textSize="10dp"
@@ -394,6 +399,7 @@
 
         android:layout_marginEnd="170dp"
         android:layout_marginBottom="9dp"
+        android:clickable="true"
         android:paddingLeft="10dp"
         android:paddingRight="5dp"
         android:paddingBottom="7dp"
@@ -403,7 +409,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/dayButton6"
         app:layout_constraintEnd_toEndOf="@+id/dayButton6"
         app:layout_constraintStart_toStartOf="@+id/dayButton6"
-        app:layout_constraintTop_toTopOf="@+id/dayButton6" />
+        app:layout_constraintTop_toTopOf="@+id/dayButton6"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <TextView
         android:id="@+id/evening7"
@@ -415,7 +422,7 @@
         android:layout_marginBottom="8dp"
         android:paddingLeft="10dp"
         android:paddingRight="5dp"
-
+        android:clickable="true"
         android:paddingBottom="7dp"
         android:textColor="@color/black"
         android:textSize="10dp"
@@ -435,6 +442,7 @@
 
         android:layout_marginEnd="170dp"
         android:layout_marginBottom="8dp"
+        android:clickable="true"
         android:paddingLeft="10dp"
         android:paddingRight="5dp"
         android:paddingBottom="7dp"
@@ -444,7 +452,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/dayButton7"
         app:layout_constraintEnd_toEndOf="@+id/dayButton7"
         app:layout_constraintStart_toStartOf="@+id/dayButton7"
-        app:layout_constraintTop_toTopOf="@+id/dayButton7" />
+        app:layout_constraintTop_toTopOf="@+id/dayButton7"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <TextView
         android:id="@+id/evening1"
@@ -457,6 +466,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="5dp"
         android:paddingBottom="7dp"
+        android:clickable="true"
         android:textColor="@color/black"
         android:textSize="10dp"
         android:theme="@style/MytextTheme"
@@ -478,7 +488,7 @@
         android:layout_marginBottom="11dp"
         android:paddingLeft="10dp"
         android:paddingRight="5dp"
-
+        android:clickable="true"
         android:paddingBottom="7dp"
         android:textColor="@color/black"
         android:textSize="10dp"

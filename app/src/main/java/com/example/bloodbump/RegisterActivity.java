@@ -26,6 +26,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
@@ -77,7 +78,6 @@ public class RegisterActivity extends AppCompatActivity {
                 user_email.requestFocus();
             } else {
                 // complete constructor
-
                 userDatabase = FirebaseDatabase.getInstance();
                 reference = userDatabase.getReference("User");
                 Donor user = new Donor(name, lastname, email, password, phone);
@@ -91,7 +91,16 @@ public class RegisterActivity extends AppCompatActivity {
                                     reference.child(ID).setValue(user);
                                     Toast.makeText(RegisterActivity.this, "User Has Been Registered Successfully! \n Complete Additional Information to start Booking donation", Toast.LENGTH_LONG).show();
                                     Toast.makeText(RegisterActivity.this, "Welcome " + fullname, Toast.LENGTH_LONG).show();
-                                    startActivity(new Intent(RegisterActivity.this, CompleteRegistrationActivity.class));
+                                    // Using Hashmap To send this data into other activity to complete registration
+                                    HashMap<String, String> FullInfo = new HashMap<>();
+                                    FullInfo.put("first_name", name);
+                                    FullInfo.put("last_name", lastname);
+                                    FullInfo.put("email", email);
+                                    FullInfo.put("password", password);
+                                    FullInfo.put("phone", phone);
+                                   Intent i =  new Intent(RegisterActivity.this, CompleteRegistrationActivity.class);
+                                   i.putExtra("list", FullInfo);
+                                   startActivity(i);
                                 }else {
                                     Toast.makeText(RegisterActivity.this, "Failed To Register!" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                 }

@@ -3,12 +3,11 @@ package com.example.bloodbump;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +25,6 @@ import java.util.Iterator;
 
 public class DateSelectionActivity extends AppCompatActivity {
     private TextView venueText;
-    private ImageView dayButton1, dayButton2, dayButton3, dayButton4, dayButton5, dayButton6, dayButton7;
     private TextView day1 ,day2, day3, day4, day5, day6, day7;
     private TextView morning1, morning2, morning3, morning4, morning5, morning6, morning7;
     private TextView evening1, evening2, evening3, evening4, evening5, evening6, evening7;
@@ -36,12 +34,12 @@ public class DateSelectionActivity extends AppCompatActivity {
     private DatabaseReference reference;
     private String RequestDate;
     private  String RequestTime;
-    private int max;
+    private String bloodgroup = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dateselection);
-        venueText = (TextView) findViewById(R.id.venueText);
+        venueText = findViewById(R.id.venueText);
         Intent intent = getIntent();
         String venue = intent.getStringExtra("venue");
         Toast.makeText(this, venue, Toast.LENGTH_SHORT).show();
@@ -49,21 +47,21 @@ public class DateSelectionActivity extends AppCompatActivity {
         bookButton = findViewById(R.id.bookButton);
         bookButton.setOnClickListener(this::Book);
         // Declaring Views
-        dayButton1 = findViewById(R.id.dayButton1);
+        /*dayButton1 = findViewById(R.id.dayButton1);
         dayButton2 = findViewById(R.id.dayButton2);
         dayButton3 = findViewById(R.id.dayButton3);
         dayButton4 = findViewById(R.id.dayButton4);
         dayButton5 = findViewById(R.id.dayButton5);
         dayButton6 = findViewById(R.id.dayButton6);
         dayButton7 = findViewById(R.id.dayButton7);
-        // Setting Thier OnClickers
+        // Setting Their OnClickers
         dayButton1.setOnClickListener(this::onClick);
         dayButton2.setOnClickListener(this::onClick);
         dayButton3.setOnClickListener(this::onClick);
         dayButton4.setOnClickListener(this::onClick);
         dayButton5.setOnClickListener(this::onClick);
         dayButton6.setOnClickListener(this::onClick);
-        dayButton7.setOnClickListener(this::onClick);
+        dayButton7.setOnClickListener(this::onClick);*/
         //
 
         day1 = findViewById(R.id.day1);
@@ -81,6 +79,14 @@ public class DateSelectionActivity extends AppCompatActivity {
         morning5 = findViewById(R.id.morning5);
         morning6 = findViewById(R.id.morning6);
         morning7 = findViewById(R.id.morning7);
+        // Creating Their OnClickers
+        morning1.setOnClickListener(this::onClick);
+        morning2.setOnClickListener(this::onClick);
+        morning3.setOnClickListener(this::onClick);
+        morning4.setOnClickListener(this::onClick);
+        morning5.setOnClickListener(this::onClick);
+        morning6.setOnClickListener(this::onClick);
+        morning7.setOnClickListener(this::onClick);
 
         evening1 = findViewById(R.id.evening1);
         evening2 = findViewById(R.id.evening2);
@@ -89,7 +95,14 @@ public class DateSelectionActivity extends AppCompatActivity {
         evening5 = findViewById(R.id.evening5);
         evening6 = findViewById(R.id.evening6);
         evening7 = findViewById(R.id.evening7);
-
+        // Setting Their OnClickers
+        evening1.setOnClickListener(this::onClick);
+        evening2.setOnClickListener(this::onClick);
+        evening3.setOnClickListener(this::onClick);
+        evening4.setOnClickListener(this::onClick);
+        evening5.setOnClickListener(this::onClick);
+        evening6.setOnClickListener(this::onClick);
+        evening7.setOnClickListener(this::onClick);
         bookButton = findViewById(R.id.bookButton);
         //
         userAuth = FirebaseAuth.getInstance();
@@ -100,21 +113,18 @@ public class DateSelectionActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if(task.isSuccessful()){
                     if(task.getResult().exists()){
-                        Toast.makeText(DateSelectionActivity.this, "Getting Data", Toast.LENGTH_SHORT).show();
                         DataSnapshot data = task.getResult();
                         long iter = data.getChildrenCount();
                         int iteration = (int) iter;
                         String[] Days = new String[iteration];
-                        String[] time = new String[iteration];
                         String[] morning = new String[iteration];
-                        String[] evening  =new String[iteration];
+                        String[] evening  = new String[iteration];
+                        String[] max = new String[iteration];
                         final Iterator<DataSnapshot> iterator = data.getChildren().iterator();
                         for(int i = 0; i < iteration; i++){
                             Days[i] = iterator.next().getKey();
                             morning[i] = String.valueOf(data.child(Days[i]).child("morning").getValue());
                             evening[i] = String.valueOf(data.child(Days[i]).child("evening").getValue());
-                            //max = Integer.parseInt(data.child(Days[i]).child("max").getValue().toString());
-                            //time[i] = String.valueOf(data.child(Days[i]).getValue());
 
                         }
                         day1.setText(Days[0]);
@@ -146,139 +156,403 @@ public class DateSelectionActivity extends AppCompatActivity {
             }
         });
     }
+    @SuppressLint("UseCompatLoadingForDrawables")
     public void onClick(View view){
-       /* switch(view.getId()){
-            case R.id.dayButton1:
-                if(timing1.getText().toString().trim().isEmpty()){
+       switch(view.getId()){
+           case R.id.morning1:
+                if(morning1.getText().toString().trim().isEmpty()){
                     bookButton.setBackground(getDrawable(R.drawable.large_grey_button));
                     bookButton.setClickable(false);
                 }else {
                     bookButton.setClickable(true);
                     bookButton.setBackground(getDrawable(R.drawable.large_red_button));
-                    dayButton1.setBackground(getDrawable(R.drawable.field_selected));
-                    RequestDate = day1.getText().toString().trim();
-                    RequestTime = timing1.getText().toString().trim();
+                    morning1.setBackground(getDrawable(R.drawable.field_selected));
+                    evening2.setBackground(getDrawable(R.drawable.field));
+                    evening3.setBackground(getDrawable(R.drawable.field));
+                    evening4.setBackground(getDrawable(R.drawable.field));
+                    evening5.setBackground(getDrawable(R.drawable.field));
+                    evening6.setBackground(getDrawable(R.drawable.field));
+                    evening7.setBackground(getDrawable(R.drawable.field));
+                    morning2.setBackground(getDrawable(R.drawable.field));
+                    morning3.setBackground(getDrawable(R.drawable.field));
+                    morning4.setBackground(getDrawable(R.drawable.field));
+                    morning5.setBackground(getDrawable(R.drawable.field));
+                    morning6.setBackground(getDrawable(R.drawable.field));
+                    morning7.setBackground(getDrawable(R.drawable.field));
+                    RequestDate = day1.getText().toString();
+                    RequestTime = morning1.getText().toString();
                 }
                 break;
-            case R.id.dayButton2:
-                if(timing2.getText().toString().trim().isEmpty()){
+           case R.id.morning2:
+                if(morning2.getText().toString().trim().isEmpty()){
                     bookButton.setBackground(getDrawable(R.drawable.large_grey_button));
                     bookButton.setClickable(false);
                 }else {
                     bookButton.setBackground(getDrawable(R.drawable.large_red_button));
-                    dayButton2.setBackground(getDrawable(R.drawable.field_selected));
+                    morning2.setBackground(getDrawable(R.drawable.field_selected));
+                    evening1.setBackground(getDrawable(R.drawable.field));
+                    evening2.setBackground(getDrawable(R.drawable.field));
+                    evening3.setBackground(getDrawable(R.drawable.field));
+                    evening4.setBackground(getDrawable(R.drawable.field));
+                    evening5.setBackground(getDrawable(R.drawable.field));
+                    evening6.setBackground(getDrawable(R.drawable.field));
+                    evening7.setBackground(getDrawable(R.drawable.field));
+                    morning1.setBackground(getDrawable(R.drawable.field));
+                    morning3.setBackground(getDrawable(R.drawable.field));
+                    morning4.setBackground(getDrawable(R.drawable.field));
+                    morning5.setBackground(getDrawable(R.drawable.field));
+                    morning6.setBackground(getDrawable(R.drawable.field));
+                    morning7.setBackground(getDrawable(R.drawable.field));
                     RequestDate = day2.getText().toString().trim();
-                    RequestTime = timing2.getText().toString().trim();
+                    RequestTime = morning2.getText().toString().trim();
                 }
                 break;
-            case R.id.dayButton3:
-                if(timing3.getText().toString().trim().isEmpty()){
+           case R.id.morning3:
+                if(morning3.getText().toString().trim().isEmpty()){
                     bookButton.setBackground(getDrawable(R.drawable.large_grey_button));
                     bookButton.setClickable(false);
                 }else {
                     bookButton.setBackground(getDrawable(R.drawable.large_red_button));
-                    dayButton3.setBackground(getDrawable(R.drawable.field_selected));
+                    morning3.setBackground(getDrawable(R.drawable.field_selected));
+                    evening1.setBackground(getDrawable(R.drawable.field));
+                    evening2.setBackground(getDrawable(R.drawable.field));
+                    evening3.setBackground(getDrawable(R.drawable.field));
+                    evening4.setBackground(getDrawable(R.drawable.field));
+                    evening5.setBackground(getDrawable(R.drawable.field));
+                    evening6.setBackground(getDrawable(R.drawable.field));
+                    evening7.setBackground(getDrawable(R.drawable.field));
+                    morning1.setBackground(getDrawable(R.drawable.field));
+                    morning2.setBackground(getDrawable(R.drawable.field));
+                    morning4.setBackground(getDrawable(R.drawable.field));
+                    morning5.setBackground(getDrawable(R.drawable.field));
+                    morning6.setBackground(getDrawable(R.drawable.field));
+                    morning7.setBackground(getDrawable(R.drawable.field));
                     RequestDate = day3.getText().toString().trim();
-                    RequestTime = timing3.getText().toString().trim();
+                    RequestTime = morning3.getText().toString().trim();
                 }
                 break;
-            case R.id.dayButton4:
-                if(timing4.getText().toString().trim().isEmpty()){
+           case R.id.morning4:
+                if(morning4.getText().toString().trim().isEmpty()){
                     bookButton.setBackground(getDrawable(R.drawable.large_grey_button));
                     bookButton.setClickable(false);
                 }else {
                     bookButton.setBackground(getDrawable(R.drawable.large_red_button));
-                    dayButton4.setBackground(getDrawable(R.drawable.field_selected));
+                    morning4.setBackground(getDrawable(R.drawable.field_selected));
+                    evening1.setBackground(getDrawable(R.drawable.field));
+                    evening2.setBackground(getDrawable(R.drawable.field));
+                    evening3.setBackground(getDrawable(R.drawable.field));
+                    evening4.setBackground(getDrawable(R.drawable.field));
+                    evening5.setBackground(getDrawable(R.drawable.field));
+                    evening6.setBackground(getDrawable(R.drawable.field));
+                    evening7.setBackground(getDrawable(R.drawable.field));
+                    morning1.setBackground(getDrawable(R.drawable.field));
+                    morning2.setBackground(getDrawable(R.drawable.field));
+                    morning3.setBackground(getDrawable(R.drawable.field));
+                    morning5.setBackground(getDrawable(R.drawable.field));
+                    morning6.setBackground(getDrawable(R.drawable.field));
+                    morning7.setBackground(getDrawable(R.drawable.field));
                     RequestDate = day4.getText().toString().trim();
-                    RequestTime = timing4.getText().toString().trim();
+                    RequestTime = morning4.getText().toString().trim();
                 }
                 break;
-            case R.id.dayButton5:
-                if(timing5.getText().toString().trim().isEmpty()){
+           case R.id.morning5:
+                if(morning5.getText().toString().trim().isEmpty()){
                     bookButton.setBackground(getDrawable(R.drawable.large_grey_button));
                     bookButton.setClickable(false);
                 }else {
                     bookButton.setBackground(getDrawable(R.drawable.large_red_button));
-                    dayButton5.setBackground(getDrawable(R.drawable.field_selected));
+                    morning5.setBackground(getDrawable(R.drawable.field_selected));
+                    evening1.setBackground(getDrawable(R.drawable.field));
+                    evening2.setBackground(getDrawable(R.drawable.field));
+                    evening3.setBackground(getDrawable(R.drawable.field));
+                    evening4.setBackground(getDrawable(R.drawable.field));
+                    evening5.setBackground(getDrawable(R.drawable.field));
+                    evening6.setBackground(getDrawable(R.drawable.field));
+                    evening7.setBackground(getDrawable(R.drawable.field));
+                    morning1.setBackground(getDrawable(R.drawable.field));
+                    morning2.setBackground(getDrawable(R.drawable.field));
+                    morning3.setBackground(getDrawable(R.drawable.field));
+                    morning4.setBackground(getDrawable(R.drawable.field));
+                    morning6.setBackground(getDrawable(R.drawable.field));
+                    morning7.setBackground(getDrawable(R.drawable.field));
                     RequestDate = day5.getText().toString().trim();
-                    RequestTime = timing5.getText().toString().trim();
+                    RequestTime = morning5.getText().toString().trim();
                 }
                 break;
-            case R.id.dayButton6:
-                if(timing6.getText().toString().trim().isEmpty()){
+           case R.id.morning6:
+                if(morning6.getText().toString().trim().isEmpty()){
                     bookButton.setBackground(getDrawable(R.drawable.large_grey_button));
                     bookButton.setClickable(false);
                 }else {
                     bookButton.setBackground(getDrawable(R.drawable.large_red_button));
-                    dayButton6.setBackground(getDrawable(R.drawable.field_selected));
+                    morning6.setBackground(getDrawable(R.drawable.field_selected));
+                    evening1.setBackground(getDrawable(R.drawable.field));
+                    evening2.setBackground(getDrawable(R.drawable.field));
+                    evening3.setBackground(getDrawable(R.drawable.field));
+                    evening4.setBackground(getDrawable(R.drawable.field));
+                    evening5.setBackground(getDrawable(R.drawable.field));
+                    evening6.setBackground(getDrawable(R.drawable.field));
+                    evening7.setBackground(getDrawable(R.drawable.field));
+                    morning1.setBackground(getDrawable(R.drawable.field));
+                    morning2.setBackground(getDrawable(R.drawable.field));
+                    morning3.setBackground(getDrawable(R.drawable.field));
+                    morning4.setBackground(getDrawable(R.drawable.field));
+                    morning5.setBackground(getDrawable(R.drawable.field));
+                    morning7.setBackground(getDrawable(R.drawable.field));
                     RequestDate = day6.getText().toString().trim();
-                    RequestTime = timing6.getText().toString().trim();
+                    RequestTime = morning6.getText().toString().trim();
                 }
                 break;
-            case R.id.dayButton7:
-                if(timing7.getText().toString().trim().isEmpty()){
+           case R.id.morning7:
+                if(morning7.getText().toString().trim().isEmpty()){
                     bookButton.setBackground(getDrawable(R.drawable.large_grey_button));
                     bookButton.setClickable(false);
                 }else {
                     bookButton.setBackground(getDrawable(R.drawable.large_red_button));
-                    dayButton7.setBackground(getDrawable(R.drawable.field_selected));
+                    morning7.setBackground(getDrawable(R.drawable.field_selected));
+                    evening1.setBackground(getDrawable(R.drawable.field));
+                    evening2.setBackground(getDrawable(R.drawable.field));
+                    evening3.setBackground(getDrawable(R.drawable.field));
+                    evening4.setBackground(getDrawable(R.drawable.field));
+                    evening5.setBackground(getDrawable(R.drawable.field));
+                    evening6.setBackground(getDrawable(R.drawable.field));
+                    evening7.setBackground(getDrawable(R.drawable.field));
+                    morning1.setBackground(getDrawable(R.drawable.field));
+                    morning2.setBackground(getDrawable(R.drawable.field));
+                    morning3.setBackground(getDrawable(R.drawable.field));
+                    morning4.setBackground(getDrawable(R.drawable.field));
+                    morning5.setBackground(getDrawable(R.drawable.field));
+                    morning6.setBackground(getDrawable(R.drawable.field));
                     RequestDate = day7.getText().toString().trim();
-                    RequestTime = timing7.getText().toString().trim();
+                    RequestTime = morning7.getText().toString().trim();
                 }
                 break;
-        }*/
+           case R.id.evening1:
+               if(evening1.getText().toString().trim().isEmpty()){
+                   bookButton.setBackground(getDrawable(R.drawable.large_grey_button));
+                   bookButton.setClickable(false);
+               }else {
+                   bookButton.setClickable(true);
+                   bookButton.setBackground(getDrawable(R.drawable.large_red_button));
+                   evening1.setBackground(getDrawable(R.drawable.field_selected));
+                   evening2.setBackground(getDrawable(R.drawable.field));
+                   evening3.setBackground(getDrawable(R.drawable.field));
+                   evening4.setBackground(getDrawable(R.drawable.field));
+                   evening5.setBackground(getDrawable(R.drawable.field));
+                   evening6.setBackground(getDrawable(R.drawable.field));
+                   evening7.setBackground(getDrawable(R.drawable.field));
+                   morning1.setBackground(getDrawable(R.drawable.field));
+                   morning2.setBackground(getDrawable(R.drawable.field));
+                   morning3.setBackground(getDrawable(R.drawable.field));
+                   morning4.setBackground(getDrawable(R.drawable.field));
+                   morning5.setBackground(getDrawable(R.drawable.field));
+                   morning6.setBackground(getDrawable(R.drawable.field));
+                   morning7.setBackground(getDrawable(R.drawable.field));
+                   RequestDate = day1.getText().toString().trim();
+                   RequestTime = morning1.getText().toString().trim();
+               }
+               break;
+           case R.id.evening2:
+               if(evening2.getText().toString().trim().isEmpty()){
+                   bookButton.setBackground(getDrawable(R.drawable.large_grey_button));
+                   bookButton.setClickable(false);
+               }else {
+                   bookButton.setBackground(getDrawable(R.drawable.large_red_button));
+                   evening2.setBackground(getDrawable(R.drawable.field_selected));
+                   evening1.setBackground(getDrawable(R.drawable.field));
+                   evening3.setBackground(getDrawable(R.drawable.field));
+                   evening4.setBackground(getDrawable(R.drawable.field));
+                   evening5.setBackground(getDrawable(R.drawable.field));
+                   evening6.setBackground(getDrawable(R.drawable.field));
+                   evening7.setBackground(getDrawable(R.drawable.field));
+                   morning1.setBackground(getDrawable(R.drawable.field));
+                   morning2.setBackground(getDrawable(R.drawable.field));
+                   morning3.setBackground(getDrawable(R.drawable.field));
+                   morning4.setBackground(getDrawable(R.drawable.field));
+                   morning5.setBackground(getDrawable(R.drawable.field));
+                   morning6.setBackground(getDrawable(R.drawable.field));
+                   morning7.setBackground(getDrawable(R.drawable.field));
+                   RequestDate = day2.getText().toString().trim();
+                   RequestTime = evening2.getText().toString().trim();
+               }
+               break;
+           case R.id.evening3:
+               if(evening3.getText().toString().trim().isEmpty()){
+                   bookButton.setBackground(getDrawable(R.drawable.large_grey_button));
+                   bookButton.setClickable(false);
+               }else {
+                   bookButton.setBackground(getDrawable(R.drawable.large_red_button));
+                   evening3.setBackground(getDrawable(R.drawable.field_selected));
+                   evening1.setBackground(getDrawable(R.drawable.field));
+                   evening2.setBackground(getDrawable(R.drawable.field));
+                   evening4.setBackground(getDrawable(R.drawable.field));
+                   evening5.setBackground(getDrawable(R.drawable.field));
+                   evening6.setBackground(getDrawable(R.drawable.field));
+                   evening7.setBackground(getDrawable(R.drawable.field));
+                   morning1.setBackground(getDrawable(R.drawable.field));
+                   morning2.setBackground(getDrawable(R.drawable.field));
+                   morning3.setBackground(getDrawable(R.drawable.field));
+                   morning4.setBackground(getDrawable(R.drawable.field));
+                   morning5.setBackground(getDrawable(R.drawable.field));
+                   morning6.setBackground(getDrawable(R.drawable.field));
+                   morning7.setBackground(getDrawable(R.drawable.field));
+                   RequestDate = day3.getText().toString().trim();
+                   RequestTime = evening3.getText().toString().trim();
+               }
+               break;
+           case R.id.evening4:
+               if(evening4.getText().toString().trim().isEmpty()){
+                   bookButton.setBackground(getDrawable(R.drawable.large_grey_button));
+                   bookButton.setClickable(false);
+               }else {
+                   bookButton.setBackground(getDrawable(R.drawable.large_red_button));
+                   evening4.setBackground(getDrawable(R.drawable.field_selected));
+                   evening1.setBackground(getDrawable(R.drawable.field));
+                   evening2.setBackground(getDrawable(R.drawable.field));
+                   evening3.setBackground(getDrawable(R.drawable.field));
+                   evening5.setBackground(getDrawable(R.drawable.field));
+                   evening6.setBackground(getDrawable(R.drawable.field));
+                   evening7.setBackground(getDrawable(R.drawable.field));
+                   morning1.setBackground(getDrawable(R.drawable.field));
+                   morning2.setBackground(getDrawable(R.drawable.field));
+                   morning3.setBackground(getDrawable(R.drawable.field));
+                   morning4.setBackground(getDrawable(R.drawable.field));
+                   morning5.setBackground(getDrawable(R.drawable.field));
+                   morning6.setBackground(getDrawable(R.drawable.field));
+                   morning7.setBackground(getDrawable(R.drawable.field));
+                   RequestDate = day4.getText().toString().trim();
+                   RequestTime = evening4.getText().toString().trim();
+               }
+               break;
+           case R.id.evening5:
+               if(evening5.getText().toString().trim().isEmpty()){
+                   bookButton.setBackground(getDrawable(R.drawable.large_grey_button));
+                   bookButton.setClickable(false);
+               }else {
+                   bookButton.setBackground(getDrawable(R.drawable.large_red_button));
+                   evening5.setBackground(getDrawable(R.drawable.field_selected));
+                   evening1.setBackground(getDrawable(R.drawable.field));
+                   evening2.setBackground(getDrawable(R.drawable.field));
+                   evening3.setBackground(getDrawable(R.drawable.field));
+                   evening4.setBackground(getDrawable(R.drawable.field));
+                   evening6.setBackground(getDrawable(R.drawable.field));
+                   evening7.setBackground(getDrawable(R.drawable.field));
+                   morning1.setBackground(getDrawable(R.drawable.field));
+                   morning2.setBackground(getDrawable(R.drawable.field));
+                   morning3.setBackground(getDrawable(R.drawable.field));
+                   morning4.setBackground(getDrawable(R.drawable.field));
+                   morning5.setBackground(getDrawable(R.drawable.field));
+                   morning6.setBackground(getDrawable(R.drawable.field));
+                   morning7.setBackground(getDrawable(R.drawable.field));
+                   RequestDate = day5.getText().toString().trim();
+                   RequestTime = evening5.getText().toString().trim();
+               }
+               break;
+           case R.id.evening6:
+               if(evening6.getText().toString().trim().isEmpty()){
+                   bookButton.setBackground(getDrawable(R.drawable.large_grey_button));
+                   bookButton.setClickable(false);
+               }else {
+                   bookButton.setBackground(getDrawable(R.drawable.large_red_button));
+                   evening6.setBackground(getDrawable(R.drawable.field_selected));
+                   evening1.setBackground(getDrawable(R.drawable.field));
+                   evening2.setBackground(getDrawable(R.drawable.field));
+                   evening3.setBackground(getDrawable(R.drawable.field));
+                   evening4.setBackground(getDrawable(R.drawable.field));
+                   evening5.setBackground(getDrawable(R.drawable.field));
+                   evening7.setBackground(getDrawable(R.drawable.field));
+                   morning1.setBackground(getDrawable(R.drawable.field));
+                   morning2.setBackground(getDrawable(R.drawable.field));
+                   morning3.setBackground(getDrawable(R.drawable.field));
+                   morning4.setBackground(getDrawable(R.drawable.field));
+                   morning5.setBackground(getDrawable(R.drawable.field));
+                   morning6.setBackground(getDrawable(R.drawable.field));
+                   morning7.setBackground(getDrawable(R.drawable.field));
+                   RequestDate = day6.getText().toString().trim();
+                   RequestTime = evening6.getText().toString().trim();
+               }
+               break;
+           case R.id.evening7:
+               if(evening7.getText().toString().trim().isEmpty()){
+                   bookButton.setBackground(getDrawable(R.drawable.large_grey_button));
+                   bookButton.setClickable(false);
+               }else {
+                   bookButton.setBackground(getDrawable(R.drawable.large_red_button));
+                   evening7.setBackground(getDrawable(R.drawable.field_selected));
+                   evening1.setBackground(getDrawable(R.drawable.field));
+                   evening2.setBackground(getDrawable(R.drawable.field));
+                   evening3.setBackground(getDrawable(R.drawable.field));
+                   evening4.setBackground(getDrawable(R.drawable.field));
+                   evening5.setBackground(getDrawable(R.drawable.field));
+                   evening6.setBackground(getDrawable(R.drawable.field));
+                   morning1.setBackground(getDrawable(R.drawable.field));
+                   morning2.setBackground(getDrawable(R.drawable.field));
+                   morning3.setBackground(getDrawable(R.drawable.field));
+                   morning4.setBackground(getDrawable(R.drawable.field));
+                   morning5.setBackground(getDrawable(R.drawable.field));
+                   morning6.setBackground(getDrawable(R.drawable.field));
+                   morning7.setBackground(getDrawable(R.drawable.field));
+                   RequestDate = day7.getText().toString().trim();
+                   RequestTime = evening7.getText().toString().trim();
+               }
+               break;
+        }
     }
-    public void Book(View view){
-        reference = userDB.getReference("Schedule");
-        reference.child(RequestDate).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if(task.getResult().exists()){
-                    DataSnapshot data = task.getResult();
-                    int max = Integer.parseInt(data.child("max").getValue().toString());
-                    if(max < 1){
-                        Toast.makeText(DateSelectionActivity.this, "You Can't Book On This Day", Toast.LENGTH_SHORT).show();
-                    }else{
-                        String UID = userAuth.getCurrentUser().getUid();
-                        reference = userDB.getReference("User");
-                        reference.child(UID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                if(task.getResult().exists()){
-                                    DataSnapshot data = task.getResult();
-                                    String first_name = String.valueOf(data.child("first_name").getValue());
-                                    String last_name = String.valueOf(data.child("last_name").getValue());
-                                    String key = reference.child(UID).push().getKey();
-                                    int iter = (int) data.child(key).getChildrenCount();
-                                    String[] info = new String[iter];
-                                    String[] value = new String[iter];
-                                    final Iterator<DataSnapshot> iterator = data.child(key).getChildren().iterator();
-                                    for(int i = 0; i< iter; i++){
-                                        info[i] = iterator.next().getKey();
-                                        value[i] = String.valueOf(data.child(info[i]).getValue());
-                                    }
-                                    String fullname = first_name + " " + last_name;
-                                    HashMap<String, String> requestMap = new HashMap<String, String>();
-                                    requestMap.put("firstname", first_name);
-                                    requestMap.put("lastname", last_name);
-                                    requestMap.put("DonationDate", RequestDate);
-                                    requestMap.put("DonationTime", RequestTime);
-                                    for(int i = 0; i < info.length; i++){
-                                        requestMap.put(info[i], value[i]);
-                                    }
-                                    reference = userDB.getReference("Request");
-                                    reference.child(fullname).setValue(requestMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
 
-                                        }
-                                    });
-                                }
+    public void Book(View view){
+        HashMap<String, String> requestMap = new HashMap<>();
+        reference = userDB.getReference("Schedule");
+        reference.child(venueText.getText().toString()).child(RequestDate).get().addOnCompleteListener(task -> {
+            if(task.getResult().exists()){
+                DataSnapshot data = task.getResult();
+                int max = Integer.parseInt(data.child("max").getValue().toString());
+                if(max < 1){
+                    Toast.makeText(DateSelectionActivity.this, "You Can't Book On This Day", Toast.LENGTH_SHORT).show();
+                }else{
+                    String UID = userAuth.getCurrentUser().getUid();
+                    reference = userDB.getReference("User");
+                    reference.child(UID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DataSnapshot> task) {
+                            if(task.getResult().exists()){
+                                DataSnapshot data = task.getResult();
+
+                                String first_name = String.valueOf(data.child("first_name").getValue());
+                                String last_name = String.valueOf(data.child("last_name").getValue());
+                                String dob = String.valueOf(data.child("date of birth").getValue());
+                                String donor_type = String.valueOf(data.child("donor type").getValue());
+                                String sex = String.valueOf(data.child("sex").getValue());
+
+                                reference = userDB.getReference("Blood");
+                                reference.child(UID).get().addOnCompleteListener(task12 -> {
+                                    if(task12.getResult().exists()){
+                                        DataSnapshot item = task12.getResult();
+                                        bloodgroup = String.valueOf(item.child("blood").getValue());
+                                        // Putting Data Into HashMap to be written in database
+                                        requestMap.put("Blood Group", bloodgroup);
+                                        requestMap.put("Date Of Birth", dob);
+                                        requestMap.put("Donor Type", donor_type);
+                                        requestMap.put("Sex", sex);
+                                        requestMap.put("Donation Date", RequestDate);
+                                        requestMap.put("Donation Time", RequestTime);
+                                        reference = userDB.getReference("Request");
+                                        String fullname = first_name + " " + last_name;
+                                        reference.child(fullname).setValue(requestMap).addOnCompleteListener(task1 -> {
+                                            if(task1.isSuccessful()){
+                                                Toast.makeText(DateSelectionActivity.this, "Request Sent Successfully", Toast.LENGTH_SHORT).show();
+                                                // Writing Code To handle Health Report Conditions
+                                            }else
+                                                Toast.makeText(DateSelectionActivity.this, "Failed To Send Request", Toast.LENGTH_SHORT).show();
+                                        });
+                                    }
+                                });
+
                             }
-                        });
-                    }
+                        }
+                    });
                 }
-            }
+            }else
+                Toast.makeText(this, "Date Doesnt exist", Toast.LENGTH_SHORT).show();
         });
 
     }

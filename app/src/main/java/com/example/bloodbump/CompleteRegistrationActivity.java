@@ -1,5 +1,6 @@
 package com.example.bloodbump;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
@@ -14,11 +15,14 @@ import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class CompleteRegistrationActivity extends AppCompatActivity {
     private FirebaseAuth userAuth;
@@ -36,6 +40,8 @@ public class CompleteRegistrationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complete_registration);
+
+        Bundle extars = getIntent().getExtras();
         sex_spinner = (Spinner) findViewById(R.id.sex_spinner);
         bloodgroupSpinner = (Spinner) findViewById(R.id.bloodgroupSpinner);
         datePicker_button = (Button) findViewById(R.id.datePicker_button);
@@ -58,23 +64,37 @@ public class CompleteRegistrationActivity extends AppCompatActivity {
         donorTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         donorTypeSpinner.setAdapter(donorTypeAdapter);
         continueButton.setOnClickListener(view -> {
+            // Getting Data From Spinner
             String sex = sex_spinner.getSelectedItem().toString();
             String dob = datePicker_button.getText().toString();
             String bloodgroup = bloodgroupSpinner.getSelectedItem().toString();
             String donorType = donorTypeSpinner.getSelectedItem().toString();
             Donor userPlus = new Donor(sex, dob, bloodgroup, donorType);
+
             userAuth = FirebaseAuth.getInstance();
             String UID = userAuth.getCurrentUser().getUid();
             userDatabase = FirebaseDatabase.getInstance();
             reference = userDatabase.getReference("User");
-            reference.child(UID).push().setValue(userPlus);
-            String pushID = reference.child(UID).push().getKey();
-            Toast.makeText(this, pushID, Toast.LENGTH_LONG).show();
-            Toast.makeText(this, "Informations Have Been Added Successfully!", Toast.LENGTH_SHORT).show();
-            String first_name = reference.child(UID).child("first_name").toString();
-            String last_name = reference.child(UID).child("last_name").toString();
-            Toast.makeText(this, "Welcome " + first_name + " " + last_name, Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(CompleteRegistrationActivity.this, picAddActivity.class));
+            // Using Hashmap To Write Data on Firebase Database
+            HashMap<String, String> User = (HashMap<String, String>) extars.get("list");
+            User.put("sex", sex);
+            User.put("date of birth", dob);
+            User.put("donor type", donorType);
+            reference.child(UID).setValue(User).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()){
+                        HashMap<String, String> blood = new HashMap<>();
+                        blood.put("blood", bloodgroup);
+                        reference  = userDatabase.getReference("Blood");
+                        reference.child(UID).setValue(blood);
+                        Toast.makeText(CompleteRegistrationActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(CompleteRegistrationActivity.this, picAddActivity.class));
+                    }else
+                        Toast.makeText(CompleteRegistrationActivity.this, "Failed To Register", Toast.LENGTH_SHORT).show();
+                }
+            });
+
 
         });
     }
