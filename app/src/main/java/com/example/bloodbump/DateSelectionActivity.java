@@ -4,10 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,22 +31,27 @@ public class DateSelectionActivity extends AppCompatActivity {
     private TextView day1 ,day2, day3, day4, day5, day6, day7;
     private TextView morning1, morning2, morning3, morning4, morning5, morning6, morning7;
     private TextView evening1, evening2, evening3, evening4, evening5, evening6, evening7;
-    private Button bookButton;
+    private TextView wholeBloodText, plateletText;
+    private EditText bloodQuantityText;
+    private ImageView upArrow, downArrow;
+    private Button bookButton, proceedButton;
     private FirebaseAuth userAuth;
     private FirebaseDatabase userDB;
     private DatabaseReference reference;
     private String RequestDate;
     private  String RequestTime;
     private String bloodgroup = null;
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dateselection);
         venueText = findViewById(R.id.venueText);
+        //
         Intent intent = getIntent();
         String venue = intent.getStringExtra("venue");
-        Toast.makeText(this, venue, Toast.LENGTH_SHORT).show();
         venueText.setText(venue);
+        //
         bookButton = findViewById(R.id.bookButton);
         bookButton.setOnClickListener(this::Book);
         // Declaring Views
@@ -63,7 +71,6 @@ public class DateSelectionActivity extends AppCompatActivity {
         dayButton6.setOnClickListener(this::onClick);
         dayButton7.setOnClickListener(this::onClick);*/
         //
-
         day1 = findViewById(R.id.day1);
         day2 = findViewById(R.id.day2);
         day3 = findViewById(R.id.day3);
@@ -71,7 +78,7 @@ public class DateSelectionActivity extends AppCompatActivity {
         day5 = findViewById(R.id.day5);
         day6 = findViewById(R.id.day6);
         day7 = findViewById(R.id.day7);
-
+        //
         morning1 = findViewById(R.id.morning1);
         morning2 = findViewById(R.id.morning2);
         morning3 = findViewById(R.id.morning3);
@@ -87,7 +94,7 @@ public class DateSelectionActivity extends AppCompatActivity {
         morning5.setOnClickListener(this::onClick);
         morning6.setOnClickListener(this::onClick);
         morning7.setOnClickListener(this::onClick);
-
+        //
         evening1 = findViewById(R.id.evening1);
         evening2 = findViewById(R.id.evening2);
         evening3 = findViewById(R.id.evening3);
@@ -103,8 +110,19 @@ public class DateSelectionActivity extends AppCompatActivity {
         evening5.setOnClickListener(this::onClick);
         evening6.setOnClickListener(this::onClick);
         evening7.setOnClickListener(this::onClick);
-        bookButton = findViewById(R.id.bookButton);
         //
+        bloodQuantityText = findViewById(R.id.bloodQuantityText);
+        wholeBloodText = (TextView) findViewById(R.id.wholeBloodText);
+        plateletText = (TextView) findViewById(R.id.plateletText);
+        upArrow = findViewById(R.id.upArrow);
+        downArrow = findViewById(R.id.downArrow);
+        proceedButton = findViewById(R.id.proceedButton);
+        //
+        wholeBloodText.setOnClickListener(this::getDonationType);
+        plateletText.setOnClickListener(this::getDonationType);
+        upArrow.setOnClickListener(this::getDonationType);
+        downArrow.setOnClickListener(this::getDonationType);
+        proceedButton.setOnClickListener(this::getDonationType);
         userAuth = FirebaseAuth.getInstance();
         userDB = FirebaseDatabase.getInstance();
         reference = userDB.getReference("Schedule");
@@ -119,13 +137,11 @@ public class DateSelectionActivity extends AppCompatActivity {
                         String[] Days = new String[iteration];
                         String[] morning = new String[iteration];
                         String[] evening  = new String[iteration];
-                        String[] max = new String[iteration];
                         final Iterator<DataSnapshot> iterator = data.getChildren().iterator();
                         for(int i = 0; i < iteration; i++){
                             Days[i] = iterator.next().getKey();
                             morning[i] = String.valueOf(data.child(Days[i]).child("morning").getValue());
                             evening[i] = String.valueOf(data.child(Days[i]).child("evening").getValue());
-
                         }
                         day1.setText(Days[0]);
                         day2.setText(Days[1]);
@@ -500,7 +516,10 @@ public class DateSelectionActivity extends AppCompatActivity {
     }
 
     public void Book(View view){
-        HashMap<String, String> requestMap = new HashMap<>();
+        Dialog dialog = new Dialog(DateSelectionActivity.this);
+        dialog.setContentView(R.layout.dialog1_layout);
+        dialog.getWindow();
+        HashMap<String, String> requestMap = getDonationType(view);
         reference = userDB.getReference("Schedule");
         reference.child(venueText.getText().toString()).child(RequestDate).get().addOnCompleteListener(task -> {
             if(task.getResult().exists()){
@@ -511,49 +530,93 @@ public class DateSelectionActivity extends AppCompatActivity {
                 }else{
                     String UID = userAuth.getCurrentUser().getUid();
                     reference = userDB.getReference("User");
-                    reference.child(UID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-                            if(task.getResult().exists()){
-                                DataSnapshot data = task.getResult();
+                    reference.child(UID).get().addOnCompleteListener(task13 -> {
+                        if(task13.getResult().exists()){
+                            DataSnapshot data1 = task13.getResult();
 
-                                String first_name = String.valueOf(data.child("first_name").getValue());
-                                String last_name = String.valueOf(data.child("last_name").getValue());
-                                String dob = String.valueOf(data.child("date of birth").getValue());
-                                String donor_type = String.valueOf(data.child("donor type").getValue());
-                                String sex = String.valueOf(data.child("sex").getValue());
+                            String first_name = String.valueOf(data1.child("first_name").getValue());
+                            String last_name = String.valueOf(data1.child("last_name").getValue());
+                            String dob = String.valueOf(data1.child("date of birth").getValue());
+                            String donor_type = String.valueOf(data1.child("donor type").getValue());
+                            String sex = String.valueOf(data1.child("sex").getValue());
 
-                                reference = userDB.getReference("Blood");
-                                reference.child(UID).get().addOnCompleteListener(task12 -> {
-                                    if(task12.getResult().exists()){
-                                        DataSnapshot item = task12.getResult();
-                                        bloodgroup = String.valueOf(item.child("blood").getValue());
-                                        // Putting Data Into HashMap to be written in database
-                                        requestMap.put("Blood Group", bloodgroup);
-                                        requestMap.put("Date Of Birth", dob);
-                                        requestMap.put("Donor Type", donor_type);
-                                        requestMap.put("Sex", sex);
-                                        requestMap.put("Donation Date", RequestDate);
-                                        requestMap.put("Donation Time", RequestTime);
-                                        reference = userDB.getReference("Request");
-                                        String fullname = first_name + " " + last_name;
-                                        reference.child(fullname).setValue(requestMap).addOnCompleteListener(task1 -> {
-                                            if(task1.isSuccessful()){
-                                                Toast.makeText(DateSelectionActivity.this, "Request Sent Successfully", Toast.LENGTH_SHORT).show();
-                                                // Writing Code To handle Health Report Conditions
-                                            }else
-                                                Toast.makeText(DateSelectionActivity.this, "Failed To Send Request", Toast.LENGTH_SHORT).show();
-                                        });
-                                    }
-                                });
+                            reference = userDB.getReference("Blood");
+                            reference.child(UID).get().addOnCompleteListener(task12 -> {
+                                if(task12.getResult().exists()){
+                                    DataSnapshot item = task12.getResult();
+                                    bloodgroup = String.valueOf(item.child("blood").getValue());
+                                    // Putting Data Into HashMap to be written in database
+                                    requestMap.put("Blood Group", bloodgroup);
+                                    requestMap.put("Date Of Birth", dob);
+                                    requestMap.put("Donor Type", donor_type);
+                                    requestMap.put("Sex", sex);
+                                    requestMap.put("Donation Date", RequestDate);
+                                    requestMap.put("Donation Time", RequestTime);
 
-                            }
+                                    reference = userDB.getReference("Request");
+                                    String fullname = first_name + " " + last_name;
+                                    reference.child(fullname).setValue(requestMap).addOnCompleteListener(task1 -> {
+                                        if(task1.isSuccessful()){
+                                            Toast.makeText(DateSelectionActivity.this, "Request Sent Successfully", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(DateSelectionActivity.this, "The System Is Checking Your Health Report", Toast.LENGTH_SHORT).show();
+                                            // Writing Code To handle Health Report Conditions
+                                            checkHealthCondition(UID);
+                                        }else
+                                            Toast.makeText(DateSelectionActivity.this, "Failed To Send Request", Toast.LENGTH_SHORT).show();
+                                    });
+                                }
+                            });
+
                         }
                     });
                 }
             }else
-                Toast.makeText(this, "Date Doesnt exist", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Date Doesn't exist", Toast.LENGTH_SHORT).show();
         });
 
+    }
+
+    private void checkHealthCondition(String uid) {
+        reference = userDB.getReference("HealthReport");
+        reference.child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.getResult().exists()){
+                    DataSnapshot data = task.getResult();
+                    boolean hiv = Boolean.parseBoolean(data.child("HIV").getValue().toString());
+                    boolean malaria = Boolean.parseBoolean(data.child("malaria").getValue().toString());
+                    int systolic = Integer.parseInt(data.child("systolic").getValue().toString());
+                    int diastolic = Integer.parseInt(data.child("diastolic").getValue().toString());
+                }
+            }
+        });
+    }
+
+    public HashMap<String, String> getDonationType(View view) {
+        HashMap<String, String> donationType = new HashMap<>();
+        switch(view.getId()){
+            case R.id.wholeBloodText:
+                wholeBloodText.setBackground(getResources().getDrawable(R.drawable.field_selected));
+                plateletText.setBackground(getResources().getDrawable(R.drawable.field));
+                bloodQuantityText.setClickable(true);
+                upArrow.setClickable(true);
+                downArrow.setClickable(true);
+                proceedButton.setClickable(true);
+                donationType.put("type", "Whole Blood");
+                break;
+            case R.id.plateletText:
+                plateletText.setBackground(getResources().getDrawable(R.drawable.field_selected));
+                wholeBloodText.setBackground(getResources().getDrawable(R.drawable.grey_button));
+                bloodQuantityText.setClickable(true);
+                upArrow.setClickable(true);
+                downArrow.setClickable(true);
+                proceedButton.setClickable(true);
+                donationType.put("type", "Platelet");
+                break;
+            case R.id.proceedButton:
+                String quantity = bloodQuantityText.getText().toString();
+                donationType.put("quantity", quantity);
+        }
+        return donationType;
     }
 }
