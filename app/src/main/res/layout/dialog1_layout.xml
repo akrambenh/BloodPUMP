@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:ignore="ExtraText">
 
     <ImageView
         android:id="@+id/imageView6"
@@ -26,10 +27,10 @@
         android:layout_marginEnd="99dp"
         android:layout_marginBottom="96dp"
         android:background="@drawable/field"
-        android:paddingRight="60dp"
-        android:paddingTop="3dp"
-        android:text="500"
         android:clickable="false"
+        android:paddingTop="3dp"
+        android:paddingRight="60dp"
+        android:text="500"
         android:textColor="@color/black"
         android:textSize="15dp"
         android:theme="@style/MytextTheme"
@@ -38,6 +39,7 @@
         app:layout_constraintHorizontal_bias="0.985"
         app:layout_constraintStart_toStartOf="@+id/imageView6"
         app:layout_constraintTop_toTopOf="@+id/imageView6"
+        app:layout_constraintVertical_bias="0.4"
         tools:ignore="TextSizeCheck" />
 
     <TextView
@@ -45,7 +47,7 @@
         android:layout_height="24dp"
         android:layout_marginStart="63dp"
         android:layout_marginTop="11dp"
-        android:layout_marginEnd="33dp"
+        android:layout_marginEnd="20dp"
         android:layout_marginBottom="13dp"
         android:paddingTop="4dp"
         android:text="mL"
@@ -53,47 +55,11 @@
         android:theme="@style/MytextTheme"
         app:layout_constraintBottom_toBottomOf="@+id/bloodQuantityText"
         app:layout_constraintEnd_toEndOf="@+id/bloodQuantityText"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/bloodQuantityText"
         app:layout_constraintTop_toTopOf="@+id/bloodQuantityText"
+        app:layout_constraintVertical_bias="0.0"
         tools:ignore="TextSizeCheck" />
-
-    <ImageView
-        android:id="@+id/upArrow"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="95dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="11dp"
-        android:layout_marginBottom="19dp"
-        android:background="@drawable/arrow_up_icon"
-        android:backgroundTint="@color/black"
-        android:clickable="false"
-        app:layout_constraintBottom_toBottomOf="@+id/bloodQuantityText"
-        app:layout_constraintEnd_toEndOf="@+id/bloodQuantityText"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/bloodQuantityText"
-        app:layout_constraintTop_toTopOf="@+id/bloodQuantityText"
-        app:layout_constraintVertical_bias="0.0"
-        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
-    <ImageView
-        android:id="@+id/downArrow"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginStart="95dp"
-        android:layout_marginTop="26dp"
-        android:layout_marginEnd="11dp"
-        android:layout_marginBottom="3dp"
-        android:background="@drawable/arrow_down_icon"
-        android:backgroundTint="@color/black"
-        android:clickable="false"
-        app:layout_constraintBottom_toBottomOf="@+id/bloodQuantityText"
-        app:layout_constraintEnd_toEndOf="@+id/bloodQuantityText"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/bloodQuantityText"
-        app:layout_constraintTop_toTopOf="@+id/bloodQuantityText"
-        app:layout_constraintVertical_bias="0.0"
-        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
     <TextView
         android:id="@+id/wholeBloodText"
@@ -140,6 +106,10 @@
         android:id="@+id/proceedButton"
         android:layout_width="128dp"
         android:layout_height="40dp"
+        android:layout_marginStart="99dp"
+        android:layout_marginTop="161dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="25dp"
         android:background="@drawable/grey_button"
         android:clickable="false"
         android:drawableRight="@drawable/arrow_forward_icon"
@@ -150,9 +120,13 @@
         android:textColor="@color/white"
         android:textSize="13dp"
         android:theme="@style/MytextTheme"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView6"
+        app:layout_constraintEnd_toEndOf="@+id/imageView6"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/imageView6"
+        app:layout_constraintTop_toTopOf="@+id/imageView6"
+        app:layout_constraintVertical_bias="0.0"
+        tools:ignore="TextSizeCheck" />
+    "
         tools:ignore="TextSizeCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>

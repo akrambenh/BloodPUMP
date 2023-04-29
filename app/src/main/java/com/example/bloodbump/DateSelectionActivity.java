@@ -52,7 +52,7 @@ public class DateSelectionActivity extends AppCompatActivity {
         String venue = intent.getStringExtra("venue");
         venueText.setText(venue);
         //
-        bookButton = findViewById(R.id.bookButton);
+        bookButton = (Button) findViewById(R.id.bookButton);
         bookButton.setOnClickListener(this::Book);
         // Declaring Views
         /*dayButton1 = findViewById(R.id.dayButton1);
@@ -111,18 +111,9 @@ public class DateSelectionActivity extends AppCompatActivity {
         evening6.setOnClickListener(this::onClick);
         evening7.setOnClickListener(this::onClick);
         //
-        bloodQuantityText = findViewById(R.id.bloodQuantityText);
-        wholeBloodText = (TextView) findViewById(R.id.wholeBloodText);
-        plateletText = (TextView) findViewById(R.id.plateletText);
-        upArrow = findViewById(R.id.upArrow);
-        downArrow = findViewById(R.id.downArrow);
-        proceedButton = findViewById(R.id.proceedButton);
+
         //
-        wholeBloodText.setOnClickListener(this::getDonationType);
-        plateletText.setOnClickListener(this::getDonationType);
-        upArrow.setOnClickListener(this::getDonationType);
-        downArrow.setOnClickListener(this::getDonationType);
-        proceedButton.setOnClickListener(this::getDonationType);
+        //
         userAuth = FirebaseAuth.getInstance();
         userDB = FirebaseDatabase.getInstance();
         reference = userDB.getReference("Schedule");
@@ -515,108 +506,135 @@ public class DateSelectionActivity extends AppCompatActivity {
         }
     }
 
-    public void Book(View view){
+    public void Book(View view) {
         Dialog dialog = new Dialog(DateSelectionActivity.this);
         dialog.setContentView(R.layout.dialog1_layout);
         dialog.getWindow();
-        HashMap<String, String> requestMap = getDonationType(view);
-        reference = userDB.getReference("Schedule");
-        reference.child(venueText.getText().toString()).child(RequestDate).get().addOnCompleteListener(task -> {
-            if(task.getResult().exists()){
-                DataSnapshot data = task.getResult();
-                int max = Integer.parseInt(data.child("max").getValue().toString());
-                if(max < 1){
-                    Toast.makeText(DateSelectionActivity.this, "You Can't Book On This Day", Toast.LENGTH_SHORT).show();
-                }else{
-                    String UID = userAuth.getCurrentUser().getUid();
-                    reference = userDB.getReference("User");
-                    reference.child(UID).get().addOnCompleteListener(task13 -> {
-                        if(task13.getResult().exists()){
-                            DataSnapshot data1 = task13.getResult();
+        bloodQuantityText = dialog.findViewById(R.id.bloodQuantityText);
+        wholeBloodText = dialog.findViewById(R.id.wholeBloodText);
+        plateletText = dialog.findViewById(R.id.plateletText);
+        proceedButton = dialog.findViewById(R.id.proceedButton);
+        dialog.show();
+        HashMap<String, String> requestMap = new HashMap<>();
+        //int quantity = Integer.parseInt(bloodQuantityText.getText().toString());
+        wholeBloodText.setOnClickListener(v -> {
+            wholeBloodText.setBackground(getResources().getDrawable(R.drawable.field_selected));
+            plateletText.setBackground(getResources().getDrawable(R.drawable.field));
+            bloodQuantityText.setClickable(true);
+            proceedButton.setClickable(true);
+            requestMap.put("type", "Whole Blood");
+        });
+        plateletText.setOnClickListener(v -> {
+            plateletText.setBackground(getResources().getDrawable(R.drawable.field_selected));
+            wholeBloodText.setBackground(getResources().getDrawable(R.drawable.grey_button));
+            bloodQuantityText.setClickable(true);
+            upArrow.setClickable(true);
+            downArrow.setClickable(true);
+            proceedButton.setClickable(true);
+            requestMap.put("type", "Platelet");
+        });
+        proceedButton.setOnClickListener(v -> {
+            int quantity = Integer.parseInt(bloodQuantityText.getText().toString());
+            requestMap.put("quantity", String.valueOf(quantity));
+            if (requestMap.get("type").isEmpty()) {
+                Toast.makeText(this, "You Need To Select Type", Toast.LENGTH_SHORT).show();
+            } else if (quantity < 460) {
+                Toast.makeText(this, "Low Volume \n Try 460 or Above", Toast.LENGTH_SHORT).show();
+            } else if (quantity > 1000) {
+                Toast.makeText(this, "High Volume \n Try 1000 or Below", Toast.LENGTH_SHORT).show();
+            } else {
+                reference = userDB.getReference("Schedule");
+                reference.child(venueText.getText().toString()).child(RequestDate).get().addOnCompleteListener(task -> {
+                    if (task.getResult().exists()) {
+                        DataSnapshot data = task.getResult();
+                        int max = Integer.parseInt(data.child("max").getValue().toString());
+                        if (max < 1) {
+                            Toast.makeText(DateSelectionActivity.this, "You Can't Book On This Day", Toast.LENGTH_SHORT).show();
+                        } else {
+                            String UID = userAuth.getCurrentUser().getUid();
+                            reference = userDB.getReference("User");
+                            reference.child(UID).get().addOnCompleteListener(task13 -> {
+                                if (task13.getResult().exists()) {
+                                    DataSnapshot data1 = task13.getResult();
 
-                            String first_name = String.valueOf(data1.child("first_name").getValue());
-                            String last_name = String.valueOf(data1.child("last_name").getValue());
-                            String dob = String.valueOf(data1.child("date of birth").getValue());
-                            String donor_type = String.valueOf(data1.child("donor type").getValue());
-                            String sex = String.valueOf(data1.child("sex").getValue());
+                                    String first_name = String.valueOf(data1.child("first_name").getValue());
+                                    String last_name = String.valueOf(data1.child("last_name").getValue());
+                                    String dob = String.valueOf(data1.child("date of birth").getValue());
+                                    String donor_type = String.valueOf(data1.child("donor type").getValue());
+                                    String sex = String.valueOf(data1.child("sex").getValue());
 
-                            reference = userDB.getReference("Blood");
-                            reference.child(UID).get().addOnCompleteListener(task12 -> {
-                                if(task12.getResult().exists()){
-                                    DataSnapshot item = task12.getResult();
-                                    bloodgroup = String.valueOf(item.child("blood").getValue());
-                                    // Putting Data Into HashMap to be written in database
-                                    requestMap.put("Blood Group", bloodgroup);
-                                    requestMap.put("Date Of Birth", dob);
-                                    requestMap.put("Donor Type", donor_type);
-                                    requestMap.put("Sex", sex);
-                                    requestMap.put("Donation Date", RequestDate);
-                                    requestMap.put("Donation Time", RequestTime);
-
-                                    reference = userDB.getReference("Request");
-                                    String fullname = first_name + " " + last_name;
-                                    reference.child(fullname).setValue(requestMap).addOnCompleteListener(task1 -> {
-                                        if(task1.isSuccessful()){
-                                            Toast.makeText(DateSelectionActivity.this, "Request Sent Successfully", Toast.LENGTH_SHORT).show();
-                                            Toast.makeText(DateSelectionActivity.this, "The System Is Checking Your Health Report", Toast.LENGTH_SHORT).show();
-                                            // Writing Code To handle Health Report Conditions
-                                            checkHealthCondition(UID);
-                                        }else
-                                            Toast.makeText(DateSelectionActivity.this, "Failed To Send Request", Toast.LENGTH_SHORT).show();
+                                    reference = userDB.getReference("Blood");
+                                    reference.child(UID).get().addOnCompleteListener(task12 -> {
+                                        if (task12.getResult().exists()) {
+                                            DataSnapshot item = task12.getResult();
+                                            bloodgroup = String.valueOf(item.child("blood").getValue());
+                                            // Putting Data Into HashMap to be written in database
+                                            requestMap.put("Blood Group", bloodgroup);
+                                            requestMap.put("Date Of Birth", dob);
+                                            requestMap.put("Donor Type", donor_type);
+                                            requestMap.put("Sex", sex);
+                                            requestMap.put("Donation Date", RequestDate);
+                                            requestMap.put("Donation Time", RequestTime);
+                                            requestMap.put("Status", "Waiting");
+                                            reference = userDB.getReference("Donation");
+                                            String fullname = first_name + " " + last_name;
+                                            reference.child(fullname).setValue(requestMap).addOnCompleteListener(task1 -> {
+                                                if (task1.isSuccessful()) {
+                                                    Toast.makeText(DateSelectionActivity.this, "Request Sent Successfully", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(DateSelectionActivity.this, "The System Is Checking Your Health Report", Toast.LENGTH_SHORT).show();
+                                                    // Writing Code To handle Health Report Conditions
+                                                    checkHealthCondition(UID, fullname);
+                                                } else
+                                                    Toast.makeText(DateSelectionActivity.this, "Failed To Send Request", Toast.LENGTH_SHORT).show();
+                                            });
+                                        }
                                     });
+
                                 }
                             });
-
                         }
-                    });
-                }
-            }else
-                Toast.makeText(this, "Date Doesn't exist", Toast.LENGTH_SHORT).show();
-        });
-
-    }
-
-    private void checkHealthCondition(String uid) {
-        reference = userDB.getReference("HealthReport");
-        reference.child(uid).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if(task.getResult().exists()){
-                    DataSnapshot data = task.getResult();
-                    boolean hiv = Boolean.parseBoolean(data.child("HIV").getValue().toString());
-                    boolean malaria = Boolean.parseBoolean(data.child("malaria").getValue().toString());
-                    int systolic = Integer.parseInt(data.child("systolic").getValue().toString());
-                    int diastolic = Integer.parseInt(data.child("diastolic").getValue().toString());
-                }
+                    } else
+                        Toast.makeText(DateSelectionActivity.this, "Date Doesn't exist", Toast.LENGTH_SHORT).show();
+                });
             }
         });
     }
+    private void checkHealthCondition(String uid, String fullname) {
+        reference = userDB.getReference("HealthReport");
+        HashMap<String, Boolean> illness = new HashMap<>();
+        HashMap<String, Integer> pressure = new HashMap<>();
+        reference.child(uid).get().addOnCompleteListener(task -> {
+            if (task.getResult().exists()) {
+                DataSnapshot data = task.getResult();
+                boolean hiv = Boolean.parseBoolean(data.child("HIV").getValue().toString());
+                boolean malaria = Boolean.parseBoolean(data.child("malaria").getValue().toString());
+                illness.put("HIV", hiv);
+                illness.put("Malaria", malaria);
+                int systolic = Integer.parseInt(data.child("systolic").getValue().toString());
+                int diastolic = Integer.parseInt(data.child("diastolic").getValue().toString());
+                pressure.put("Systolic", systolic);
+                pressure.put("Diastolic", diastolic);
+                // Testing
+                if(illness.get("HIV") == true){
+                    Toast.makeText(DateSelectionActivity.this, "Can't Book The Donation \n  Due To Having HIV", Toast.LENGTH_SHORT).show();
+                }else if(illness.get("Malaria") == true){
+                    Toast.makeText(DateSelectionActivity.this, "Can't Book The Donation \n Due to Having Malaria", Toast.LENGTH_SHORT).show();
+                }else if(pressure.get("Systolic") >= 180){
+                    Toast.makeText(DateSelectionActivity.this, "Your Systolic Pressure Is Too High", Toast.LENGTH_SHORT).show();
 
-    public HashMap<String, String> getDonationType(View view) {
-        HashMap<String, String> donationType = new HashMap<>();
-        switch(view.getId()){
-            case R.id.wholeBloodText:
-                wholeBloodText.setBackground(getResources().getDrawable(R.drawable.field_selected));
-                plateletText.setBackground(getResources().getDrawable(R.drawable.field));
-                bloodQuantityText.setClickable(true);
-                upArrow.setClickable(true);
-                downArrow.setClickable(true);
-                proceedButton.setClickable(true);
-                donationType.put("type", "Whole Blood");
-                break;
-            case R.id.plateletText:
-                plateletText.setBackground(getResources().getDrawable(R.drawable.field_selected));
-                wholeBloodText.setBackground(getResources().getDrawable(R.drawable.grey_button));
-                bloodQuantityText.setClickable(true);
-                upArrow.setClickable(true);
-                downArrow.setClickable(true);
-                proceedButton.setClickable(true);
-                donationType.put("type", "Platelet");
-                break;
-            case R.id.proceedButton:
-                String quantity = bloodQuantityText.getText().toString();
-                donationType.put("quantity", quantity);
-        }
-        return donationType;
+                }else if(pressure.get("Diastolic") >= 100) {
+                    Toast.makeText(DateSelectionActivity.this, "Your Diastolic Pressure Is Too High", Toast.LENGTH_SHORT).show();
+                }else {
+                    Toast.makeText(DateSelectionActivity.this, "Your Donation Is Booked", Toast.LENGTH_SHORT).show();
+                    reference = userDB.getReference("Donation");
+                    reference.child(fullname).child("Status").setValue("Accepted");
+                }
+            }
+        });
+
+    }
+
+    public void getDonationType(View view) {
+
     }
 }

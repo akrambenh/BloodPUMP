@@ -11,29 +11,52 @@ import androidx.fragment.app.FragmentTransaction;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+    private FirebaseAuth userAuth;
+    private FirebaseDatabase userDB;
+    private DatabaseReference reference;
+    private StorageReference storage;
     private CircleImageView profile_image;
-    private TextView locationText;
+    private TextView nameText;
     private DrawerLayout drawerLayout;
     private  androidx.appcompat.widget.Toolbar toolbar;
 
-    @SuppressLint("UseSupportActionBar")
+    @SuppressLint({"UseSupportActionBar", "MissingInflatedId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         toolbar = findViewById(R.id.toolbar);
+        profile_image = findViewById(R.id.profile_image);
+        nameText = findViewById(R.id.nameText);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         drawerLayout = findViewById(R.id.drawerLayout);
@@ -46,6 +69,27 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_content, new HomeFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_home);
         }
+        userAuth = FirebaseAuth.getInstance();
+        String UID = userAuth.getCurrentUser().getUid();
+        storage = FirebaseStorage.getInstance().getReference("Donor/"+  UID+  "/ProfilePic.jpg");
+        try {
+            File profile_pic = File.createTempFile("profilePic", ".jpg");
+            storage.getFile(profile_pic).addOnSuccessListener(taskSnapshot -> {
+                Bitmap bitmap = BitmapFactory.decodeFile(profile_pic.getAbsolutePath());
+                profile_image.setImageBitmap(bitmap);
+            });
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        userDB = FirebaseDatabase.getInstance();
+        reference = userDB.getReference("User");
+        reference.child(UID).get().addOnCompleteListener(task -> {
+            DataSnapshot data = task.getResult();
+            String name = data.child("first_name").getValue().toString();
+            String lastName = data.child("last_name").getValue().toString();
+            String fullname = name + " " + lastName;
+            nameText.setText(fullname);
+        });
     }
 
     @SuppressLint("NonConstantResourceId")

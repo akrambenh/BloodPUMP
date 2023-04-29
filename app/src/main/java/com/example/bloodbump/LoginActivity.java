@@ -102,7 +102,4 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
     }
 
-    public void SwitchToAdmin(View view) {
-        startActivity(new Intent(LoginActivity.this, AdminLoginActivity.class));
-    }
 }
