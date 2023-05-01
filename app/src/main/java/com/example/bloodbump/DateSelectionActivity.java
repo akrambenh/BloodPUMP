@@ -526,10 +526,8 @@ public class DateSelectionActivity extends AppCompatActivity {
         });
         plateletText.setOnClickListener(v -> {
             plateletText.setBackground(getResources().getDrawable(R.drawable.field_selected));
-            wholeBloodText.setBackground(getResources().getDrawable(R.drawable.grey_button));
+            wholeBloodText.setBackground(getResources().getDrawable(R.drawable.field));
             bloodQuantityText.setClickable(true);
-            upArrow.setClickable(true);
-            downArrow.setClickable(true);
             proceedButton.setClickable(true);
             requestMap.put("type", "Platelet");
         });

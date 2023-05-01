@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageView6"
         android:layout_width="327dp"
         android:layout_height="226dp"
         android:background="@drawable/round_dialog"
         android:padding="10dp"
+        app:shapeAppearanceOverlay="@style/Rouned"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
