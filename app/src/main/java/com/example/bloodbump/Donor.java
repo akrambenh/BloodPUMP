@@ -3,6 +3,8 @@ package com.example.bloodbump;
 
 import static android.content.ContentValues.TAG;
 
+import android.app.NotificationManager;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -10,6 +12,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -30,6 +33,7 @@ public class Donor {
 		this.Bloodgroup = bloodgroup;
 		this.donorType = donorType;
 	}
+
 	public String getBloodgroup() {
 		return Bloodgroup;
 	}
@@ -66,11 +70,12 @@ public class Donor {
 		this.DOB = DOB;
 	}
 
-	public Donor(String email, String password){
+	public Donor(String email, String password) {
 		super();
 		this.email = email;
 		this.password = password;
 	}
+
 	public Donor(String name, String lastname, String email, String password, String phone) {
 		super();
 		this.first_name = name;
@@ -80,6 +85,9 @@ public class Donor {
 		this.phone = phone;
 	}
 
+	public Donor() {
+		super();
+	}
 
 	public String getPassword() {
 		return password;
@@ -131,7 +139,7 @@ public class Donor {
 				.addOnCompleteListener(new OnCompleteListener<AuthResult>() {
 					@Override
 					public void onComplete(@NonNull Task<AuthResult> task) {
-						if(task.isSuccessful()){
+						if (task.isSuccessful()) {
 						}
 					}
 				});
@@ -179,9 +187,10 @@ public class Donor {
 					}
 
 				});
-		if(status[0]){
+		if (status[0]) {
 			return true;
-		}else
+		} else
 			return false;
 	}
+
 }

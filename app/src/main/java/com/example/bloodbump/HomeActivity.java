@@ -3,36 +3,40 @@ package com.example.bloodbump;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
-import android.app.Fragment;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -45,18 +49,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private CircleImageView profile_image;
     private TextView nameText;
     private DrawerLayout drawerLayout;
-    private  androidx.appcompat.widget.Toolbar toolbar;
+    private androidx.appcompat.widget.Toolbar toolbar;
 
     @SuppressLint({"UseSupportActionBar", "MissingInflatedId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        appointmentNotify();
         toolbar = findViewById(R.id.toolbar);
         profile_image = findViewById(R.id.profile_image);
         nameText = findViewById(R.id.nameText);
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         drawerLayout = findViewById(R.id.drawerLayout);
@@ -71,7 +74,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
         userAuth = FirebaseAuth.getInstance();
         String UID = userAuth.getCurrentUser().getUid();
-        storage = FirebaseStorage.getInstance().getReference("Donor/"+  UID+  "/ProfilePic.jpg");
+        storage = FirebaseStorage.getInstance().getReference("Donor/" + UID + "/ProfilePic.jpg");
         try {
             File profile_pic = File.createTempFile("profilePic", ".jpg");
             storage.getFile(profile_pic).addOnSuccessListener(taskSnapshot -> {
@@ -90,6 +93,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             String fullname = name + " " + lastName;
             nameText.setText(fullname);
         });
+
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -100,7 +104,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_content, new HomeFragment()).commit();
                 break;
             case R.id.nav_appointment:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_content, new appointmentFragment()).commit();
+                startActivity(new Intent(HomeActivity.this, AppointmentActivity.class));
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -109,9 +113,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-        }else if(!Objects.equals(getSupportFragmentManager().findFragmentById(R.id.fragment_content), new HomeFragment())){
+        } else if (!Objects.equals(getSupportFragmentManager().findFragmentById(R.id.fragment_content), new HomeFragment())) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_content, new HomeFragment()).commit();
             // Add onBackPressed On HomeFragment to Destroy activity
         } else {
@@ -124,7 +128,88 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void DonateBlood(View view) {
-        startActivity(new Intent(HomeActivity.this, AppointmentActivity.class));
+        startActivity(new Intent(HomeActivity.this, SelectVenueActivity.class));
+    }
+
+    public void JumpHealthReportFrag(View view) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_content, new HealthReportFragment()).commit();
+    }
+
+    public void JumpSearchVenue(View view) {
+        Intent intent = new Intent(HomeActivity.this, SearchVenueActivity.class);
+        intent.putExtra("predecessor_activity", "HomeActivity");
+        startActivity(intent);
+    }
+
+    public void appointmentNotify() {
+        FirebaseAuth userAuth = FirebaseAuth.getInstance();
+        FirebaseDatabase userDB = FirebaseDatabase.getInstance();
+        DatabaseReference reference;
+        String UID = userAuth.getCurrentUser().getUid();
+        reference = userDB.getReference("Appointment");
+        reference.child(UID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (task.getResult().exists()) {
+                    //
+                    DataSnapshot data = task.getResult();
+                    String date = String.valueOf(data.child("Donation Date").getValue());
+                    String time = String.valueOf(data.child("Donation Time").getValue());
+                    String venue = String.valueOf(data.child("Medical Establishment").getValue());
+                    String type = String.valueOf(data.child("type").getValue());
+                    /*HashMap<String, String> bookingDetails = new HashMap<>();
+                    bookingDetails.put("date", date);
+                    bookingDetails.put("time", time);
+                    bookingDetails.put("venue", venue);
+                    bookingDetails.put("type", type);*/
+                    //
+                    String id = "channel_id_one";
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        CharSequence name = "channel_one";
+                        int importance = NotificationManager.INTERRUPTION_FILTER_NONE;
+                        @SuppressLint("WrongConstant")
+                        NotificationChannel channel = new NotificationChannel(id, name, importance);
+                        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+                        notificationManager.createNotificationChannel(channel);
+                        String notifiactionContent = "The '" + type +"' Donation will be done on " + date + " at " + time + " in " + venue;
+                        NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), id)
+                                .setSmallIcon(R.drawable.icon)
+                                .setContentTitle("Appointment Is Set")
+                                .setContentText(notifiactionContent)
+                                .setStyle(new NotificationCompat.BigTextStyle()
+                                        .bigText(notifiactionContent))
+                                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                                .setAutoCancel(true)
+                                .setPriority(NotificationCompat.BADGE_ICON_SMALL);
+                        NotificationManagerCompat managerCompat = NotificationManagerCompat.from(getApplicationContext());
+                        Intent resultIntent = new Intent(getApplicationContext(), AppointmentActivity.class);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("date", date);
+                        bundle.putString("time", time);
+                        bundle.putString("type", type);
+                        bundle.putString("venue", venue);
+                        resultIntent.putExtras(bundle);
+                        TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
+                        stackBuilder.addNextIntentWithParentStack(resultIntent);
+                        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                        if (ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                            // TODO: Consider calling
+                            //    ActivityCompat#requestPermissions
+                            // here to request the missing permissions, and then overriding
+                            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                            //                                          int[] grantResults)
+                            // to handle the case where the user grants the permission. See the documentation
+                            // for ActivityCompat#requestPermissions for more details.
+                            return;
+                        }
+                        builder.setContentIntent(resultPendingIntent);
+                        builder.setOngoing(true);
+                        managerCompat.notify(1, builder.build());
+                    }
+
+                }
+            }
+        });
     }
 }
 

@@ -137,7 +137,7 @@
 
     <ImageView
         android:id="@+id/imageView9"
-        android:layout_width="250dp"
+        android:layout_width="320dp"
         android:layout_height="35dp"
         android:background="@drawable/stats_rect"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -149,7 +149,7 @@
 
     <TextView
         android:id="@+id/venueText"
-        android:layout_width="220dp"
+        android:layout_width="300dp"
         android:layout_height="24dp"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="14dp"
@@ -159,7 +159,7 @@
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
         android:paddingBottom="2dp"
-        android:text="Red Cross Hospital"
+        android:text=""
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="12dp"
@@ -482,20 +482,20 @@
         android:id="@+id/morning1"
         android:layout_width="128dp"
         android:layout_height="30dp"
-        android:layout_marginStart="13dp"
-        android:layout_marginTop="13dp"
-        android:layout_marginEnd="179dp"
-        android:layout_marginBottom="11dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="168dp"
+        android:layout_marginBottom="7dp"
+        android:clickable="true"
         android:paddingLeft="10dp"
         android:paddingRight="5dp"
-        android:clickable="true"
+
         android:paddingBottom="7dp"
         android:textColor="@color/black"
         android:textSize="10dp"
         android:theme="@style/MytextTheme"
         app:layout_constraintBottom_toBottomOf="@+id/dayButton1"
         app:layout_constraintEnd_toEndOf="@+id/dayButton1"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/dayButton1"
         app:layout_constraintTop_toTopOf="@+id/dayButton1"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />

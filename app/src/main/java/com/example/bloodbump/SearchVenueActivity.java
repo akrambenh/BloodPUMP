@@ -1,28 +1,16 @@
 package com.example.bloodbump;
 
-import static android.content.ContentValues.TAG;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.SupportMapFragment;
 
 public class SearchVenueActivity extends AppCompatActivity {
@@ -30,19 +18,21 @@ public class SearchVenueActivity extends AppCompatActivity {
     private double currentLong;
     private FusedLocationProviderClient client;
     private SupportMapFragment supportMapFragment;
-    private EditText searchEditText;
     private RadioGroup venueGroup;
     private RadioButton hospitalRadio;
     private RadioButton centreRadio;
     private SeekBar RadiusSeekBar;
     private TextView radiusText;
     public static int RadiusValue;
+    private String predecessor_activity = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        predecessor_activity = intent.getStringExtra("predecessor_activity");
+
         setContentView(R.layout.activity_search_venue);
-        searchEditText = findViewById(R.id.searchEditText);
         venueGroup = findViewById(R.id.venueGroup);
         hospitalRadio = findViewById(R.id.hospitalRadio);
         centreRadio = findViewById(R.id.centreRadio);
@@ -64,11 +54,6 @@ public class SearchVenueActivity extends AppCompatActivity {
         });
     }
 
-
-    public void backToAppointment(View view) {
-        startActivity(new Intent(SearchVenueActivity.this, AppointmentActivity.class));
-    }
-
     public void SearchNearby(View view) {
         Bundle bundle = new Bundle();
         int ChosenID = venueGroup.getCheckedRadioButtonId();
@@ -80,5 +65,13 @@ public class SearchVenueActivity extends AppCompatActivity {
         PlacesFragemnt fragVenue = new PlacesFragemnt();
         fragVenue.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.searchResult_content, fragVenue).commit();
+    }
+
+    public void onBackButton(View view) {
+        if(predecessor_activity.equals("AppointmentActivity")){
+            startActivity(new Intent(SearchVenueActivity.this, SelectVenueActivity.class));
+        }else if(predecessor_activity.equals("HomeActivity")){
+            startActivity(new Intent(SearchVenueActivity.this, HomeActivity.class));
+        }
     }
 }

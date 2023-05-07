@@ -50,20 +50,6 @@
             tools:ignore="TextSizeCheck" />
 
 
-        <TextView
-            android:id="@+id/donationNum"
-            android:layout_width="48dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="60dp"
-            android:layout_marginEnd="62dp"
-            android:layout_marginBottom="56dp"
-            android:text="0"
-            android:theme="@style/MytextTheme"
-            app:layout_constraintBottom_toBottomOf="@+id/donationRect"
-            app:layout_constraintEnd_toEndOf="@+id/donationRect"
-            app:layout_constraintHorizontal_bias="0.4"
-            app:layout_constraintStart_toStartOf="@+id/donationRect" />
-
         <ImageView
             android:id="@+id/announcesRect"
             android:layout_width="160dp"
@@ -86,6 +72,7 @@
             android:layout_height="140dp"
             android:background="@drawable/stats_rect"
             android:src="@drawable/health_icon"
+            android:onClick="JumpHealthReportFrag"
             app:tint="@color/my_red"
             android:paddingTop="80dp"
             android:paddingBottom="10dp"
@@ -133,6 +120,7 @@
             android:layout_width="160dp"
             android:layout_height="140dp"
             android:background="@drawable/stats_rect"
+            android:onClick="JumpSearchVenue"
             android:src="@drawable/search_icon"
             android:paddingTop="80dp"
             android:paddingBottom="10dp"

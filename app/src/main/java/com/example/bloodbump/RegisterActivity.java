@@ -114,7 +114,4 @@ public class RegisterActivity extends AppCompatActivity {
         startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
     }
 
-    public void RegisterAdmin(View view) {
-        startActivity(new Intent(RegisterActivity.this, RegisterAdminActivity.class));
-    }
 }

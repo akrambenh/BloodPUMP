@@ -139,6 +139,7 @@ public class PlacesFragemnt extends Fragment implements  OnMapReadyCallback{
                                             String Marker = marker.getTitle();
                                             Intent intent = new Intent(getActivity(), DateSelectionActivity.class);
                                             intent.putExtra("venue", Marker);
+                                            intent.putExtra("predecessor_activity", "SearchVenueActivity");
                                             startActivity(intent);
                                         }
                                     });

@@ -18,11 +18,13 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -41,6 +43,8 @@ public class DateSelectionActivity extends AppCompatActivity {
     private String RequestDate;
     private  String RequestTime;
     private String bloodgroup = null;
+    private String predecessor_activity = null;
+    private String venue = null;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +53,8 @@ public class DateSelectionActivity extends AppCompatActivity {
         venueText = findViewById(R.id.venueText);
         //
         Intent intent = getIntent();
-        String venue = intent.getStringExtra("venue");
+        venue = intent.getStringExtra("venue");
+        predecessor_activity = intent.getStringExtra("predecessor_activity");
         venueText.setText(venue);
         //
         bookButton = (Button) findViewById(R.id.bookButton);
@@ -566,7 +571,10 @@ public class DateSelectionActivity extends AppCompatActivity {
                                         if (task12.getResult().exists()) {
                                             DataSnapshot item = task12.getResult();
                                             bloodgroup = String.valueOf(item.child("blood").getValue());
+                                            String fullname = first_name + " " + last_name;
                                             // Putting Data Into HashMap to be written in database
+                                            requestMap.put("Fullname", fullname);
+                                            requestMap.put("Medical Establishment", venue);
                                             requestMap.put("Blood Group", bloodgroup);
                                             requestMap.put("Date Of Birth", dob);
                                             requestMap.put("Donor Type", donor_type);
@@ -574,14 +582,14 @@ public class DateSelectionActivity extends AppCompatActivity {
                                             requestMap.put("Donation Date", RequestDate);
                                             requestMap.put("Donation Time", RequestTime);
                                             requestMap.put("Status", "Waiting");
-                                            reference = userDB.getReference("Donation");
-                                            String fullname = first_name + " " + last_name;
-                                            reference.child(fullname).setValue(requestMap).addOnCompleteListener(task1 -> {
+                                            reference = userDB.getReference("Request");
+
+                                            reference.child(UID).setValue(requestMap).addOnCompleteListener(task1 -> {
                                                 if (task1.isSuccessful()) {
                                                     Toast.makeText(DateSelectionActivity.this, "Request Sent Successfully", Toast.LENGTH_SHORT).show();
                                                     Toast.makeText(DateSelectionActivity.this, "The System Is Checking Your Health Report", Toast.LENGTH_SHORT).show();
                                                     // Writing Code To handle Health Report Conditions
-                                                    checkHealthCondition(UID, fullname);
+                                                    checkHealthCondition(UID, fullname, requestMap);
                                                 } else
                                                     Toast.makeText(DateSelectionActivity.this, "Failed To Send Request", Toast.LENGTH_SHORT).show();
                                             });
@@ -597,13 +605,36 @@ public class DateSelectionActivity extends AppCompatActivity {
             }
         });
     }
-    private void checkHealthCondition(String uid, String fullname) {
+    private void checkHealthCondition(String uid, String fullname, HashMap<String, String> requestMap) {
         reference = userDB.getReference("HealthReport");
         HashMap<String, Boolean> illness = new HashMap<>();
         HashMap<String, Integer> pressure = new HashMap<>();
         reference.child(uid).get().addOnCompleteListener(task -> {
             if (task.getResult().exists()) {
                 DataSnapshot data = task.getResult();
+                String date = String.valueOf(data.child("Date").getValue());
+                //checking if health report is older than 15 days
+                @SuppressLint("SimpleDateFormat")
+                SimpleDateFormat dtformat = new SimpleDateFormat("dd/MM/yyyy");
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                    LocalDate now = LocalDate.now();
+                    try {
+                        Date hpDate = dtformat.parse(date);
+                        //LocalDate end = LocalDate.of(hpDate.getYear(), hpDate.getMonth(), hpDate.getDay()).plusDays(15);
+                        int day = hpDate.getDay();
+                        int month = hpDate.getMonth();
+                        int year = hpDate.getYear();
+                        LocalDate end = LocalDate.of(year, month, day).plusDays(15);
+                        Toast.makeText(DateSelectionActivity.this, end.toString(), Toast.LENGTH_SHORT).show();
+                        if(end.compareTo(now) >= 0){
+                            Toast.makeText(DateSelectionActivity.this, "Date is valid", Toast.LENGTH_SHORT).show();
+                        }else if(end.compareTo(now) < 0){
+                            Toast.makeText(DateSelectionActivity.this, "Date is invalid", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (ParseException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
                 boolean hiv = Boolean.parseBoolean(data.child("HIV").getValue().toString());
                 boolean malaria = Boolean.parseBoolean(data.child("malaria").getValue().toString());
                 illness.put("HIV", hiv);
@@ -623,16 +654,43 @@ public class DateSelectionActivity extends AppCompatActivity {
                 }else if(pressure.get("Diastolic") >= 100) {
                     Toast.makeText(DateSelectionActivity.this, "Your Diastolic Pressure Is Too High", Toast.LENGTH_SHORT).show();
                 }else {
-                    Toast.makeText(DateSelectionActivity.this, "Your Donation Is Booked", Toast.LENGTH_SHORT).show();
-                    reference = userDB.getReference("Donation");
-                    reference.child(fullname).child("Status").setValue("Accepted");
+                    Toast.makeText(DateSelectionActivity.this, "Donation Is Booked", Toast.LENGTH_SHORT).show();
+                    //acceptAppointment(requestMap);
+
+                }
+            }
+});
+
+        }
+
+    private void acceptAppointment(HashMap<String, String> requestMap) {
+        String UID = userAuth.getCurrentUser().getUid();
+        reference = userDB.getReference("Appointment");
+        requestMap.remove("Status");
+        reference.child(UID).setValue(requestMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(DateSelectionActivity.this, "Donation Is Booked", Toast.LENGTH_SHORT).show();
+                    // Removing The Request From The Database
+                    reference = userDB.getReference("Request");
+                    reference.child(UID).removeValue();
+                    // Direct to appointment display Activity
                 }
             }
         });
-
     }
+
 
     public void getDonationType(View view) {
 
-    }
+        }
+
+public void backToHome(View view) {
+        if(predecessor_activity.equals("AppointmentActivity")){
+            startActivity(new Intent(DateSelectionActivity.this, SelectVenueActivity.class));
+        }else if(predecessor_activity.equals("SearchVenueActivity")){
+            startActivity(new Intent(DateSelectionActivity.this, SearchVenueActivity.class));
+        }
+        }
 }
