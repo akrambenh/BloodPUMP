@@ -80,8 +80,10 @@ public class RegisterActivity extends AppCompatActivity {
                 // complete constructor
                 userDatabase = FirebaseDatabase.getInstance();
                 reference = userDatabase.getReference("User");
+                // dir hna hashmap fi placet l'objet user
                 Donor user = new Donor(name, lastname, email, password, phone);
                 String fullname = user.first_name + " " + user.last_name;
+                //bdal user.email b hashmap
                 userAuth.createUserWithEmailAndPassword(user.email, user.password)
                         .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                             @Override
@@ -94,6 +96,7 @@ public class RegisterActivity extends AppCompatActivity {
                                     // Using Hashmap To send this data into other activity to complete registration
                                     HashMap<String, String> FullInfo = new HashMap<>();
                                     FullInfo.put("first_name", name);
+
                                     FullInfo.put("last_name", lastname);
                                     FullInfo.put("email", email);
                                     FullInfo.put("password", password);

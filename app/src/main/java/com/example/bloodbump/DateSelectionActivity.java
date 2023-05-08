@@ -570,7 +570,7 @@ public class DateSelectionActivity extends AppCompatActivity {
                                     reference.child(UID).get().addOnCompleteListener(task12 -> {
                                         if (task12.getResult().exists()) {
                                             DataSnapshot item = task12.getResult();
-                                            bloodgroup = String.valueOf(item.child("blood").getValue());
+                                            bloodgroup = String.valueOf(item.child("Blood Group").getValue());
                                             String fullname = first_name + " " + last_name;
                                             // Putting Data Into HashMap to be written in database
                                             requestMap.put("Fullname", fullname);

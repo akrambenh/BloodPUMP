@@ -94,4 +94,8 @@ public class AppointmentActivity extends AppCompatActivity {
             appointment_type.setText(bundle.getString("type"));
         }
     }
+
+    public void backToHome(View view) {
+            startActivity(new Intent(AppointmentActivity.this, HomeActivity.class));
+    }
 }

@@ -47,9 +47,6 @@ public class CompleteRegistrationActivity extends AppCompatActivity {
         datePicker_button = (Button) findViewById(R.id.datePicker_button);
         continueButton = (Button) findViewById(R.id.continue_button);
         donorTypeSpinner = (Spinner) findViewById(R.id.donorTypeSpinner);
-        // TEST
-        //userAuth = FirebaseAuth.getInstance();
-
         initDatePicker();
         // Adding Sex Options With Array Adapter
         ArrayAdapter<CharSequence> sexAdapter = ArrayAdapter.createFromResource(this, R.array.Sex, R.layout.spinner_item);
@@ -69,30 +66,25 @@ public class CompleteRegistrationActivity extends AppCompatActivity {
             String dob = datePicker_button.getText().toString();
             String bloodgroup = bloodgroupSpinner.getSelectedItem().toString();
             String donorType = donorTypeSpinner.getSelectedItem().toString();
-            Donor userPlus = new Donor(sex, dob, bloodgroup, donorType);
-
-            userAuth = FirebaseAuth.getInstance();
-            String UID = userAuth.getCurrentUser().getUid();
-            userDatabase = FirebaseDatabase.getInstance();
-            reference = userDatabase.getReference("User");
             // Using Hashmap To Write Data on Firebase Database
             HashMap<String, String> User = (HashMap<String, String>) extars.get("list");
             User.put("sex", sex);
             User.put("date of birth", dob);
             User.put("donor type", donorType);
-            reference.child(UID).setValue(User).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if(task.isSuccessful()){
-                        HashMap<String, String> blood = new HashMap<>();
-                        blood.put("blood", bloodgroup);
-                        reference  = userDatabase.getReference("Blood");
-                        reference.child(UID).setValue(blood);
-                        Toast.makeText(CompleteRegistrationActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(CompleteRegistrationActivity.this, picAddActivity.class));
-                    }else
-                        Toast.makeText(CompleteRegistrationActivity.this, "Failed To Register", Toast.LENGTH_SHORT).show();
-                }
+            userAuth = FirebaseAuth.getInstance();
+            String UID = userAuth.getCurrentUser().getUid();
+            userDatabase = FirebaseDatabase.getInstance();
+            reference = userDatabase.getReference("User");
+            reference.child(UID).setValue(User).addOnCompleteListener(task -> {
+                if(task.isSuccessful()){
+                    HashMap<String, String> blood = new HashMap<>();
+                    blood.put("Blood Group", bloodgroup);
+                    reference  = userDatabase.getReference("Blood");
+                    reference.child(UID).setValue(blood);
+                    Toast.makeText(CompleteRegistrationActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(CompleteRegistrationActivity.this, picAddActivity.class));
+                }else
+                    Toast.makeText(CompleteRegistrationActivity.this, "Failed To Register", Toast.LENGTH_SHORT).show();
             });
 
 
