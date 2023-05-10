@@ -24,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -617,18 +618,18 @@ public class DateSelectionActivity extends AppCompatActivity {
                 @SuppressLint("SimpleDateFormat")
                 SimpleDateFormat dtformat = new SimpleDateFormat("dd/MM/yyyy");
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                    LocalDate now = LocalDate.now();
                     try {
-                        Date hpDate = dtformat.parse(date);
-                        //LocalDate end = LocalDate.of(hpDate.getYear(), hpDate.getMonth(), hpDate.getDay()).plusDays(15);
-                        int day = hpDate.getDay();
-                        int month = hpDate.getMonth();
-                        int year = hpDate.getYear();
-                        LocalDate end = LocalDate.of(year, month, day).plusDays(15);
-                        Toast.makeText(DateSelectionActivity.this, end.toString(), Toast.LENGTH_SHORT).show();
-                        if(end.compareTo(now) >= 0){
+                        Calendar cal = Calendar.getInstance();
+                        String today = dtformat.format(cal.getTime());
+                        cal.setTime(dtformat.parse(date));
+                        cal.add(Calendar.DAY_OF_MONTH, 15);
+                        String afterFifteen = dtformat.format(cal.getTime());
+                        // Parsing this date strings into Date objects
+                        Date todayDate = dtformat.parse(today);
+                        Date end = dtformat.parse(afterFifteen);
+                        if(end.compareTo(todayDate) >= 0){
                             Toast.makeText(DateSelectionActivity.this, "Date is valid", Toast.LENGTH_SHORT).show();
-                        }else if(end.compareTo(now) < 0){
+                        }else if(end.compareTo(todayDate) < 0){
                             Toast.makeText(DateSelectionActivity.this, "Date is invalid", Toast.LENGTH_SHORT).show();
                         }
                     } catch (ParseException e) {
@@ -648,15 +649,9 @@ public class DateSelectionActivity extends AppCompatActivity {
                     Toast.makeText(DateSelectionActivity.this, "Can't Book The Donation \n  Due To Having HIV", Toast.LENGTH_SHORT).show();
                 }else if(illness.get("Malaria") == true){
                     Toast.makeText(DateSelectionActivity.this, "Can't Book The Donation \n Due to Having Malaria", Toast.LENGTH_SHORT).show();
-                }else if(pressure.get("Systolic") >= 180){
-                    Toast.makeText(DateSelectionActivity.this, "Your Systolic Pressure Is Too High", Toast.LENGTH_SHORT).show();
-
-                }else if(pressure.get("Diastolic") >= 100) {
-                    Toast.makeText(DateSelectionActivity.this, "Your Diastolic Pressure Is Too High", Toast.LENGTH_SHORT).show();
                 }else {
                     Toast.makeText(DateSelectionActivity.this, "Donation Is Booked", Toast.LENGTH_SHORT).show();
                     //acceptAppointment(requestMap);
-
                 }
             }
 });
@@ -686,11 +681,5 @@ public class DateSelectionActivity extends AppCompatActivity {
 
         }
 
-public void backToHome(View view) {
-        if(predecessor_activity.equals("AppointmentActivity")){
-            startActivity(new Intent(DateSelectionActivity.this, SelectVenueActivity.class));
-        }else if(predecessor_activity.equals("SearchVenueActivity")){
-            startActivity(new Intent(DateSelectionActivity.this, SearchVenueActivity.class));
-        }
-        }
+
 }
