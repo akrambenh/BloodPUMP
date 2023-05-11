@@ -1,6 +1,5 @@
 package com.example.bloodbump;
 
-import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,9 +8,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -20,83 +17,64 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import java.util.stream.IntStream;
 
 
-public class donationFragment extends Fragment {
+public class HistoryFragment extends Fragment {
     private FirebaseAuth userAuth;
     private FirebaseDatabase userDB;
     private DatabaseReference reference;
-    private TextView completed_donations_text;
-    private TextView blood_quantity_text;
-    private TextView check_history_text;
-    private String completed;
-    public int sum = 0;
+    private TextView donation_venue, donation_date_textview, donation_time_textview, donation_type_textview, quantity_textview;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
-    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View rootView = inflater.inflate(R.layout.fragment_donation, container, false);
-        completed_donations_text = rootView.findViewById(R.id.completed_donations_text);
-        blood_quantity_text = rootView.findViewById(R.id.blood_quantity_text);
-        check_history_text = rootView.findViewById(R.id.check_history_text);
-        check_history_text.setOnClickListener(this::checkHistory);
+        View rootView = inflater.inflate(R.layout.fragment_history, container, false);
+        donation_venue = rootView.findViewById(R.id.donation_venue);
+        donation_time_textview = rootView.findViewById(R.id.donation_time_textview);
+        donation_date_textview = rootView.findViewById(R.id.donation_date_textview);
+        donation_type_textview = rootView.findViewById(R.id.donation_type_textview);
+        quantity_textview = rootView.findViewById(R.id.quantity_textview);
         getDonations();
-        //
         return rootView;
     }
-
     private void getDonations() {
         userAuth = FirebaseAuth.getInstance();
-        String UID = userAuth.getCurrentUser().getUid();
         userDB = FirebaseDatabase.getInstance();
+        String UID = userAuth.getCurrentUser().getUid();
         reference = userDB.getReference("Donation");
-
         reference.child(UID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @SuppressLint("SetTextI18n")
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if(task.getResult().exists()){
                     DataSnapshot data = task.getResult();
                     int iteration = (int) data.getChildrenCount();
-                    completed = String.valueOf(iteration);
-                    String [] ID = new String[iteration];
+                    String[] ID = new String[iteration];
                     final Iterator<DataSnapshot> iterator = data.getChildren().iterator();
-                    for(int i = 0; i <iteration; i++){
+                    for(int i = 0; i < iteration; i++){
                         ID[i] = iterator.next().getKey();
                         reference.child(UID).child(ID[i]).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                            @SuppressLint("ResourceType")
                             @Override
                             public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                Pattern number = Pattern.compile("[0-9]+");
                                 DataSnapshot data1 = task.getResult();
-                                String value = String.valueOf(data1.child("Quantity").getValue());
-                                // CharQuantity is null
-                                Matcher num = number.matcher(value);
-                                while(num.find()){
-                                    sum = sum + Integer.parseInt(num.group());
-                                    blood_quantity_text.setText(String.valueOf(sum));
-                                }
+                                String venue = data1.child("Medical Establishment").getValue().toString();
+                                String date = data1.child("Donation Date").getValue().toString();
+                                String time = data1.child("Donation Time").getValue().toString();
+                                String type = data1.child("Donation Type").getValue().toString();
+                                String quantity = data1.child("Quantity").getValue().toString();
+                                donation_venue.setText(venue);
+                                donation_date_textview.setText(date);
+                                donation_time_textview.setText(time);
+                                donation_type_textview.setText(type);
+                                quantity_textview.setText(quantity);
                             }
                         });
                     }
-                    completed_donations_text.setText(completed);
                 }
             }
         });
-    }
-    public void checkHistory(View view){
-
     }
 }
