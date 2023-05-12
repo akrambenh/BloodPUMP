@@ -110,6 +110,7 @@
             android:layout_height="48dp"
             android:text="Check History"
             android:clickable="true"
+            android:onClick="checkHistory"
             android:theme="@style/MytextTheme"
             android:textColor="@color/my_red"
             android:drawableRight="@drawable/right_arrow_icon"

@@ -51,7 +51,6 @@ public class donationFragment extends Fragment {
         completed_donations_text = rootView.findViewById(R.id.completed_donations_text);
         blood_quantity_text = rootView.findViewById(R.id.blood_quantity_text);
         check_history_text = rootView.findViewById(R.id.check_history_text);
-        check_history_text.setOnClickListener(this::checkHistory);
         getDonations();
         //
         return rootView;
@@ -96,7 +95,5 @@ public class donationFragment extends Fragment {
             }
         });
     }
-    public void checkHistory(View view){
 
-    }
 }

@@ -134,7 +134,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public void JumpHealthReportFrag(View view) {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_content, new HealthReportFragment()).commit();
     }
-
     public void JumpSearchVenue(View view) {
         Intent intent = new Intent(HomeActivity.this, SearchVenueActivity.class);
         intent.putExtra("predecessor_activity", "HomeActivity");
@@ -210,6 +209,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         });
+    }
+
+    public void checkHistory(View view) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_content, new HistoryFragment()).commit();
     }
 }
 
