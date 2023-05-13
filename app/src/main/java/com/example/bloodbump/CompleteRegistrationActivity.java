@@ -28,7 +28,7 @@ public class CompleteRegistrationActivity extends AppCompatActivity {
     private FirebaseAuth userAuth;
     private FirebaseDatabase userDatabase;
     private DatabaseReference reference;
-    private Spinner sex_spinner;
+    private Spinner gender_spinner;
     private Spinner bloodgroupSpinner;
     private Spinner donorTypeSpinner;
     private DatePickerDialog datePickerDialog;
@@ -42,7 +42,7 @@ public class CompleteRegistrationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_complete_registration);
 
         Bundle extars = getIntent().getExtras();
-        sex_spinner = (Spinner) findViewById(R.id.sex_spinner);
+        gender_spinner = (Spinner) findViewById(R.id.sex_spinner);
         bloodgroupSpinner = (Spinner) findViewById(R.id.bloodgroupSpinner);
         datePicker_button = (Button) findViewById(R.id.datePicker_button);
         continueButton = (Button) findViewById(R.id.continue_button);
@@ -51,7 +51,7 @@ public class CompleteRegistrationActivity extends AppCompatActivity {
         // Adding Sex Options With Array Adapter
         ArrayAdapter<CharSequence> sexAdapter = ArrayAdapter.createFromResource(this, R.array.Sex, R.layout.spinner_item);
         sexAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sex_spinner.setAdapter(sexAdapter);
+        gender_spinner.setAdapter(sexAdapter);
         // Adding Blood Group Options With Array Adapter;
         ArrayAdapter<CharSequence> bloodgroupAdapter = ArrayAdapter.createFromResource(this, R.array.bloodgroup, R.layout.spinner_item);
         bloodgroupAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -62,15 +62,15 @@ public class CompleteRegistrationActivity extends AppCompatActivity {
         donorTypeSpinner.setAdapter(donorTypeAdapter);
         continueButton.setOnClickListener(view -> {
             // Getting Data From Spinner
-            String sex = sex_spinner.getSelectedItem().toString();
+            String gender = gender_spinner.getSelectedItem().toString();
             String dob = datePicker_button.getText().toString();
             String bloodgroup = bloodgroupSpinner.getSelectedItem().toString();
             String donorType = donorTypeSpinner.getSelectedItem().toString();
             // Using Hashmap To Write Data on Firebase Database
             HashMap<String, String> User = (HashMap<String, String>) extars.get("list");
-            User.put("sex", sex);
-            User.put("date of birth", dob);
-            User.put("donor type", donorType);
+            User.put("Gender", gender);
+            User.put("Date Of Birth", dob);
+            User.put("Donor Type", donorType);
             userAuth = FirebaseAuth.getInstance();
             String UID = userAuth.getCurrentUser().getUid();
             userDatabase = FirebaseDatabase.getInstance();
@@ -90,15 +90,10 @@ public class CompleteRegistrationActivity extends AppCompatActivity {
 
         });
     }
-    // Adding Date Picker For Date Of Birth Dialog And It's Functions
     private void initDatePicker(){
-        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                //month = month + 1;
-                String DOB = makeDateString(year, month, day);
-                datePicker_button.setText(DOB);
-            }
+        DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, day) -> {
+            String DOB = makeDateString(year, month, day);
+            datePicker_button.setText(DOB);
         };
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
@@ -113,7 +108,6 @@ public class CompleteRegistrationActivity extends AppCompatActivity {
     private String makeDateString(int year, int month, int day) {
         return day + "/" + getMonthFormat(month) + "/" + year;
     }
-
     private String getMonthFormat(int month) {
             if(month == 0)
                 return "JAN";
@@ -141,8 +135,6 @@ public class CompleteRegistrationActivity extends AppCompatActivity {
                 return "DEC";
         return null;
     }
-
-
     public void OpenDatePicker(View view) {
         datePickerDialog.show();
     }

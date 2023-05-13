@@ -1,29 +1,20 @@
 package com.example.bloodbump;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -35,8 +26,6 @@ public class DateSelectionActivity extends AppCompatActivity {
     private TextView morning1, morning2, morning3, morning4, morning5, morning6, morning7;
     private TextView evening1, evening2, evening3, evening4, evening5, evening6, evening7;
     private TextView wholeBloodText, plateletText;
-    private EditText bloodQuantityText;
-    private ImageView upArrow, downArrow;
     private Button bookButton, proceedButton;
     private FirebaseAuth userAuth;
     private FirebaseDatabase userDB;
@@ -44,7 +33,6 @@ public class DateSelectionActivity extends AppCompatActivity {
     private String RequestDate;
     private  String RequestTime;
     private String bloodgroup = null;
-    private String predecessor_activity = null;
     private String venue = null;
     @SuppressLint("MissingInflatedId")
     @Override
@@ -52,31 +40,15 @@ public class DateSelectionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dateselection);
         venueText = findViewById(R.id.venueText);
-        //
+        // Getting Predecessor Activity
         Intent intent = getIntent();
         venue = intent.getStringExtra("venue");
-        predecessor_activity = intent.getStringExtra("predecessor_activity");
+        String predecessor_activity = intent.getStringExtra("predecessor_activity");
         venueText.setText(venue);
         //
-        bookButton = (Button) findViewById(R.id.bookButton);
+        bookButton = findViewById(R.id.bookButton);
         bookButton.setOnClickListener(this::Book);
         // Declaring Views
-        /*dayButton1 = findViewById(R.id.dayButton1);
-        dayButton2 = findViewById(R.id.dayButton2);
-        dayButton3 = findViewById(R.id.dayButton3);
-        dayButton4 = findViewById(R.id.dayButton4);
-        dayButton5 = findViewById(R.id.dayButton5);
-        dayButton6 = findViewById(R.id.dayButton6);
-        dayButton7 = findViewById(R.id.dayButton7);
-        // Setting Their OnClickers
-        dayButton1.setOnClickListener(this::onClick);
-        dayButton2.setOnClickListener(this::onClick);
-        dayButton3.setOnClickListener(this::onClick);
-        dayButton4.setOnClickListener(this::onClick);
-        dayButton5.setOnClickListener(this::onClick);
-        dayButton6.setOnClickListener(this::onClick);
-        dayButton7.setOnClickListener(this::onClick);*/
-        //
         day1 = findViewById(R.id.day1);
         day2 = findViewById(R.id.day2);
         day3 = findViewById(R.id.day3);
@@ -116,60 +88,53 @@ public class DateSelectionActivity extends AppCompatActivity {
         evening5.setOnClickListener(this::onClick);
         evening6.setOnClickListener(this::onClick);
         evening7.setOnClickListener(this::onClick);
-        //
-
-        //
-        //
+        // Getting Schedule From Database
         userAuth = FirebaseAuth.getInstance();
         userDB = FirebaseDatabase.getInstance();
         reference = userDB.getReference("Schedule");
-        reference.child(venue).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if(task.isSuccessful()){
-                    if(task.getResult().exists()){
-                        DataSnapshot data = task.getResult();
-                        long iter = data.getChildrenCount();
-                        int iteration = (int) iter;
-                        String[] Days = new String[iteration];
-                        String[] morning = new String[iteration];
-                        String[] evening  = new String[iteration];
-                        final Iterator<DataSnapshot> iterator = data.getChildren().iterator();
-                        for(int i = 0; i < iteration; i++){
-                            Days[i] = iterator.next().getKey();
-                            morning[i] = String.valueOf(data.child(Days[i]).child("morning").getValue());
-                            evening[i] = String.valueOf(data.child(Days[i]).child("evening").getValue());
-                        }
-                        day1.setText(Days[0]);
-                        day2.setText(Days[1]);
-                        day3.setText(Days[2]);
-                        day4.setText(Days[3]);
-                        day5.setText(Days[4]);
-                        day6.setText(Days[5]);
-                        day7.setText(Days[6]);
-                        //
-                        morning1.setText(morning[0]);
-                        morning2.setText(morning[1]);
-                        morning3.setText(morning[2]);
-                        morning4.setText(morning[3]);
-                        morning5.setText(morning[4]);
-                        morning6.setText(morning[5]);
-                        morning7.setText(morning[6]);
-                        //
-                        evening1.setText(evening[0]);
-                        evening2.setText(evening[1]);
-                        evening3.setText(evening[2]);
-                        evening4.setText(evening[3]);
-                        evening5.setText(evening[4]);
-                        evening6.setText(evening[5]);
-                        evening7.setText(evening[6]);
+        reference.child(venue).get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                if(task.getResult().exists()){
+                    DataSnapshot data = task.getResult();
+                    int iteration = (int) data.getChildrenCount();
+                    String[] Days = new String[iteration];
+                    String[] morning = new String[iteration];
+                    String[] evening  = new String[iteration];
+                    final Iterator<DataSnapshot> iterator = data.getChildren().iterator();
+                    for(int i = 0; i < iteration; i++){
+                        Days[i] = iterator.next().getKey();
+                        morning[i] = String.valueOf(data.child(Days[i]).child("morning").getValue());
+                        evening[i] = String.valueOf(data.child(Days[i]).child("evening").getValue());
                     }
-                }else
-                    Toast.makeText(DateSelectionActivity.this, venue + " Has No Schedule", Toast.LENGTH_SHORT).show();
-            }
+                    day1.setText(Days[0]);
+                    day2.setText(Days[1]);
+                    day3.setText(Days[2]);
+                    day4.setText(Days[3]);
+                    day5.setText(Days[4]);
+                    day6.setText(Days[5]);
+                    day7.setText(Days[6]);
+                    //
+                    morning1.setText(morning[0]);
+                    morning2.setText(morning[1]);
+                    morning3.setText(morning[2]);
+                    morning4.setText(morning[3]);
+                    morning5.setText(morning[4]);
+                    morning6.setText(morning[5]);
+                    morning7.setText(morning[6]);
+                    //
+                    evening1.setText(evening[0]);
+                    evening2.setText(evening[1]);
+                    evening3.setText(evening[2]);
+                    evening4.setText(evening[3]);
+                    evening5.setText(evening[4]);
+                    evening6.setText(evening[5]);
+                    evening7.setText(evening[6]);
+                }
+            }else
+                Toast.makeText(DateSelectionActivity.this, venue + " Has No Schedule", Toast.LENGTH_SHORT).show();
         });
     }
-    @SuppressLint("UseCompatLoadingForDrawables")
+    @SuppressLint({"UseCompatLoadingForDrawables", "NonConstantResourceId"})
     public void onClick(View view){
        switch(view.getId()){
            case R.id.morning1:
@@ -512,41 +477,29 @@ public class DateSelectionActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     public void Book(View view) {
         Dialog dialog = new Dialog(DateSelectionActivity.this);
         dialog.setContentView(R.layout.dialog1_layout);
         dialog.getWindow();
-        bloodQuantityText = dialog.findViewById(R.id.bloodQuantityText);
         wholeBloodText = dialog.findViewById(R.id.wholeBloodText);
         plateletText = dialog.findViewById(R.id.plateletText);
         proceedButton = dialog.findViewById(R.id.proceedButton);
         dialog.show();
         HashMap<String, String> requestMap = new HashMap<>();
-        //int quantity = Integer.parseInt(bloodQuantityText.getText().toString());
         wholeBloodText.setOnClickListener(v -> {
             wholeBloodText.setBackground(getResources().getDrawable(R.drawable.field_selected));
             plateletText.setBackground(getResources().getDrawable(R.drawable.field));
-            bloodQuantityText.setClickable(true);
             proceedButton.setClickable(true);
-            requestMap.put("type", "Whole Blood");
+            requestMap.put("Donation Type", "Whole Blood");
         });
         plateletText.setOnClickListener(v -> {
             plateletText.setBackground(getResources().getDrawable(R.drawable.field_selected));
             wholeBloodText.setBackground(getResources().getDrawable(R.drawable.field));
-            bloodQuantityText.setClickable(true);
             proceedButton.setClickable(true);
-            requestMap.put("type", "Platelet");
+            requestMap.put("Donation", "Platelet");
         });
         proceedButton.setOnClickListener(v -> {
-            int quantity = Integer.parseInt(bloodQuantityText.getText().toString());
-            requestMap.put("quantity", String.valueOf(quantity));
-            if (requestMap.get("type").isEmpty()) {
-                Toast.makeText(this, "You Need To Select Type", Toast.LENGTH_SHORT).show();
-            } else if (quantity < 460) {
-                Toast.makeText(this, "Low Volume \n Try 460 or Above", Toast.LENGTH_SHORT).show();
-            } else if (quantity > 1000) {
-                Toast.makeText(this, "High Volume \n Try 1000 or Below", Toast.LENGTH_SHORT).show();
-            } else {
                 reference = userDB.getReference("Schedule");
                 reference.child(venueText.getText().toString()).child(RequestDate).get().addOnCompleteListener(task -> {
                     if (task.getResult().exists()) {
@@ -560,13 +513,13 @@ public class DateSelectionActivity extends AppCompatActivity {
                             reference.child(UID).get().addOnCompleteListener(task13 -> {
                                 if (task13.getResult().exists()) {
                                     DataSnapshot data1 = task13.getResult();
-
+                                    //
                                     String first_name = String.valueOf(data1.child("first_name").getValue());
                                     String last_name = String.valueOf(data1.child("last_name").getValue());
-                                    String dob = String.valueOf(data1.child("date of birth").getValue());
-                                    String donor_type = String.valueOf(data1.child("donor type").getValue());
-                                    String sex = String.valueOf(data1.child("sex").getValue());
-
+                                    String dob = String.valueOf(data1.child("Date Of Birth").getValue());
+                                    String donor_type = String.valueOf(data1.child("Donor Type").getValue());
+                                    String gender = String.valueOf(data1.child("Gender").getValue());
+                                    //
                                     reference = userDB.getReference("Blood");
                                     reference.child(UID).get().addOnCompleteListener(task12 -> {
                                         if (task12.getResult().exists()) {
@@ -579,17 +532,17 @@ public class DateSelectionActivity extends AppCompatActivity {
                                             requestMap.put("Blood Group", bloodgroup);
                                             requestMap.put("Date Of Birth", dob);
                                             requestMap.put("Donor Type", donor_type);
-                                            requestMap.put("Sex", sex);
+                                            requestMap.put("Gender", gender);
                                             requestMap.put("Donation Date", RequestDate);
                                             requestMap.put("Donation Time", RequestTime);
-                                            requestMap.put("Status", "Waiting");
+                                            requestMap.put("Status", "Pending");
                                             reference = userDB.getReference("Request");
 
                                             reference.child(UID).setValue(requestMap).addOnCompleteListener(task1 -> {
                                                 if (task1.isSuccessful()) {
+                                                    // use textview instead of Toasts
                                                     Toast.makeText(DateSelectionActivity.this, "Request Sent Successfully", Toast.LENGTH_SHORT).show();
                                                     Toast.makeText(DateSelectionActivity.this, "The System Is Checking Your Health Report", Toast.LENGTH_SHORT).show();
-                                                    // Writing Code To handle Health Report Conditions
                                                     checkHealthCondition(UID, fullname, requestMap);
                                                 } else
                                                     Toast.makeText(DateSelectionActivity.this, "Failed To Send Request", Toast.LENGTH_SHORT).show();
@@ -603,7 +556,6 @@ public class DateSelectionActivity extends AppCompatActivity {
                     } else
                         Toast.makeText(DateSelectionActivity.this, "Date Doesn't exist", Toast.LENGTH_SHORT).show();
                 });
-            }
         });
     }
     private void checkHealthCondition(String uid, String fullname, HashMap<String, String> requestMap) {
@@ -645,41 +597,14 @@ public class DateSelectionActivity extends AppCompatActivity {
                 pressure.put("Systolic", systolic);
                 pressure.put("Diastolic", diastolic);
                 // Testing
-                if(illness.get("HIV") == true){
+                if(illness.get("HIV")){ // try using text View instaed of Toast
                     Toast.makeText(DateSelectionActivity.this, "Can't Book The Donation \n  Due To Having HIV", Toast.LENGTH_SHORT).show();
-                }else if(illness.get("Malaria") == true){
+                }else if(illness.get("Malaria")){
                     Toast.makeText(DateSelectionActivity.this, "Can't Book The Donation \n Due to Having Malaria", Toast.LENGTH_SHORT).show();
                 }else {
                     Toast.makeText(DateSelectionActivity.this, "Donation Is Booked", Toast.LENGTH_SHORT).show();
-                    //acceptAppointment(requestMap);
-                }
-            }
-});
-
-        }
-
-    private void acceptAppointment(HashMap<String, String> requestMap) {
-        String UID = userAuth.getCurrentUser().getUid();
-        reference = userDB.getReference("Appointment");
-        requestMap.remove("Status");
-        reference.child(UID).setValue(requestMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
-                    Toast.makeText(DateSelectionActivity.this, "Donation Is Booked", Toast.LENGTH_SHORT).show();
-                    // Removing The Request From The Database
-                    reference = userDB.getReference("Request");
-                    reference.child(UID).removeValue();
-                    // Direct to appointment display Activity
                 }
             }
         });
-    }
-
-
-    public void getDonationType(View view) {
-
         }
-
-
 }

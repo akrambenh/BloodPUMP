@@ -1,7 +1,6 @@
 package com.example.bloodbump;
 
 import static android.content.ContentValues.TAG;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -9,21 +8,18 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -33,12 +29,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,7 +41,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 
-public class PlacesFragemnt extends Fragment implements  OnMapReadyCallback{
+public class PlacesFragment extends Fragment implements  OnMapReadyCallback{
     private GoogleMap FragmentMap;
     private SupportMapFragment supportMapFragment;
     private static final float NEARBY_ZOOM = 14f;
@@ -65,6 +58,7 @@ public class PlacesFragemnt extends Fragment implements  OnMapReadyCallback{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        @SuppressLint("InflateParams")
         View view = inflater.inflate(R.layout.fragment_places_fragemnt, null, false);
             FragmentManager fm = getFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
@@ -92,12 +86,12 @@ public class PlacesFragemnt extends Fragment implements  OnMapReadyCallback{
             }
         }
     }
-    private void moveCamera(LatLng latLng, float zoom, String title){
+    private void moveCamera(LatLng latLng){
         Log.d(TAG, "moveCamera: moving the camera to: lat: " + latLng.latitude + ", lng: " + latLng.longitude );
-        FragmentMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
+        FragmentMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, PlacesFragment.NEARBY_ZOOM));
         MarkerOptions option = new MarkerOptions()
                 .position(latLng)
-                .title(title);
+                .title("My Location");
         FragmentMap.addMarker(option);
     }
     @SuppressLint("MissingPermission")
@@ -114,44 +108,35 @@ public class PlacesFragemnt extends Fragment implements  OnMapReadyCallback{
             return;
         }
         Task<Location> task = client.getLastLocation();
-        task.addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                //when success
-                if (location != null){
-                    currentLat = location.getLatitude();
-                    currentLong = location.getLongitude();
-                    supportMapFragment.getMapAsync(new OnMapReadyCallback() {
+        task.addOnSuccessListener(location -> {
+            //when success
+            if (location != null){
+                currentLat = location.getLatitude();
+                currentLong = location.getLongitude();
+                supportMapFragment.getMapAsync(googleMap -> {
+                    FragmentMap = googleMap;
+                    moveCamera(new LatLng(currentLat, currentLong)
+                    );
+                    Nearby();
+                    FragmentMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                         @Override
-                        public void onMapReady(@NonNull GoogleMap googleMap) {
-                            FragmentMap = googleMap;
-                            moveCamera(new LatLng(currentLat, currentLong),
-                                    NEARBY_ZOOM, "My Location");
-                            Nearby();
-                            FragmentMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                                @Override
-                                public boolean onMarkerClick(@NonNull Marker marker) {
-                                    TitleSelection = getActivity().findViewById(R.id.titleSelection);
-                                    TitleSelection.setVisibility(View.VISIBLE);
-                                    TitleSelection.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            String Marker = marker.getTitle();
-                                            Intent intent = new Intent(getActivity(), DateSelectionActivity.class);
-                                            intent.putExtra("venue", Marker);
-                                            intent.putExtra("predecessor_activity", "SearchVenueActivity");
-                                            startActivity(intent);
-                                        }
-                                    });
-                                    return false;
-                                }
+                        public boolean onMarkerClick(@NonNull Marker marker) {
+                            TitleSelection = getActivity().findViewById(R.id.titleSelection);
+                            TitleSelection.setVisibility(View.VISIBLE);
+                            TitleSelection.setOnClickListener(v -> {
+                                String Marker = marker.getTitle();
+                                Intent intent = new Intent(getActivity(), DateSelectionActivity.class);
+                                intent.putExtra("venue", Marker);
+                                intent.putExtra("predecessor_activity", "SearchVenueActivity");
+                                startActivity(intent);
                             });
-
+                            return false;
                         }
                     });
-                }else
-                    startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
-            }
+
+                });
+            }else
+                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
         });
     }
     public void Nearby(){

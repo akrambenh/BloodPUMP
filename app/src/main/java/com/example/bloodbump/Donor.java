@@ -1,34 +1,18 @@
 package com.example.bloodbump;
 
-
-import static android.content.ContentValues.TAG;
-
-import android.app.NotificationManager;
-import android.os.Build;
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Donor {
-	String password;
-	String email;
-	String donor_ID;
-	String first_name;
-	String last_name;
-	String phone;
-	String DOB;
-	String sex;
-	String donorType;
+	String password, email, donor_ID, first_name, last_name, phone, DOB, gender, donorType;
 
 	public Donor(String sex, String dob, String bloodgroup, String donorType) {
-		this.sex = sex;
+		this.gender = sex;
 		this.DOB = dob;
 		this.Bloodgroup = bloodgroup;
 		this.donorType = donorType;
@@ -53,12 +37,12 @@ public class Donor {
 	}
 
 
-	public String getSex() {
-		return sex;
+	public String getGender() {
+		return gender;
 	}
 
-	public void setSex(String sex) {
-		this.sex = sex;
+	public void setGender(String sex) {
+		this.gender = sex;
 	}
 
 
