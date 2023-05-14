@@ -58,6 +58,7 @@
             android:src="@drawable/notify_icon"
             android:paddingTop="80dp"
             android:paddingBottom="10dp"
+            android:onClick="JumpAnnounceFrag"
             app:tint="@color/my_red"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -71,17 +72,18 @@
             android:layout_width="160dp"
             android:layout_height="140dp"
             android:background="@drawable/stats_rect"
-            android:src="@drawable/health_icon"
             android:onClick="JumpHealthReportFrag"
-            app:tint="@color/my_red"
             android:paddingTop="80dp"
             android:paddingBottom="10dp"
+            android:src="@drawable/health_icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.925"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.111" />
+            app:layout_constraintVertical_bias="0.111"
+            app:tint="@color/my_red"
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <TextView
             android:layout_width="123dp"
@@ -121,16 +123,17 @@
             android:layout_height="140dp"
             android:background="@drawable/stats_rect"
             android:onClick="JumpSearchVenue"
-            android:src="@drawable/search_icon"
             android:paddingTop="80dp"
             android:paddingBottom="10dp"
-            app:tint="@color/my_red"
+            android:src="@drawable/search_icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.925"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.498" />
+            app:layout_constraintVertical_bias="0.498"
+            app:tint="@color/my_red"
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <TextView
             android:layout_width="150dp"

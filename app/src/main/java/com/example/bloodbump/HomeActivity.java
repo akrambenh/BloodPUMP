@@ -214,5 +214,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public void checkHistory(View view) {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_content, new HistoryFragment()).commit();
     }
+
+    public void JumpAnnounceFrag(View view) {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_content, new AnnounceFragment()).commit();
+    }
 }
 

@@ -1,5 +1,6 @@
 package com.example.bloodbump;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -43,6 +44,7 @@ public class HealthReportFragment extends Fragment {
         return rootView;
     }
 
+    @SuppressLint("SetTextI18n")
     private void getHealthReport() {
         String UID = userAuth.getCurrentUser().getUid();
         DatabaseReference reference = userDB.getReference("HealthReport");
@@ -71,8 +73,8 @@ public class HealthReportFragment extends Fragment {
                 //
                 date_text.setText(date);
                 bloodgroup_text.setText(bloodgroup);
-                diastolic_text.setText(diastolic);
-                systolic_text.setText(systolic);
+                diastolic_text.setText(diastolic + " mm Hg");
+                systolic_text.setText(systolic + " mm Hg");
                 hiv_text.setText(hivText);
                 malaria_text.setText(malariaText);
             }

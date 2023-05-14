@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
@@ -536,17 +538,7 @@ public class DateSelectionActivity extends AppCompatActivity {
                                             requestMap.put("Donation Date", RequestDate);
                                             requestMap.put("Donation Time", RequestTime);
                                             requestMap.put("Status", "Pending");
-                                            reference = userDB.getReference("Request");
-
-                                            reference.child(UID).setValue(requestMap).addOnCompleteListener(task1 -> {
-                                                if (task1.isSuccessful()) {
-                                                    // use textview instead of Toasts
-                                                    Toast.makeText(DateSelectionActivity.this, "Request Sent Successfully", Toast.LENGTH_SHORT).show();
-                                                    Toast.makeText(DateSelectionActivity.this, "The System Is Checking Your Health Report", Toast.LENGTH_SHORT).show();
-                                                    checkHealthCondition(UID, fullname, requestMap);
-                                                } else
-                                                    Toast.makeText(DateSelectionActivity.this, "Failed To Send Request", Toast.LENGTH_SHORT).show();
-                                            });
+                                            checkHealthCondition(UID ,requestMap);
                                         }
                                     });
 
@@ -558,10 +550,9 @@ public class DateSelectionActivity extends AppCompatActivity {
                 });
         });
     }
-    private void checkHealthCondition(String uid, String fullname, HashMap<String, String> requestMap) {
+    private void checkHealthCondition(String uid, HashMap<String, String> requestMap) {
         reference = userDB.getReference("HealthReport");
         HashMap<String, Boolean> illness = new HashMap<>();
-        HashMap<String, Integer> pressure = new HashMap<>();
         reference.child(uid).get().addOnCompleteListener(task -> {
             if (task.getResult().exists()) {
                 DataSnapshot data = task.getResult();
@@ -580,9 +571,9 @@ public class DateSelectionActivity extends AppCompatActivity {
                         Date todayDate = dtformat.parse(today);
                         Date end = dtformat.parse(afterFifteen);
                         if(end.compareTo(todayDate) >= 0){
-                            Toast.makeText(DateSelectionActivity.this, "Date is valid", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DateSelectionActivity.this, "Date Is Valid", Toast.LENGTH_SHORT).show();
                         }else if(end.compareTo(todayDate) < 0){
-                            Toast.makeText(DateSelectionActivity.this, "Date is invalid", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DateSelectionActivity.this, "Date Is Invalid", Toast.LENGTH_SHORT).show();
                         }
                     } catch (ParseException e) {
                         throw new RuntimeException(e);
@@ -592,17 +583,20 @@ public class DateSelectionActivity extends AppCompatActivity {
                 boolean malaria = Boolean.parseBoolean(data.child("malaria").getValue().toString());
                 illness.put("HIV", hiv);
                 illness.put("Malaria", malaria);
-                int systolic = Integer.parseInt(data.child("systolic").getValue().toString());
-                int diastolic = Integer.parseInt(data.child("diastolic").getValue().toString());
-                pressure.put("Systolic", systolic);
-                pressure.put("Diastolic", diastolic);
                 // Testing
-                if(illness.get("HIV")){ // try using text View instaed of Toast
-                    Toast.makeText(DateSelectionActivity.this, "Can't Book The Donation \n  Due To Having HIV", Toast.LENGTH_SHORT).show();
+                if(illness.get("HIV")){ // try using text View instead of Toast
+                    Toast.makeText(DateSelectionActivity.this, "Can't Book The Donation \n Due To Having HIV", Toast.LENGTH_SHORT).show();
                 }else if(illness.get("Malaria")){
-                    Toast.makeText(DateSelectionActivity.this, "Can't Book The Donation \n Due to Having Malaria", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(DateSelectionActivity.this, "Can't Book The Donation \n Due To Having Malaria", Toast.LENGTH_SHORT).show();
                 }else {
-                    Toast.makeText(DateSelectionActivity.this, "Donation Is Booked", Toast.LENGTH_SHORT).show();
+                    DatabaseReference reference1 = userDB.getReference("Request");
+                    reference1.child(uid).setValue(requestMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Toast.makeText(DateSelectionActivity.this, "Request Has Been Sent", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
                 }
             }
         });

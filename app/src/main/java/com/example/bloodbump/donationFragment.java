@@ -85,7 +85,7 @@ public class donationFragment extends Fragment {
                                 Matcher num = number.matcher(value);
                                 while(num.find()){
                                     sum = sum + Integer.parseInt(num.group());
-                                    blood_quantity_text.setText(String.valueOf(sum));
+                                    blood_quantity_text.setText(String.valueOf(sum + " mL"));
                                 }
                             }
                         });
