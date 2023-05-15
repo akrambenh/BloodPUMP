@@ -147,7 +147,10 @@ public class DateSelectionActivity extends AppCompatActivity {
                 }else {
                     bookButton.setClickable(true);
                     bookButton.setBackground(getDrawable(R.drawable.large_red_button));
+                    bookButton.setText("Book");
+                    bookButton.setTextColor(getResources().getColor(R.color.white));
                     morning1.setBackground(getDrawable(R.drawable.field_selected));
+                    evening1.setBackground(getDrawable(R.drawable.field));
                     evening2.setBackground(getDrawable(R.drawable.field));
                     evening3.setBackground(getDrawable(R.drawable.field));
                     evening4.setBackground(getDrawable(R.drawable.field));
@@ -170,6 +173,8 @@ public class DateSelectionActivity extends AppCompatActivity {
                     bookButton.setClickable(false);
                 }else {
                     bookButton.setBackground(getDrawable(R.drawable.large_red_button));
+                    bookButton.setText("Book");
+                    bookButton.setTextColor(getResources().getColor(R.color.white));
                     morning2.setBackground(getDrawable(R.drawable.field_selected));
                     evening1.setBackground(getDrawable(R.drawable.field));
                     evening2.setBackground(getDrawable(R.drawable.field));
@@ -194,6 +199,8 @@ public class DateSelectionActivity extends AppCompatActivity {
                     bookButton.setClickable(false);
                 }else {
                     bookButton.setBackground(getDrawable(R.drawable.large_red_button));
+                    bookButton.setText("Book");
+                    bookButton.setTextColor(getResources().getColor(R.color.white));
                     morning3.setBackground(getDrawable(R.drawable.field_selected));
                     evening1.setBackground(getDrawable(R.drawable.field));
                     evening2.setBackground(getDrawable(R.drawable.field));
@@ -218,6 +225,8 @@ public class DateSelectionActivity extends AppCompatActivity {
                     bookButton.setClickable(false);
                 }else {
                     bookButton.setBackground(getDrawable(R.drawable.large_red_button));
+                    bookButton.setText("Book");
+                    bookButton.setTextColor(getResources().getColor(R.color.white));
                     morning4.setBackground(getDrawable(R.drawable.field_selected));
                     evening1.setBackground(getDrawable(R.drawable.field));
                     evening2.setBackground(getDrawable(R.drawable.field));
@@ -242,6 +251,8 @@ public class DateSelectionActivity extends AppCompatActivity {
                     bookButton.setClickable(false);
                 }else {
                     bookButton.setBackground(getDrawable(R.drawable.large_red_button));
+                    bookButton.setText("Book");
+                    bookButton.setTextColor(getResources().getColor(R.color.white));
                     morning5.setBackground(getDrawable(R.drawable.field_selected));
                     evening1.setBackground(getDrawable(R.drawable.field));
                     evening2.setBackground(getDrawable(R.drawable.field));
@@ -266,6 +277,8 @@ public class DateSelectionActivity extends AppCompatActivity {
                     bookButton.setClickable(false);
                 }else {
                     bookButton.setBackground(getDrawable(R.drawable.large_red_button));
+                    bookButton.setText("Book");
+                    bookButton.setTextColor(getResources().getColor(R.color.white));
                     morning6.setBackground(getDrawable(R.drawable.field_selected));
                     evening1.setBackground(getDrawable(R.drawable.field));
                     evening2.setBackground(getDrawable(R.drawable.field));
@@ -290,6 +303,8 @@ public class DateSelectionActivity extends AppCompatActivity {
                     bookButton.setClickable(false);
                 }else {
                     bookButton.setBackground(getDrawable(R.drawable.large_red_button));
+                    bookButton.setText("Book");
+                    bookButton.setTextColor(getResources().getColor(R.color.white));
                     morning7.setBackground(getDrawable(R.drawable.field_selected));
                     evening1.setBackground(getDrawable(R.drawable.field));
                     evening2.setBackground(getDrawable(R.drawable.field));
@@ -315,6 +330,8 @@ public class DateSelectionActivity extends AppCompatActivity {
                }else {
                    bookButton.setClickable(true);
                    bookButton.setBackground(getDrawable(R.drawable.large_red_button));
+                   bookButton.setText("Book");
+                   bookButton.setTextColor(getResources().getColor(R.color.white));
                    evening1.setBackground(getDrawable(R.drawable.field_selected));
                    evening2.setBackground(getDrawable(R.drawable.field));
                    evening3.setBackground(getDrawable(R.drawable.field));
@@ -339,6 +356,8 @@ public class DateSelectionActivity extends AppCompatActivity {
                    bookButton.setClickable(false);
                }else {
                    bookButton.setBackground(getDrawable(R.drawable.large_red_button));
+                   bookButton.setText("Book");
+                   bookButton.setTextColor(getResources().getColor(R.color.white));
                    evening2.setBackground(getDrawable(R.drawable.field_selected));
                    evening1.setBackground(getDrawable(R.drawable.field));
                    evening3.setBackground(getDrawable(R.drawable.field));
@@ -363,6 +382,8 @@ public class DateSelectionActivity extends AppCompatActivity {
                    bookButton.setClickable(false);
                }else {
                    bookButton.setBackground(getDrawable(R.drawable.large_red_button));
+                   bookButton.setText("Book");
+                   bookButton.setTextColor(getResources().getColor(R.color.white));
                    evening3.setBackground(getDrawable(R.drawable.field_selected));
                    evening1.setBackground(getDrawable(R.drawable.field));
                    evening2.setBackground(getDrawable(R.drawable.field));
@@ -387,6 +408,8 @@ public class DateSelectionActivity extends AppCompatActivity {
                    bookButton.setClickable(false);
                }else {
                    bookButton.setBackground(getDrawable(R.drawable.large_red_button));
+                   bookButton.setText("Book");
+                   bookButton.setTextColor(getResources().getColor(R.color.white));
                    evening4.setBackground(getDrawable(R.drawable.field_selected));
                    evening1.setBackground(getDrawable(R.drawable.field));
                    evening2.setBackground(getDrawable(R.drawable.field));
@@ -411,6 +434,8 @@ public class DateSelectionActivity extends AppCompatActivity {
                    bookButton.setClickable(false);
                }else {
                    bookButton.setBackground(getDrawable(R.drawable.large_red_button));
+                   bookButton.setText("Book");
+                   bookButton.setTextColor(getResources().getColor(R.color.white));
                    evening5.setBackground(getDrawable(R.drawable.field_selected));
                    evening1.setBackground(getDrawable(R.drawable.field));
                    evening2.setBackground(getDrawable(R.drawable.field));
@@ -435,6 +460,8 @@ public class DateSelectionActivity extends AppCompatActivity {
                    bookButton.setClickable(false);
                }else {
                    bookButton.setBackground(getDrawable(R.drawable.large_red_button));
+                   bookButton.setText("Book");
+                   bookButton.setTextColor(getResources().getColor(R.color.white));
                    evening6.setBackground(getDrawable(R.drawable.field_selected));
                    evening1.setBackground(getDrawable(R.drawable.field));
                    evening2.setBackground(getDrawable(R.drawable.field));
@@ -459,6 +486,8 @@ public class DateSelectionActivity extends AppCompatActivity {
                    bookButton.setClickable(false);
                }else {
                    bookButton.setBackground(getDrawable(R.drawable.large_red_button));
+                   bookButton.setText("Book");
+                   bookButton.setTextColor(getResources().getColor(R.color.white));
                    evening7.setBackground(getDrawable(R.drawable.field_selected));
                    evening1.setBackground(getDrawable(R.drawable.field));
                    evening2.setBackground(getDrawable(R.drawable.field));
@@ -507,6 +536,7 @@ public class DateSelectionActivity extends AppCompatActivity {
             requestMap.put("Donation Type", "Platelet");
         });
         proceedButton.setOnClickListener(v -> {
+            dialog.hide();
                 reference = userDB.getReference("Schedule");
                 reference.child(venueText.getText().toString()).child(RequestDate).get().addOnCompleteListener(task -> {
                     if (task.getResult().exists()) {
@@ -575,10 +605,9 @@ public class DateSelectionActivity extends AppCompatActivity {
                         // Parsing this date strings into Date objects
                         Date todayDate = dtformat.parse(today);
                         Date end = dtformat.parse(afterFifteen);
-                        if(end.compareTo(todayDate) >= 0){
-                            Toast.makeText(DateSelectionActivity.this, "Date Is Valid", Toast.LENGTH_SHORT).show();
-                        }else if(end.compareTo(todayDate) < 0){
-                            Toast.makeText(DateSelectionActivity.this, "Date Is Invalid", Toast.LENGTH_SHORT).show();
+                        if(end.compareTo(todayDate) < 0){
+                            Toast.makeText(DateSelectionActivity.this, "Your Health Report Is older Than 15 Days\n" +
+                                    "Recheck Will Be Performed", Toast.LENGTH_LONG).show();
                         }
                     } catch (ParseException e) {
                         throw new RuntimeException(e);
@@ -599,6 +628,10 @@ public class DateSelectionActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Void unused) {
                             Toast.makeText(DateSelectionActivity.this, "Request Has Been Sent", Toast.LENGTH_SHORT).show();
+                            bookButton.setBackground(getResources().getDrawable(R.drawable.transparent_button));
+                            bookButton.setText("Request Sent");
+                            bookButton.setTextSize(16f);
+                            bookButton.setTextColor(getResources().getColor(R.color.russian_green));
                         }
                     });
 

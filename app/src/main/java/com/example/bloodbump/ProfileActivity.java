@@ -1,5 +1,6 @@
 package com.example.bloodbump;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,7 +21,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
@@ -79,7 +83,7 @@ public class ProfileActivity extends AppCompatActivity {
         userAuth = FirebaseAuth.getInstance();
         userDB = FirebaseDatabase.getInstance();
         reference = userDB.getReference("User");
-        String UID = userAuth.getCurrentUser().getUid();
+        UID = userAuth.getCurrentUser().getUid();
         reference.child(UID).get().addOnCompleteListener(task -> {
             DataSnapshot data = task.getResult();
             String first_name = data.child("first_name").getValue().toString();
@@ -150,18 +154,16 @@ public class ProfileActivity extends AppCompatActivity {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] data = baos.toByteArray();
             UploadTask uploadTask = avatarRef.putBytes(data);
-            uploadTask.addOnFailureListener(e -> Toast.makeText(ProfileActivity.this, "Failed To Upload Image", Toast.LENGTH_SHORT).show()).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    save_button.setBackground(getResources().getDrawable(R.drawable.transparent_button));
-                    save_button.setText("Saved");
-                    save_button.setTextColor(getResources().getColor(R.color.russian_green));
-                    old_password.setVisibility(View.GONE);
-                    new_password.setVisibility(View.GONE);
-                    new_confirm_password.setVisibility(View.GONE);
-                }
+            uploadTask.addOnFailureListener(e -> Toast.makeText(ProfileActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show()).addOnSuccessListener(taskSnapshot -> {
+                save_button.setBackground(getResources().getDrawable(R.drawable.transparent_button));
+                save_button.setText("Saved");
+                save_button.setTextColor(getResources().getColor(R.color.russian_green));
+                old_password.setVisibility(View.GONE);
+                new_password.setVisibility(View.GONE);
+                new_confirm_password.setVisibility(View.GONE);
             });
-        }if(passFieldShown){
+        }
+        if(passFieldShown){
             String old_pass = old_password.getText().toString().trim();
             String new_pass = new_password.getText().toString().trim();
             String confirm_pass = new_confirm_password.getText().toString().trim();
@@ -202,7 +204,8 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 });
             }
-        }if(emailFieldShown){
+        }
+        if(emailFieldShown){
             String old_address = old_email.getText().toString().trim();
             String new_address = new_email.getText().toString().trim();
             String pass = password.getText().toString().trim();
@@ -227,12 +230,37 @@ public class ProfileActivity extends AppCompatActivity {
                     old_email.setError("Wrong Email");
                     old_email.requestFocus();
                 }else{
-                    if(!old_address.equals(new_address)){
-                        new_email.setError("Email Doesn't Match");
-                        new_email.requestFocus();
-                    }else{
 
-                    }
+                        userAuth.signInWithEmailAndPassword(current_email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if(task.isSuccessful()){
+                                    reference = userDB.getReference("User");
+                                    userAuth.getCurrentUser().updateEmail(new_address).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                reference.child(UID).child("email").setValue(new_address).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void unused) {
+                                                        save_button.setBackground(getResources().getDrawable(R.drawable.transparent_button));
+                                                        save_button.setText("Saved");
+                                                        save_button.setTextColor(getResources().getColor(R.color.russian_green));
+                                                        old_email.setVisibility(View.GONE);
+                                                        new_email.setVisibility(View.GONE);
+                                                        password.setVisibility(View.GONE);
+                                                    }
+                                                });
+                                            }else
+                                                Toast.makeText(ProfileActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
+                                }else {
+                                    Toast.makeText(ProfileActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
                 }
             }
         }

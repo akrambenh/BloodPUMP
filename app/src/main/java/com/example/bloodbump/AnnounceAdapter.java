@@ -8,13 +8,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -59,29 +56,26 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.MyView
                 DatabaseReference reference;
                 // get other user data like name ...
                 reference = userDB.getReference("User");
-                reference.child(UID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                        HashMap<String, String> announceRequest = new HashMap<>();
-                        DataSnapshot dataSnapshot = task.getResult();
-                        first_name = dataSnapshot.child("first_name").getValue().toString();
-                        last_name = dataSnapshot.child("last_name").getValue().toString();
-                        dob = dataSnapshot.child("Date Of Birth").getValue().toString();
-                        gender = dataSnapshot.child("Gender").getValue().toString();
-                        announceRequest.put("First Name", first_name);
-                        announceRequest.put("Last Name", last_name);
-                        announceRequest.put("Date Of Birth", dob);
-                        announceRequest.put("Gender", gender);
-                        // Setting Announce Request
-                        DatabaseReference reference1 = userDB.getReference("Request");
-                        String name = String.valueOf(announce_name.get(position));
-                        String date = String.valueOf(announce_date.get(position));
-                        String time = String.valueOf(announce_time.get(position));
-                        announceRequest.put("Campaign Name", name);
-                        announceRequest.put("Request Date", date);
-                        announceRequest.put("Request Time", time);
-                        checkHealthCondition(UID, announceRequest);
-                    }
+                reference.child(UID).get().addOnCompleteListener(task -> {
+                    HashMap<String, String> announceRequest = new HashMap<>();
+                    DataSnapshot dataSnapshot = task.getResult();
+                    first_name = dataSnapshot.child("first_name").getValue().toString();
+                    last_name = dataSnapshot.child("last_name").getValue().toString();
+                    dob = dataSnapshot.child("Date Of Birth").getValue().toString();
+                    gender = dataSnapshot.child("Gender").getValue().toString();
+                    announceRequest.put("First Name", first_name);
+                    announceRequest.put("Last Name", last_name);
+                    announceRequest.put("Date Of Birth", dob);
+                    announceRequest.put("Gender", gender);
+                    // Setting Announce Request
+                    DatabaseReference reference1 = userDB.getReference("Request");
+                    String name = String.valueOf(announce_name.get(position));
+                    String date = String.valueOf(announce_date.get(position));
+                    String time = String.valueOf(announce_time.get(position));
+                    announceRequest.put("Campaign Name", name);
+                    announceRequest.put("Request Date", date);
+                    announceRequest.put("Request Time", time);
+                    checkHealthCondition(UID, announceRequest);
                 });
 
             }
@@ -109,10 +103,9 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.MyView
                         // Parsing this date strings into Date objects
                         Date todayDate = dtformat.parse(today);
                         Date end = dtformat.parse(afterFifteen);
-                        if(end.compareTo(todayDate) >= 0){
-                            Toast.makeText(context, "Date is valid", Toast.LENGTH_SHORT).show();
-                        }else if(end.compareTo(todayDate) < 0){
-                            Toast.makeText(context, "Date is invalid", Toast.LENGTH_SHORT).show();
+                        if(end.compareTo(todayDate) < 0){
+                            Toast.makeText(context, "Your Health Report Is older Than 15 Days\n" +
+                                    "Recheck Will Be Performed", Toast.LENGTH_LONG).show();
                         }
                     } catch (ParseException e) {
                         throw new RuntimeException(e);
@@ -132,7 +125,7 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.MyView
                     reference1.child(uid).setValue(announceRequest).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            Toast.makeText(context, "Request Has Been Sent", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Request Sent Successfully", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
