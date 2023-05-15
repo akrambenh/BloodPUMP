@@ -9,7 +9,25 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class Donor {
-	String password, email, donor_ID, first_name, last_name, phone, DOB, gender, donorType;
+	String password;
+	String email;
+	String donor_ID;
+	String first_name;
+	String last_name;
+	String phone;
+	String DOB;
+	String gender;
+	String donorType;
+
+	public String getAge() {
+		return age;
+	}
+
+	public void setAge(String age) {
+		this.age = age;
+	}
+
+	String age;
 
 	public Donor(String sex, String dob, String bloodgroup, String donorType) {
 		this.gender = sex;

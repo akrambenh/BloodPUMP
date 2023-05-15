@@ -70,24 +70,22 @@ public class ResetPasswordActivity extends AppCompatActivity {
 
     public void confirmPassword(View view) {
         String password = reset_password.getText().toString().trim();
-        userAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    String UID = userAuth.getCurrentUser().getUid();
-                    reference = userDB.getReference("User");
-                    reference.child(UID).child("password").setValue(password).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            Toast.makeText(ResetPasswordActivity.this, "Password Reset Successfully", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(ResetPasswordActivity.this, HomeActivity.class));
-                        }
-                    });
-                }else {
-                    reset_password.setError("Wrong Password");
-                    reset_password.requestFocus();
-                }
+        userAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                String UID = userAuth.getCurrentUser().getUid();
+                reference = userDB.getReference("User");
+                reference.child(UID).child("password").setValue(password).addOnSuccessListener(unused -> {
+                    Toast.makeText(ResetPasswordActivity.this, "Password Reset Successfully", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(ResetPasswordActivity.this, HomeActivity.class));
+                });
+            }else {
+                reset_password.setError("Wrong Password");
+                reset_password.requestFocus();
             }
         });
+    }
+
+    public void backToHome(View view) {
+        startActivity(new Intent(ResetPasswordActivity.this, LoginActivity.class));
     }
 }

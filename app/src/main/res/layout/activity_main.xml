@@ -7,44 +7,6 @@
     android:background="@color/my_red"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/login_button"
-        android:layout_width="128dp"
-        android:layout_height="64dp"
-        android:background="@drawable/blue_button"
-        android:onClick="login"
-        android:text="Login"
-        android:textColor="@color/med_blue"
-        android:textSize="15sp"
-        android:theme="@style/MytextTheme"
-        android:paddingBottom="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.137"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.877"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <Button
-        android:id="@+id/signup_button"
-        android:layout_width="128dp"
-        android:layout_height="64dp"
-        android:background="@drawable/blue_button"
-        android:onClick="signup"
-        android:paddingBottom="10dp"
-        android:text="SIGn up"
-        android:textColor="@color/med_blue"
-        android:textSize="15sp"
-        android:theme="@style/MytextTheme"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.855"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.878"
-        tools:ignore="SpeakableTextPresentCheck" />
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
@@ -68,4 +30,53 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.546"
         app:srcCompat="@drawable/every_two_seconds__someone_needs_blood__and_a_single_donation_can_save_lives_blood_donors_are_true_heroes_" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:background="@drawable/main_banner"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Button
+        android:id="@+id/signup_button"
+        android:layout_width="150dp"
+        android:layout_height="64dp"
+        android:background="@drawable/rect_nofilled_button"
+        android:onClick="signup"
+        android:paddingBottom="10dp"
+        android:text="Sign up"
+        android:textColor="@color/my_red"
+        android:textSize="15sp"
+        android:theme="@style/MytextTheme"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.892"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.908"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="150dp"
+        android:layout_height="64dp"
+        android:background="@drawable/rect_button"
+        android:onClick="login"
+        android:paddingBottom="10dp"
+        android:text="Login"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:theme="@style/MytextTheme"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.095"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.908"
+        tools:ignore="SpeakableTextPresentCheck" />
 </androidx.constraintlayout.widget.ConstraintLayout>

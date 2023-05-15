@@ -21,7 +21,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 public class CompleteRegistrationActivity extends AppCompatActivity {
@@ -40,7 +46,6 @@ public class CompleteRegistrationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complete_registration);
-
         Bundle extars = getIntent().getExtras();
         gender_spinner = (Spinner) findViewById(R.id.sex_spinner);
         bloodgroupSpinner = (Spinner) findViewById(R.id.bloodgroupSpinner);
@@ -66,10 +71,25 @@ public class CompleteRegistrationActivity extends AppCompatActivity {
             String dob = datePicker_button.getText().toString();
             String bloodgroup = bloodgroupSpinner.getSelectedItem().toString();
             String donorType = donorTypeSpinner.getSelectedItem().toString();
+            // Calculating Age
+            int age = 0;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                SimpleDateFormat dtf = new SimpleDateFormat("dd/MM/yyyy");
+                try {
+                    Date date = dtf.parse(dob);
+                    LocalDate birth = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                    LocalDate curDate = LocalDate.now();
+                    age = Period.between(birth, curDate).getYears();
+                } catch (ParseException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
             // Using Hashmap To Write Data on Firebase Database
             HashMap<String, String> User = (HashMap<String, String>) extars.get("list");
             User.put("Gender", gender);
             User.put("Date Of Birth", dob);
+            User.put("Age", String.valueOf(age));
             User.put("Donor Type", donorType);
             userAuth = FirebaseAuth.getInstance();
             String UID = userAuth.getCurrentUser().getUid();
@@ -92,21 +112,32 @@ public class CompleteRegistrationActivity extends AppCompatActivity {
     }
     private void initDatePicker(){
         DatePickerDialog.OnDateSetListener dateSetListener = (datePicker, year, month, day) -> {
-            String DOB = makeDateString(year, month, day);
-            datePicker_button.setText(DOB);
+            month = month + 1;
+                String DOB = makeDateString(year, month, day);
+                datePicker_button.setText(DOB);
         };
+        final Calendar mCalendar = Calendar.getInstance();
+        final int maxDay = 31;
+        final int maxMonth = 12;
+        final int maxYear = 2005;
+        mCalendar.set(maxYear, maxMonth
+                -1, maxDay);
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
-
         int style = AlertDialog.THEME_DEVICE_DEFAULT_LIGHT;
-
-        datePickerDialog = new DatePickerDialog(this, style, dateSetListener, year, month, day);
+        datePickerDialog = new DatePickerDialog(this, style,dateSetListener, year, month, day);
+        datePickerDialog.getDatePicker().setMaxDate(mCalendar.getTimeInMillis());
+        final int minDay = 01;
+        final int minMonth = 01;
+        final int minYear = 1900;
+        mCalendar.set(minYear, minMonth - 1, minDay);
+        datePickerDialog.getDatePicker().setMinDate(mCalendar.getTimeInMillis());
     }
 
     private String makeDateString(int year, int month, int day) {
-        return day + "/" + getMonthFormat(month) + "/" + year;
+        return day + "/" + month + "/" + year;
     }
     private String getMonthFormat(int month) {
             if(month == 0)

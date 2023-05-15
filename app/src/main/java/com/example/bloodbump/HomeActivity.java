@@ -167,6 +167,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 if (task.getResult().exists()) {
                     //
                     DataSnapshot data = task.getResult();
+
                     String date = String.valueOf(data.child("Donation Date").getValue());
                     String time = String.valueOf(data.child("Donation Time").getValue());
                     String venue = String.valueOf(data.child("Medical Establishment").getValue());
@@ -198,6 +199,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             // TODO: Consider calling
                             //    ActivityCompat#requestPermissions
                             // here to request the missing permissions, and then overriding
+
                             //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
                             //                                          int[] grantResults)
                             // to handle the case where the user grants the permission. See the documentation
@@ -224,6 +226,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     public void JumpProfile(View view) {
         startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
+    }
+
+    public void makeDonation(View view) {
+        startActivity(new Intent(HomeActivity.this, SelectVenueActivity.class));
     }
 }
 

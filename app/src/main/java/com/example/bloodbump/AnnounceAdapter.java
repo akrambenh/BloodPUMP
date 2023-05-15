@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Random;
 
 public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.MyViewHolder> {
     private Context context;
@@ -122,7 +123,11 @@ public class AnnounceAdapter extends RecyclerView.Adapter<AnnounceAdapter.MyView
                     Toast.makeText(context, "Can't Book The Donation \n Due to Having Malaria", Toast.LENGTH_SHORT).show();
                 }else {
                     DatabaseReference reference1 = userDB.getReference("Request");
-                    reference1.child(uid).setValue(announceRequest).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    Random rnd = new Random();
+                    int number = rnd.nextInt(999999999);
+                    @SuppressLint("DefaultLocale")
+                    String RequestID =  String.format("%09d", number);
+                    reference1.child(uid).child(RequestID).setValue(announceRequest).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
                             Toast.makeText(context, "Request Sent Successfully", Toast.LENGTH_SHORT).show();

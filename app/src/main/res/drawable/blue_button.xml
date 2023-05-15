@@ -6,7 +6,7 @@
     <shape android:shape="rectangle"
         android:thickness="2dp">
         <solid android:color="@color/white"></solid>
-        <stroke android:color="@color/med_blue"
+        <stroke android:color="@color/my_red"
             android:width="4dp"/>
         <corners android:bottomLeftRadius="10dp"
             android:bottomRightRadius="10dp"/>

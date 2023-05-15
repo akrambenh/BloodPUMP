@@ -4,27 +4,22 @@ public class HealthReport {
 
 	private String donor_ID;
 	private String bloodGroup;
-	private String bloodPressure;
 	private boolean HIV;
 	private boolean malaria;
+	private int systolic;
+	private int diastolic;
 
-	public void submitReport() {
-		// TODO - implement HealthReport.submitReport
-		throw new UnsupportedOperationException();
+	public HealthReport(String donor_id, String bloodGroup, boolean hiv, boolean malaria, int systolic, int diastolic) {
+		donor_ID = donor_id;
+		this.bloodGroup = bloodGroup;
+		HIV = hiv;
+		this.malaria = malaria;
+		this.systolic = systolic;
+		this.diastolic = diastolic;
 	}
 
 	public void viewReport() {
 		// TODO - implement HealthReport.viewReport
-		throw new UnsupportedOperationException();
-	}
-
-	public void updateReport() {
-		// TODO - implement HealthReport.updateReport
-		throw new UnsupportedOperationException();
-	}
-
-	public void deleteReport() {
-		// TODO - implement HealthReport.deleteReport
 		throw new UnsupportedOperationException();
 	}
 

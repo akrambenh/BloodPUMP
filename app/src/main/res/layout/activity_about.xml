@@ -116,7 +116,7 @@
         android:layout_width="300dp"
         android:layout_height="24dp"
         android:paddingTop="5dp"
-        android:text="geuchtalrihab07@gmail.com"
+        android:text="guechtalrihab07@gmail.com"
         android:textColor="@color/med_blue"
         android:textSize="13dp"
         android:theme="@style/MytextTheme"

@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Random;
 
 public class DateSelectionActivity extends AppCompatActivity {
     private TextView venueText;
@@ -624,10 +625,14 @@ public class DateSelectionActivity extends AppCompatActivity {
                     Toast.makeText(DateSelectionActivity.this, "Can't Book The Donation \n Due To Having Malaria", Toast.LENGTH_SHORT).show();
                 }else {
                     DatabaseReference reference1 = userDB.getReference("Request");
-                    reference1.child(uid).setValue(requestMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    // creating request id
+                    Random rnd = new Random();
+                    int number = rnd.nextInt(999999999);
+                    @SuppressLint("DefaultLocale")
+                    String RequestID =  String.format("%09d", number);
+                    reference1.child(uid).child(RequestID).setValue(requestMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            Toast.makeText(DateSelectionActivity.this, "Request Has Been Sent", Toast.LENGTH_SHORT).show();
                             bookButton.setBackground(getResources().getDrawable(R.drawable.transparent_button));
                             bookButton.setText("Request Sent");
                             bookButton.setTextSize(16f);

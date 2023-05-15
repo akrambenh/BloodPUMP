@@ -55,17 +55,18 @@
             android:layout_width="160dp"
             android:layout_height="140dp"
             android:background="@drawable/stats_rect"
-            android:src="@drawable/notify_icon"
+            android:onClick="JumpAnnounceFrag"
             android:paddingTop="80dp"
             android:paddingBottom="10dp"
-            android:onClick="JumpAnnounceFrag"
-            app:tint="@color/my_red"
+            android:src="@drawable/notify_icon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.08"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.494" />
+            app:layout_constraintVertical_bias="0.494"
+            app:tint="@color/my_red"
+            tools:ignore="SpeakableTextPresentCheck" />
 
         <ImageView
             android:id="@+id/healthRect"
@@ -150,7 +151,25 @@
             app:layout_constraintStart_toStartOf="@+id/nearbySearch"
             app:layout_constraintTop_toTopOf="@+id/nearbySearch"
             app:layout_constraintVertical_bias="0.666" />
-
+        <Button
+            android:id="@+id/donate_button"
+            android:layout_width="250dp"
+            android:layout_height="48dp"
+            android:background="@drawable/large_red_button"
+            android:drawableLeft="@drawable/add_icon"
+            android:onClick="makeDonation"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="6dp"
+            android:text="Donate Blood"
+            android:textColor="@color/white"
+            android:theme="@style/MytextTheme"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.782" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
