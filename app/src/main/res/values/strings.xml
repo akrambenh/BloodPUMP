@@ -38,7 +38,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_maps">MapsActivity</string>
-
+    <string name="thesis">This is a thesis \n (final dissertation) \n a research project completed
+as a part of an undregraduate degree. \n
+It was developed by Both Students of University of Ferhat abbas, Faculty of sciences \n \n \n&amp;\n \n \nAnd we Hope that our app meets The recommended requirements.\n You can send feedback to our emails</string>
 
     <style name="Rouned">
         <item name="cornerRadius">80dp</item>

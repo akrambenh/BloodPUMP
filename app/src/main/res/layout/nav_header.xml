@@ -8,26 +8,27 @@
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="74dp"
+        android:layout_width="128dp"
         android:layout_height="36dp"
-        android:paddingTop="5dp"
-        android:text="Menu"
+        android:text="Profile"
         android:textColor="@color/white"
         android:theme="@style/MytextTheme"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.293"
+        app:layout_constraintHorizontal_bias="0.342"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.541" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="@drawable/round_arrow_back"
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_nav"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:onClick="JumpProfile"
+        app:civ_border_color="@color/white"
+        app:civ_border_width="2dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.042"
+        app:layout_constraintHorizontal_bias="0.046"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

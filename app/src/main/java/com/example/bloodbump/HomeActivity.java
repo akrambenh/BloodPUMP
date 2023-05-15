@@ -20,23 +20,25 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -47,11 +49,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private DatabaseReference reference;
     private StorageReference storage;
     private CircleImageView profile_image;
+    private CircleImageView profile_nav;
     private TextView nameText;
     private DrawerLayout drawerLayout;
     private androidx.appcompat.widget.Toolbar toolbar;
 
-    @SuppressLint({"UseSupportActionBar", "MissingInflatedId"})
+    @SuppressLint({"UseSupportActionBar", "MissingInflatedId", "ResourceType"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,10 +67,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         drawerLayout = findViewById(R.id.drawerLayout);
         NavigationView navigationView = findViewById(R.id.nav_view);
+        View header = navigationView.getHeaderView(0);
+        profile_nav = header.findViewById(R.id.profile_nav);
         navigationView.setNavigationItemSelectedListener(this);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_nav,
                 R.string.close_nav);
-
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_content, new HomeFragment()).commit();
             navigationView.setCheckedItem(R.id.nav_home);
@@ -76,14 +80,19 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         String UID = userAuth.getCurrentUser().getUid();
         storage = FirebaseStorage.getInstance().getReference("Donor/" + UID + "/ProfilePic.jpg");
         try {
-            File profile_pic = File.createTempFile("profilePic", ".jpg");
-            storage.getFile(profile_pic).addOnSuccessListener(taskSnapshot -> {
-                Bitmap bitmap = BitmapFactory.decodeFile(profile_pic.getAbsolutePath());
-                profile_image.setImageBitmap(bitmap);
+            File profile_pic = File.createTempFile("ProfilePic", ".jpg");
+            storage.getFile(profile_pic).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    Bitmap bitmap = BitmapFactory.decodeFile(profile_pic.getAbsolutePath());
+                    profile_image.setImageBitmap(bitmap);
+                    profile_nav.setImageBitmap(bitmap);
+                }
             });
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
         userDB = FirebaseDatabase.getInstance();
         reference = userDB.getReference("User");
         reference.child(UID).get().addOnCompleteListener(task -> {
@@ -93,7 +102,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             String fullname = name + " " + lastName;
             nameText.setText(fullname);
         });
-
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -105,6 +113,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_appointment:
                 startActivity(new Intent(HomeActivity.this, AppointmentActivity.class));
+                break;
+            case R.id.nav_logout:
+                userAuth.signOut();
+                startActivity(new Intent(HomeActivity.this, MainActivity.class));
+                break;
+            case R.id.nav_about:
+                startActivity(new Intent(HomeActivity.this, AboutActivity.class));
                 break;
         }
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -155,13 +170,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     String date = String.valueOf(data.child("Donation Date").getValue());
                     String time = String.valueOf(data.child("Donation Time").getValue());
                     String venue = String.valueOf(data.child("Medical Establishment").getValue());
-                    String type = String.valueOf(data.child("type").getValue());
-                    /*HashMap<String, String> bookingDetails = new HashMap<>();
-                    bookingDetails.put("date", date);
-                    bookingDetails.put("time", time);
-                    bookingDetails.put("venue", venue);
-                    bookingDetails.put("type", type);*/
-                    //
+                    String type = String.valueOf(data.child("Donation Type").getValue());
                     String id = "channel_id_one";
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         CharSequence name = "channel_one";
@@ -182,12 +191,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                 .setPriority(NotificationCompat.BADGE_ICON_SMALL);
                         NotificationManagerCompat managerCompat = NotificationManagerCompat.from(getApplicationContext());
                         Intent resultIntent = new Intent(getApplicationContext(), AppointmentActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putString("date", date);
-                        bundle.putString("time", time);
-                        bundle.putString("type", type);
-                        bundle.putString("venue", venue);
-                        resultIntent.putExtras(bundle);
                         TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
                         stackBuilder.addNextIntentWithParentStack(resultIntent);
                         PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
@@ -217,6 +220,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     public void JumpAnnounceFrag(View view) {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_content, new AnnounceFragment()).commit();
+    }
+
+    public void JumpProfile(View view) {
+        startActivity(new Intent(HomeActivity.this, ProfileActivity.class));
     }
 }
 
