@@ -57,8 +57,6 @@ import io.getstream.avatarview.AvatarView;
 
 public class picAddActivity extends AppCompatActivity {
     private FirebaseAuth userAuth;
-    private FirebaseDatabase userDatabase;
-    private DatabaseReference reference;
     private FirebaseStorage storage;
     private Button skip_continue_button;
     private File photoFile = null;
@@ -67,7 +65,6 @@ public class picAddActivity extends AppCompatActivity {
     private Button upload_pic_button;
     private CircleImageView profile_image;
     private Bitmap user_bitmap = null;
-    private String imageDatabasePath;
     private static final int CAMERA_REQUEST = 1888;
     public static final int PICK_IMAGE = 1;
     @Override
@@ -77,35 +74,27 @@ public class picAddActivity extends AppCompatActivity {
         skip_continue_button = (Button) findViewById(R.id.skip_continue_button);
         profile_image = (CircleImageView) findViewById(R.id.profile_image);
         userAuth = FirebaseAuth.getInstance();
-        String UID = userAuth.getCurrentUser().getUid().toString();
-        skip_continue_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(photoFile == null){
-                    // set standard avatar as profile pic and save in storage
-                }else {
-                    storage = FirebaseStorage.getInstance();
-                    StorageReference storageRef = storage.getReferenceFromUrl("gs://bloodbump-35398.appspot.com/");
-                    StorageReference avatarRef = storageRef.child("Donor/" + UID + "/ProfilePic.jpg");
-                    Bitmap bitmap = ((BitmapDrawable) profile_image.getDrawable()).getBitmap();
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                    byte[] data = baos.toByteArray();
-                    UploadTask uploadTask = avatarRef.putBytes(data);
-                    uploadTask.addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(picAddActivity.this, "Failed To Upload Image", Toast.LENGTH_SHORT).show();
-                        }
-                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Toast.makeText(picAddActivity.this, "Image Uploaded Successfully", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(picAddActivity.this, HomeActivity.class));
-                        }
-                    });
+        String UID = userAuth.getCurrentUser().getUid();
+        skip_continue_button.setOnClickListener(view -> {
+            if(photoFile == null){
+                // set standard avatar as profile pic and save in storage
+            }else {
+                storage = FirebaseStorage.getInstance();
+                StorageReference storageRef = storage.getReferenceFromUrl("gs://bloodbump-35398.appspot.com/");
+                StorageReference avatarRef = storageRef.child("Donor/" + UID + "/ProfilePic.jpg");
+                Bitmap bitmap = ((BitmapDrawable) profile_image.getDrawable()).getBitmap();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] data = baos.toByteArray();
+                UploadTask uploadTask = avatarRef.putBytes(data);
+                uploadTask.addOnFailureListener(e -> Toast.makeText(picAddActivity.this, "Failed To Upload Image", Toast.LENGTH_SHORT).show()).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Toast.makeText(picAddActivity.this, "Image Uploaded Successfully", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(picAddActivity.this, HomeActivity.class));
+                    }
+                });
 
-                }
             }
         });
     }
@@ -116,25 +105,17 @@ public class picAddActivity extends AppCompatActivity {
         take_pic_button = dialog.findViewById(R.id.take_pic_button);
         upload_pic_button = dialog.findViewById(R.id.upload_pic_button);
 
-        take_pic_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent CameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(CameraIntent, CAMERA_REQUEST);
-            }
+        take_pic_button.setOnClickListener(view1 -> {
+            Intent CameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(CameraIntent, CAMERA_REQUEST);
         });
-        upload_pic_button.setOnClickListener(new View.OnClickListener() {
-            private ContentResolver getContentResolver;
-
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
-                dialog.hide();
-                }
-        });
+        upload_pic_button.setOnClickListener(view12 -> {
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+            dialog.hide();
+            });
         dialog.show();
 
     }
@@ -152,7 +133,6 @@ public class picAddActivity extends AppCompatActivity {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            Toast.makeText(this, currentPhotoPath, Toast.LENGTH_SHORT).show();
         }if(requestCode == CAMERA_REQUEST){
             user_bitmap = (Bitmap) data.getExtras().get("data");
             skip_continue_button.setText("Continue");
@@ -165,25 +145,6 @@ public class picAddActivity extends AppCompatActivity {
         }
 
 
-    }
-    // Used This Method to manually make photo's corners Rounder now with CircleImageView Dependency this method is not needed
-    public Bitmap getRoundedCornerBitmap(Bitmap bitmap) {
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
-        Toast.makeText(this, "Making Pic Rounder", Toast.LENGTH_SHORT).show();
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-        final RectF rectF = new RectF(rect);
-        final float roundPx = 380;
-
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(Color.RED);
-        canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-        return output;
     }
     private File createImageFile() throws IOException {
         // Create an image file name

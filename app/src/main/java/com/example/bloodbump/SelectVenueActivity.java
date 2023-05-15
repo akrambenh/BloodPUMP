@@ -55,7 +55,7 @@ public class SelectVenueActivity extends AppCompatActivity {
     }
     public void onClick(View v){
         Intent intent = new Intent(SelectVenueActivity.this, DateSelectionActivity.class);
-        intent.putExtra("predecessor_activity", "AppointmentActivity");
+        intent.putExtra("predecessor_activity", "SelectVenueActivity");
         switch(v.getId()){
             case R.id.suggest_button1:
                 intent.putExtra("venue", suggestedCentre[0]);
@@ -75,7 +75,7 @@ public class SelectVenueActivity extends AppCompatActivity {
 
     public void searchVenue(View view) {
         Intent intent = new Intent(SelectVenueActivity.this, SearchVenueActivity.class);
-        intent.putExtra("predecessor_activity", "AppointmentActivity");
+        intent.putExtra("predecessor_activity", "SelectVenueActivity");
         startActivity(intent);
     }
 }

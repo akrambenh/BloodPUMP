@@ -108,20 +108,20 @@
             android:id="@+id/check_history_text"
             android:layout_width="210dp"
             android:layout_height="48dp"
-            android:text="Check History"
             android:clickable="true"
-            android:onClick="checkHistory"
-            android:theme="@style/MytextTheme"
-            android:textColor="@color/my_red"
             android:drawableRight="@drawable/right_arrow_icon"
             android:drawableTint="@color/my_red"
+            android:onClick="checkHistory"
             android:paddingBottom="16dp"
+            android:text="Check History"
+            android:textColor="@color/my_red"
+            android:theme="@style/MytextTheme"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.582" />
+            app:layout_constraintVertical_bias="0.611" />
 
         <Button
             android:id="@+id/donate_button"
@@ -129,19 +129,19 @@
             android:layout_height="48dp"
             android:background="@drawable/large_red_button"
             android:drawableLeft="@drawable/add_icon"
-            android:paddingLeft="20dp"
-            android:text="Donate Blood"
-            android:paddingBottom="6dp"
-            android:paddingRight="20dp"
-            android:theme="@style/MytextTheme"
-            android:textColor="@color/white"
             android:onClick="DonateBlood"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="6dp"
+            android:text="Donate Blood"
+            android:textColor="@color/white"
+            android:theme="@style/MytextTheme"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.829" />
+            app:layout_constraintVertical_bias="0.782" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

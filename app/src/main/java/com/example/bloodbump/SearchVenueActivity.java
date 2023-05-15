@@ -55,7 +55,7 @@ public class SearchVenueActivity extends AppCompatActivity {
     }
 
     public void onBackButton(View view) {
-        if(predecessor_activity.equals("AppointmentActivity")){
+        if(predecessor_activity.equals("SelectVenueActivity")){
             startActivity(new Intent(SearchVenueActivity.this, SelectVenueActivity.class));
         }else if(predecessor_activity.equals("HomeActivity")){
             startActivity(new Intent(SearchVenueActivity.this, HomeActivity.class));

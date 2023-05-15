@@ -17,13 +17,13 @@
 
     <Button
         android:id="@+id/titleSelection"
-        android:layout_width="120dp"
+        android:layout_width="250dp"
         android:layout_height="48dp"
         android:background="@drawable/large_red_button"
         android:drawableLeft="@drawable/bookmark_icon"
         android:drawableTint="@color/white"
-        android:paddingLeft="10dp"
-        android:paddingRight="29dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="42dp"
         android:text="Book"
         android:textSize="15dp"
         android:textColor="@color/white"

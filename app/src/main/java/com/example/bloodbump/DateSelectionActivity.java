@@ -36,6 +36,7 @@ public class DateSelectionActivity extends AppCompatActivity {
     private  String RequestTime;
     private String bloodgroup = null;
     private String venue = null;
+    String predecessor_activity = null;
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,7 @@ public class DateSelectionActivity extends AppCompatActivity {
         // Getting Predecessor Activity
         Intent intent = getIntent();
         venue = intent.getStringExtra("venue");
-        String predecessor_activity = intent.getStringExtra("predecessor_activity");
+        predecessor_activity = intent.getStringExtra("predecessor_activity");
         venueText.setText(venue);
         //
         bookButton = findViewById(R.id.bookButton);
@@ -491,15 +492,19 @@ public class DateSelectionActivity extends AppCompatActivity {
         HashMap<String, String> requestMap = new HashMap<>();
         wholeBloodText.setOnClickListener(v -> {
             wholeBloodText.setBackground(getResources().getDrawable(R.drawable.field_selected));
+            wholeBloodText.setTextColor(getResources().getColor(R.color.white));
             plateletText.setBackground(getResources().getDrawable(R.drawable.field));
+            plateletText.setTextColor(getResources().getColor(R.color.my_red));
             proceedButton.setClickable(true);
             requestMap.put("Donation Type", "Whole Blood");
         });
         plateletText.setOnClickListener(v -> {
             plateletText.setBackground(getResources().getDrawable(R.drawable.field_selected));
+            plateletText.setTextColor(getResources().getColor(R.color.white));
             wholeBloodText.setBackground(getResources().getDrawable(R.drawable.field));
+            wholeBloodText.setTextColor(getResources().getColor(R.color.my_red));
             proceedButton.setClickable(true);
-            requestMap.put("Donation", "Platelet");
+            requestMap.put("Donation Type", "Platelet");
         });
         proceedButton.setOnClickListener(v -> {
                 reference = userDB.getReference("Schedule");
@@ -601,4 +606,12 @@ public class DateSelectionActivity extends AppCompatActivity {
             }
         });
         }
+
+    public void backToHome(View view) {
+        if(predecessor_activity.equals("SelectVenueActivity")){
+            startActivity(new Intent(DateSelectionActivity.this, SelectVenueActivity.class));
+        }else if(predecessor_activity.equals("SearchVenueActivity")){
+            startActivity(new Intent(DateSelectionActivity.this, SearchVenueActivity.class));
+        }
+    }
 }
