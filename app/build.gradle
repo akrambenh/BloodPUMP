@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.bloodbump'
+    namespace 'com.example.bloodpump'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.bloodbump"
+        applicationId "com.example.bloodpump"
         minSdk 24
         targetSdk 33
         versionCode 1
