@@ -1,7 +1,6 @@
 # BloodPUMP
 
   Blood Pump is an android app that offers the possibilty to book blood donation appointments
-[![Blood Pump LOGO][product-screenshot]][https://www.mediafire.com/view/emylepffrimspc0/BLOOD_BUMP_%25283%2529.jpg.png/file]
 # Description
   This app was built with java(Android Studio) and it uses Firebase Authentification & Firebase Real-Time Database as a backend & Firebase Storage to load profile picture
  It uses Google Places API to detect nearby Hospitals & Medical Centers.
