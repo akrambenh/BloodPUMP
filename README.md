@@ -20,6 +20,7 @@ to discuss what you would like to change.
 
 ## Contact
 You can contact me throught this email : akramoov@outlook.com
+</b>
 Project Link [https://github.com/akrambenh/BloodPUMP](https://github.com/akrambenh/BloodPUMP)
 
 [Java-url]: https://www.java.com/en/
