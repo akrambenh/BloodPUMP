@@ -23,6 +23,7 @@ You can contact me throught this email : akramoov@outlook.com
 Project Link [https://github.com/akrambenh/BloodPUMP](https://github.com/akrambenh/BloodPUMP)
 
 [Java-url]: https://www.java.com/en/
+[Java.com]: https://img.shields.io/badge/Java-DD0031?style=for-the-badge&logo=java&logoColor=white
 [AndroidStudio-url]: https://developer.android.com/studio?gclid=CjwKCAjw-b-kBhB-EiwA4fvKrEDrOZz23aC7I8USYHuJpFToYYFONWxVmi7z0BC9o_57JV0LQkfb1RoCiZcQAvD_BwE&gclsrc=aw.ds
-[developer.android.com]: https://img.shields.io/aur/license/:android-studio
+[developer.android.com]: https://img.shields.io/badge/Android%20Studio-GD0031?style=for-the-badge&logo=java&logoColor=white
 
