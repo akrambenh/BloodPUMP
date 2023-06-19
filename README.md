@@ -11,8 +11,8 @@
 # Note
   Both Donor 
 # Build With
-[![Java][Java.com]][Java-url]
-[![AndroidStudio][developer.android.com]][AndroidStudio-url]
+* [![Java][Java.com]][Java-url]
+* [![AndroidStudio][developer.android.com]][AndroidStudio-url]
 ## Contributing
 
   Pull requests are welcome. For major changes, please open an issue first
