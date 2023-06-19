@@ -147,7 +147,7 @@ public class PlacesFragment extends Fragment implements  OnMapReadyCallback{
                 "&radius=" + radius +
                 "&name=" + venue +
                 "&region=DZ" +
-                "&key=AIzaSyA5hxDEk36Yub71bI9FrJt1HfCW9tz1_9k";
+                "YOUR_MAPS_API";
         new PlaceTask().execute(url);
     }
 
