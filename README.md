@@ -24,3 +24,5 @@ Project Link [https://github.com/akrambenh/BloodPUMP](https://github.com/akrambe
 
 [Java-url]: https://www.java.com/en/
 [AndroidStudio-url]: https://developer.android.com/studio?gclid=CjwKCAjw-b-kBhB-EiwA4fvKrEDrOZz23aC7I8USYHuJpFToYYFONWxVmi7z0BC9o_57JV0LQkfb1RoCiZcQAvD_BwE&gclsrc=aw.ds
+[developer.android.com]: https://img.shields.io/aur/license/:android-studio
+
